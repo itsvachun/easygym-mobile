@@ -36,7 +36,7 @@ object AppModule {
         val json = Json { ignoreUnknownKeys = true }
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl("https://localhost/api/v1")
+            .baseUrl("https://localhost:8080/api/v1")
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()

@@ -1,36 +1,35 @@
 package com.easygym.ui.screens
 
-import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.easygym.R
 
 @Composable
 fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     onLoginSuccess: () -> Unit
 ) {
-
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
+    val loginState by viewModel.state.collectAsState()
 
     Box(
         modifier = modifier
@@ -59,11 +58,8 @@ fun LoginScreen(
             )
 
             OutlinedTextField(
-                value = email,
-                onValueChange = {
-                    email = it
-                    errorMessage = null
-                },
+                value = loginState.loginRequest.email,
+                onValueChange = viewModel::onEmailChanged,
                 label = { Text("Email") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
@@ -74,24 +70,19 @@ fun LoginScreen(
             )
 
             OutlinedTextField(
-                value = password,
-                onValueChange = {
-                    password = it
-                    errorMessage = null
-                },
+                value = loginState.loginRequest.password,
+                onValueChange = viewModel::onPasswordChanged,
                 label = { Text("Password") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = if (passwordVisible)
+                visualTransformation = if (loginState.isPasswordVisible)
                     VisualTransformation.None
                 else
                     PasswordVisualTransformation(),
                 trailingIcon = {
-                    IconButton(onClick = {
-                        passwordVisible = !passwordVisible
-                    }) {
+                    IconButton(onClick = viewModel::toggleVisibility) {
                         Icon(
-                            imageVector = if (passwordVisible)
+                            imageVector = if (loginState.isPasswordVisible)
                                 Icons.Default.Visibility
                             else
                                 Icons.Default.VisibilityOff,
@@ -105,7 +96,7 @@ fun LoginScreen(
                 )
             )
 
-            errorMessage?.let {
+            loginState.errorMessage?.let {
                 Text(
                     text = it,
                     color = MaterialTheme.colorScheme.error
@@ -113,16 +104,7 @@ fun LoginScreen(
             }
 
             Button(
-                onClick = {
-                    if (email.isBlank()) {
-                        errorMessage = "Compila tutti i campi"
-                    } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                        errorMessage = "Email non valida"
-                    } else {
-                        errorMessage = null
-                        onLoginSuccess()
-                    }
-                },
+                onClick = viewModel::login,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
