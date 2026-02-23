@@ -1,13 +1,13 @@
 package com.easygym.di
 
-import android.content.Context
-import androidx.room.Room
-import com.easygym.data.local.AppDatabase
+//import android.content.Context
+//import androidx.room.Room
+//import com.easygym.data.local.AppDatabase
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
+//import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -42,13 +42,13 @@ object AppModule {
             .build()
     }
 
-    @Provides
-    @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "easygym.db"
-        ).build()
-    }
+//    @Provides
+//    @Singleton
+//    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+//        return Room.databaseBuilder(
+//            context,
+//            AppDatabase::class.java,
+//            "easygym.db"
+//        ).build()
+//    }
 }
