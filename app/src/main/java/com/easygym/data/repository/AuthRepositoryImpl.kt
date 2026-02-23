@@ -1,0 +1,37 @@
+package com.easygym.data.repository
+
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.easygym.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+
+class AuthRepositoryImpl @Inject constructor(
+    private val dataStore: DataStore<Preferences>
+) : AuthRepository {
+
+    private object Keys {
+        val JWT_KEY = stringPreferencesKey("jwt_token")
+    }
+
+    override fun jwtToken(): Flow<String?> =
+        dataStore.data
+            .map { prefs ->
+                prefs[Keys.JWT_KEY]
+            }
+
+    override suspend fun saveJwtToken(token: String) {
+        dataStore.edit { prefs ->
+            prefs[Keys.JWT_KEY] = token
+        }
+    }
+
+    override suspend fun clearJwtToken() {
+        dataStore.edit { prefs ->
+            prefs.remove(Keys.JWT_KEY)
+        }
+    }
+}
