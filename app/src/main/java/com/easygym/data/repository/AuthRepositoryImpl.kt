@@ -20,17 +20,11 @@ class AuthRepositoryImpl @Inject constructor(
         val JWT_KEY = stringPreferencesKey("jwt_token")
     }
 
-    override fun jwtToken(): Flow<String?> =
+    override val jwtToken: Flow<String?> =
         dataStore.data
             .map { prefs ->
                 prefs[Keys.JWT_KEY]
             }
-
-    override suspend fun saveJwtToken(token: String) {
-        dataStore.edit { prefs ->
-            prefs[Keys.JWT_KEY] = token
-        }
-    }
 
     override suspend fun clearJwtToken() {
         dataStore.edit { prefs ->
@@ -40,6 +34,9 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun login(loginRequest: Login.Request) {
         val loginResponse = auth.login(loginRequest)
+        dataStore.edit { prefs ->
+            prefs[Keys.JWT_KEY] = loginResponse.accessToken
+        }
         println("Login successful: $loginResponse")
     }
 }

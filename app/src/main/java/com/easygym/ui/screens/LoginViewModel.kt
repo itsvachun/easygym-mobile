@@ -29,35 +29,6 @@ class LoginViewModel @Inject constructor(
 
     val state: StateFlow<LoginState> = _state.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            authRepository.jwtToken().collect { token ->
-                _state.value = _state.value.copy(
-                    isLoggedIn = isTokenValid(token),
-                )
-            }
-        }
-    }
-
-    private fun isTokenValid(token: String?): Boolean {
-        if (token.isNullOrBlank()) return false
-
-        return try {
-            val parts = token.split(".")
-            if (parts.size != 3) return false
-
-            val payload = String(android.util.Base64.decode(parts[1], android.util.Base64.URL_SAFE))
-            val json = org.json.JSONObject(payload)
-
-            val exp = json.getLong("exp")
-            val currentTime = System.currentTimeMillis() / 1000
-
-            currentTime < exp
-        } catch (e: Exception) {
-            false
-        }
-    }
-
     fun login() {
         val currentState = _state.value
         _state.value = currentState.copy(isLoading = true)

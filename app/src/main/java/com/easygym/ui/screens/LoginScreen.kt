@@ -27,7 +27,6 @@ import com.easygym.R
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    onLoginSuccess: () -> Unit
 ) {
     val loginState by viewModel.state.collectAsState()
 
@@ -119,6 +118,5 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     LoginScreen(
-        onLoginSuccess = {}
     )
 }
