@@ -2,16 +2,18 @@ package com.easygym.di
 
 import com.easygym.data.repository.AuthRepositoryImpl
 import com.easygym.domain.repository.AuthRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthModule {
-    @Provides
+abstract class RepositoryModule {
+    @Binds
     @Singleton
-    fun provideAuthRepository(): AuthRepository = AuthRepositoryImpl()
+    abstract fun provideAuthRepositoryImpl(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
+
+
 }
