@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.easygym.ui.screens.GateScreen
+import com.easygym.ui.navigation.NavGraph
 import com.easygym.ui.theme.EasyGymTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             EasyGymTheme {
-                GateScreen()
+                NavGraph()
             }
         }
     }

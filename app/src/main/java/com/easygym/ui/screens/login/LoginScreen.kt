@@ -1,4 +1,4 @@
-package com.easygym.ui.screens
+package com.easygym.ui.screens.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
