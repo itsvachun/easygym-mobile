@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.easygym.ui.navigation.NavGraph
 import com.easygym.ui.theme.EasyGymTheme
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.easygym.ui.navigation.NavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            EasyGymTheme {
+            EasyGymTheme(darkTheme = isSystemInDarkTheme()) {
                 NavGraph()
             }
         }
