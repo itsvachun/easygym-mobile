@@ -112,7 +112,7 @@ fun LoginScreen(
 
                 Button(
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = EasyGym.colorScheme.primary,
+                        containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     shape = MaterialTheme.shapes.medium,

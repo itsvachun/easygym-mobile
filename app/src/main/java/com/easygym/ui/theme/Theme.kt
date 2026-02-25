@@ -16,6 +16,7 @@ val GreenAccent = Color(0xFF4CAF50)     // Verde per indicatori
 @Composable
 fun EasyGymTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -38,7 +39,7 @@ fun EasyGymTheme(
             onError = md_theme_dark_onError,
             errorContainer = md_theme_dark_errorContainer,
             onErrorContainer = md_theme_dark_onErrorContainer,
-            background = DarkBackground,  // Aggiungi il tuo sfondo scuro qui
+            background = md_theme_dark_background,
             onBackground = md_theme_dark_onBackground,
             surface = md_theme_dark_surface,
             onSurface = md_theme_dark_onSurface
@@ -64,9 +65,10 @@ fun EasyGymTheme(
         )
     }
 
+    // Usa la tipografia importata dal file Typography.kt
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = typography,
+        typography = typography,  // Qui stai usando la tipografia definita in Typography.kt
         content = content
     )
 }
