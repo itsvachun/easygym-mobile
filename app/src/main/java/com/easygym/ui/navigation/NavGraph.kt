@@ -1,6 +1,9 @@
 package com.easygym.ui.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,22 +33,26 @@ fun NavGraph(
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
-    LaunchedEffect(navState.availableDestinations) {
-        navController.navigate(navState.availableDestinations.first().route)
+    val pagerState = rememberPagerState(pageCount = { navState.bottomDestinations.size })
+
+    LaunchedEffect(navState.bottomDestinations) {
+        if (navState.bottomDestinations.isNotEmpty()) {
+            navController.navigate(NavDestination.Common.BOTTOM.route)
+        }
     }
 
     Scaffold(
         bottomBar = {
-            if (navState.bottomDestinations.map { it.route }.contains(currentRoute))
+            if (currentRoute == NavDestination.Common.BOTTOM.route)
                 BottomBar(
-                    navController = navController,
-                    bottomDestinations = navState.bottomDestinations
+                    bottomDestinations = navState.bottomDestinations,
+                    pagerState = pagerState,
                 )
         }
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = navState.availableDestinations.first().route,
+            startDestination = NavDestination.Common.LOADING.route,
             modifier = Modifier.padding(padding)
         ) {
             composable(NavDestination.Common.LOADING.route) {
@@ -54,20 +61,19 @@ fun NavGraph(
             composable(NavDestination.Common.LOGIN.route) {
                 LoginScreen()
             }
-            composable(NavDestination.BottomBar.HOME.route) {
-                HomeScreen()
-            }
-            composable(NavDestination.BottomBar.ATHLETES.route) {
-                AthletesScreen()
-            }
-            composable(NavDestination.BottomBar.CALENDAR.route) {
-                CalendarScreen()
-            }
-            composable(NavDestination.BottomBar.PAYMENTS.route) {
-                PaymentScreen()
-            }
-            composable(NavDestination.BottomBar.CLUB.route) {
-                ClubScreen()
+            composable(NavDestination.Common.BOTTOM.route) {
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    when (navState.bottomDestinations[page].route) {
+                        NavDestination.BottomBar.HOME.route -> HomeScreen()
+                        NavDestination.BottomBar.ATHLETES.route -> AthletesScreen()
+                        NavDestination.BottomBar.CALENDAR.route -> CalendarScreen()
+                        NavDestination.BottomBar.PAYMENTS.route -> PaymentScreen()
+                        NavDestination.BottomBar.CLUB.route -> ClubScreen()
+                    }
+                }
             }
         }
     }

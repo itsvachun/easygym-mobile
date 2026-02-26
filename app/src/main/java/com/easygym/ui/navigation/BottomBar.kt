@@ -4,14 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,16 +19,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
+import kotlinx.coroutines.launch
 
 @Composable
 fun BottomBar(
-    navController: NavController,
     bottomDestinations: List<NavDestination.BottomBar>,
-    viewModel: BottomBarViewModel = viewModel()
+    pagerState: PagerState
 ) {
-    val selectedIndex by viewModel.state.collectAsState()
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -42,7 +40,7 @@ fun BottomBar(
         ) {
             bottomDestinations.forEachIndexed { index, item ->
 
-                val isSelected = index == selectedIndex
+                val isSelected = index == pagerState.currentPage
                 val tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
 
                 Column(
@@ -52,8 +50,9 @@ fun BottomBar(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                         ) {
-                            viewModel.updateSelectedIndex(index)
-                            navController.navigate(item.route)
+                            scope.launch {
+                                pagerState.scrollToPage(index)
+                            }
                         }
                         .padding(horizontal = 12.dp)
                 ) {

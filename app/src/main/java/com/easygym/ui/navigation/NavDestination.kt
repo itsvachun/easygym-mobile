@@ -8,6 +8,7 @@ sealed interface NavDestination {
     sealed class Common(override val route: String) : NavDestination {
         object LOADING : Common(route = "loading")
         object LOGIN : Common(route = "login")
+        object BOTTOM : Common(route = "bottom")
     }
 
     sealed class BottomBar(override val route: String, val label: String, val iconId: Int) : NavDestination {
