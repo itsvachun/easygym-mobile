@@ -19,7 +19,8 @@ enum class UserRole {
 }
 
 data class NavState(
-    val availableDestinations: List<NavDestination> = listOf<NavDestination>(NavDestination.Common.LOADING),
+    val isLoading: Boolean = true,
+    val availableDestinations: List<NavDestination> = listOf(),
     val bottomDestinations: List<NavDestination.BottomBar> = availableDestinations.filterIsInstance<NavDestination.BottomBar>(),
     val role: UserRole? = null,
 )
@@ -38,27 +39,42 @@ class NavViewModel @Inject constructor(
                 initialValue = NavState()
             )
 
-    private fun getNavStateByToken(token: String?): NavState =
-        try {
-            val parts = token?.split(".")
+    private fun getNavStateByToken(token: String?): NavState {
+        if (token.isNullOrBlank()) {
+            return NavState(
+                isLoading = false,
+                availableDestinations = getDestinationsByRole()
+            )
+        }
 
-            val payload = String(Base64.decode(parts?.get(1), Base64.URL_SAFE))
+        return try {
+            val parts = token.split(".")
+            val payload = String(Base64.decode(parts[1], Base64.URL_SAFE))
             val json = JSONObject(payload)
 
             val role = UserRole.valueOf(json.getString("role"))
             val exp = json.getLong("exp")
             val currentTime = System.currentTimeMillis() / 1000
 
-            println("ciao")
-
             if (currentTime < exp) {
-                NavState(availableDestinations = getDestinationsByRole(role), role = role)
+                NavState(
+                    isLoading = false,
+                    availableDestinations = getDestinationsByRole(role),
+                    role = role
+                )
             } else {
-                NavState(availableDestinations = getDestinationsByRole())
+                NavState(
+                    isLoading = false,
+                    availableDestinations = getDestinationsByRole()
+                )
             }
-        } catch (_: Exception) {
-            NavState(availableDestinations = getDestinationsByRole())
+        } catch (e: Exception) {
+            NavState(
+                isLoading = false,
+                availableDestinations = getDestinationsByRole()
+            )
         }
+    }
 
 
     private fun getDestinationsByRole(role: UserRole? = null): List<NavDestination> =

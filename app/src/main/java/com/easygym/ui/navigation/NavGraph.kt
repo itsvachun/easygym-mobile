@@ -6,7 +6,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -35,18 +34,6 @@ fun NavGraph(
 
     val pagerState = rememberPagerState(pageCount = { navState.bottomDestinations.size })
 
-    LaunchedEffect(navState.bottomDestinations) {
-        if (navState.bottomDestinations.isNotEmpty()) {
-            navController.navigate(NavDestination.Common.BOTTOM.route) {
-                popUpTo(0)
-            }
-        } else {
-            navController.navigate(NavDestination.Common.LOGIN.route) {
-                popUpTo(0)
-            }
-        }
-    }
-
     Scaffold(
         bottomBar = {
             if (currentRoute == NavDestination.Common.BOTTOM.route)
@@ -58,7 +45,11 @@ fun NavGraph(
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = NavDestination.Common.LOADING.route,
+            startDestination = when {
+                navState.isLoading -> NavDestination.Common.LOADING.route
+                navState.bottomDestinations.isNotEmpty() -> NavDestination.Common.BOTTOM.route
+                else -> NavDestination.Common.LOGIN.route
+            },
             modifier = Modifier.padding(padding)
         ) {
             composable(NavDestination.Common.LOADING.route) {
