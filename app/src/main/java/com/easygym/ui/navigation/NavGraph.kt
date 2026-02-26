@@ -37,7 +37,10 @@ fun NavGraph(
     Scaffold(
         bottomBar = {
             if (navState.bottomDestinations.map { it.route }.contains(currentRoute))
-                BottomBar(bottomDestinations = navState.bottomDestinations)
+                BottomBar(
+                    navController = navController,
+                    bottomDestinations = navState.bottomDestinations
+                )
         }
     ) { padding ->
         NavHost(

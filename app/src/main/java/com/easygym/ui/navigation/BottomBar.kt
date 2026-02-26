@@ -19,21 +19,15 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @Composable
 fun BottomBar(
+    navController: NavController,
     bottomDestinations: List<NavDestination.BottomBar>,
     viewModel: BottomBarViewModel = viewModel()
 ) {
     val selectedIndex by viewModel.state.collectAsState()
-
-//    LaunchedEffect(bottomBarState.bottomDestinations) {
-//        if (bottomBarState.bottomDestinations.isNotEmpty()) {
-//            navController.navigate(bottomBarState.bottomDestinations.first().route)
-//        } else {
-//            navController.navigate(NavDestination.Common.LOGIN.route)
-//        }
-//    }
 
     Box(
         modifier = Modifier
@@ -56,7 +50,10 @@ fun BottomBar(
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                        ) { viewModel.updateSelectedIndex(index) }
+                        ) {
+                            viewModel.updateSelectedIndex(index)
+                            navController.navigate(item.route)
+                        }
                         .padding(horizontal = 12.dp)
                 ) {
 
