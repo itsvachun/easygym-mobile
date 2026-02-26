@@ -65,7 +65,6 @@ fun BottomBar(
                 )
 
                 val tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
-
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier

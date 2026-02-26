@@ -7,60 +7,86 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Nuovi colori definiti
-val DarkBackground = Color(0xFF121212)  // Sfondo scuro
-val OrangeAccent = Color(0xFFFF5722)   // Arancione acceso
-val RedAccent = Color(0xFFB71C1C)       // Rosso scuro
-val GreenAccent = Color(0xFF4CAF50)     // Verde per indicatori
-
 @Composable
 fun EasyGymTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    // dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    Color(0xFF8B5CF6)            // Cornfield Blue
+    Color(0xFFA78BFF)   // Cornfield Blue backgorund
+
+    Color(0xFF3B82F6)               // French Rose
+    Color(0xFF64AFFF)      // French Rose background
+
+    Color(0xFFEC4899)          // French Rose
+    Color(0xFFF76CBF) // French Rose background
+
     val colorScheme = when {
-
-
         darkTheme -> darkColorScheme(
-            primary = md_theme_dark_primary,
-            onPrimary = md_theme_dark_onPrimary,
-            primaryContainer = md_theme_dark_primaryContainer,
-            onPrimaryContainer = md_theme_dark_onPrimaryContainer,
-            secondary = md_theme_dark_secondary,
-            onSecondary = md_theme_dark_onSecondary,
-            secondaryContainer = md_theme_dark_secondaryContainer,
-            onSecondaryContainer = md_theme_dark_onSecondaryContainer,
-            error = md_theme_dark_error,
-            onError = md_theme_dark_onError,
-            errorContainer = md_theme_dark_errorContainer,
-            onErrorContainer = md_theme_dark_onErrorContainer,
-            background = md_theme_dark_background,
-            onBackground = md_theme_dark_onBackground,
-            surface = md_theme_dark_surface,
-            onSurface = md_theme_dark_onSurface
+            // Primary = Red
+            primary = red_dark,
+            onPrimary = text_dark,
+            primaryContainer = redContainer_dark,
+            onPrimaryContainer = text_dark,
+
+            // Secondary = Yellow
+            secondary = yellow_dark,
+            onSecondary = text_dark,
+            secondaryContainer = yellowContainer_dark,
+            onSecondaryContainer = text_dark,
+
+            // Tertiary = Green
+            tertiary = green_dark,
+            onTertiary = text_dark,
+            tertiaryContainer = greenContainer_dark,
+            onTertiaryContainer = text_dark,
+
+            // Error
+            error = red_dark,
+            onError = text_dark,
+            errorContainer = redContainer_dark,
+            onErrorContainer = text_dark,
+
+            // Background and Surface
+            background = background_dark,
+            onBackground = text_dark,
+            surface = surface_dark,
+            onSurface = text_dark
         )
 
         else -> lightColorScheme(
-            primary = md_theme_light_primary,
-            onPrimary = md_theme_light_onPrimary,
-            primaryContainer = md_theme_light_primaryContainer,
-            onPrimaryContainer = md_theme_light_onPrimaryContainer,
-            secondary = md_theme_light_secondary,
-            onSecondary = md_theme_light_onSecondary,
-            secondaryContainer = md_theme_light_secondaryContainer,
-            onSecondaryContainer = md_theme_light_onSecondaryContainer,
-            error = md_theme_light_error,
-            onError = md_theme_light_onError,
-            errorContainer = md_theme_light_errorContainer,
-            onErrorContainer = md_theme_light_onErrorContainer,
-            background = md_theme_light_background,
-            onBackground = md_theme_light_onBackground,
-            surface = md_theme_light_surface,
-            onSurface = md_theme_light_onSurface
+            // Primary = Red
+            primary = red,
+            onPrimary = text,
+            primaryContainer = redContainer,
+            onPrimaryContainer = text,
+
+            // Secondary = Yellow
+            secondary = yellow,
+            onSecondary = text,
+            secondaryContainer = yellowContainer,
+            onSecondaryContainer = text,
+
+            // Tertiary = Green
+            tertiary = green,
+            onTertiary = text,
+            tertiaryContainer = greenContainer,
+            onTertiaryContainer = text,
+
+            // Error
+            error = red,
+            onError = text,
+            errorContainer = redContainer,
+            onErrorContainer = text,
+
+            // Background and Surface
+            background = background,
+            onBackground = text,
+            surface = surface,
+            onSurface = text
         )
     }
+
 
     // Usa la tipografia importata dal file Typography.kt
     MaterialTheme(

@@ -31,102 +31,98 @@ fun LoginScreen(
     val loginState by viewModel.state.collectAsState()
 
     // Usa Scaffold e imposta il background per tutta la schermata
-    Scaffold(
+
+    Box(
         modifier = modifier
-            .fillMaxSize(),
-        contentColor = MaterialTheme.colorScheme.onBackground // Colore del contenuto
+            .fillMaxSize()
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            contentAlignment = Alignment.Center
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo EasyGym",
+                modifier = Modifier
+                    .size(120.dp)
+                    .padding(bottom = 16.dp),
+                contentScale = ContentScale.Fit
+            )
 
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "Logo EasyGym",
-                    modifier = Modifier
-                        .size(120.dp)
-                        .padding(bottom = 16.dp),
-                    contentScale = ContentScale.Fit
+            Text(
+                text = "Login",
+                style = MaterialTheme.typography.headlineLarge
+            )
+
+            OutlinedTextField(
+                shape = MaterialTheme.shapes.medium,
+                value = loginState.loginRequest.email,
+                onValueChange = viewModel::onEmailChanged,
+                label = { Text("Email") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
                 )
+            )
 
+            OutlinedTextField(
+                shape = MaterialTheme.shapes.medium,
+                value = loginState.loginRequest.password,
+                onValueChange = viewModel::onPasswordChanged,
+                label = { Text("Password") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = if (loginState.isPasswordVisible)
+                    VisualTransformation.None
+                else
+                    PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = viewModel::toggleVisibility) {
+                        Icon(
+                            imageVector = if (loginState.isPasswordVisible)
+                                Icons.Default.Visibility
+                            else
+                                Icons.Default.VisibilityOff,
+                            contentDescription = null
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                )
+            )
+
+            loginState.errorMessage?.let {
                 Text(
-                    text = "Login",
-                    style = MaterialTheme.typography.headlineLarge
+                    text = it,
+                    color = MaterialTheme.colorScheme.error
                 )
+            }
 
-                OutlinedTextField(
-                    shape = MaterialTheme.shapes.medium,
-                    value = loginState.loginRequest.email,
-                    onValueChange = viewModel::onEmailChanged,
-                    label = { Text("Email") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    )
-                )
-
-                OutlinedTextField(
-                    shape = MaterialTheme.shapes.medium,
-                    value = loginState.loginRequest.password,
-                    onValueChange = viewModel::onPasswordChanged,
-                    label = { Text("Password") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = if (loginState.isPasswordVisible)
-                        VisualTransformation.None
-                    else
-                        PasswordVisualTransformation(),
-                    trailingIcon = {
-                        IconButton(onClick = viewModel::toggleVisibility) {
-                            Icon(
-                                imageVector = if (loginState.isPasswordVisible)
-                                    Icons.Default.Visibility
-                                else
-                                    Icons.Default.VisibilityOff,
-                                contentDescription = null
-                            )
-                        }
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Done
-                    )
-                )
-
-                loginState.errorMessage?.let {
-                    Text(
-                        text = it,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    shape = MaterialTheme.shapes.medium,
-                    onClick = viewModel::login,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    Text("Accedi", style = MaterialTheme.typography.headlineSmall)
-                }
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                shape = MaterialTheme.shapes.medium,
+                onClick = viewModel::login,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text("Accedi", style = MaterialTheme.typography.headlineSmall)
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
