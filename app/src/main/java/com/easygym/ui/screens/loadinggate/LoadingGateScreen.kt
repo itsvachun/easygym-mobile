@@ -1,4 +1,4 @@
-package com.easygym.ui.screens.loading
+package com.easygym.ui.screens.loadinggate
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun LoadingScreen() {
+fun LoadingGateScreen() {
+
+
     Scaffold { paddingValues ->
         Box(
             modifier = Modifier.padding(paddingValues).fillMaxSize(),
