@@ -35,7 +35,7 @@ fun HomeScreen(
 
                 Text(
                     text = "Home Screen",
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineLarge
                 )
 
                 Button(
@@ -44,7 +44,7 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .height(50.dp)
                 ) {
-                    Text("Logout")
+                    Text("Logout", style = MaterialTheme.typography.headlineSmall)
                 }
             }
         }

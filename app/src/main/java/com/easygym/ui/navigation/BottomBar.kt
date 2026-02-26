@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -42,7 +43,7 @@ fun BottomBar(
             bottomDestinations.forEachIndexed { index, item ->
 
                 val isSelected = index == selectedIndex
-                val tint = if (isSelected) Color.Red else Color.Gray
+                val tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,7 +80,7 @@ fun BottomBar(
                             modifier = Modifier
                                 .size(6.dp)
                                 .background(
-                                    color = Color.Red,
+                                    color = tint,
                                     shape = CircleShape
                                 )
                         )
