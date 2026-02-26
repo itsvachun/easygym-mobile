@@ -37,7 +37,13 @@ fun NavGraph(
 
     LaunchedEffect(navState.bottomDestinations) {
         if (navState.bottomDestinations.isNotEmpty()) {
-            navController.navigate(NavDestination.Common.BOTTOM.route)
+            navController.navigate(NavDestination.Common.BOTTOM.route) {
+                popUpTo(0)
+            }
+        } else {
+            navController.navigate(NavDestination.Common.LOGIN.route) {
+                popUpTo(0)
+            }
         }
     }
 
