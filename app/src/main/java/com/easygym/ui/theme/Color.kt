@@ -16,10 +16,10 @@ val green = Color(0xFF22C55E)             // Mountain Meadow
 val greenContainer = Color(0xFF6EEB8F)    // Mountain Meadow light
 
 // Background and Surfaces
-val background = Color(0xFFFFFFFF)        // White background
-val surface = Color(0xFFFFFFFF)           // White surface
-val surfaceVariant = Color(0xFFF0F0F0)    // Light gray surface variant
-val outline = Color(0xFF8D8D8D)           // Gray outline
+val background = Color(0xFFFFFFFF)       // Warm light background
+val surface = Color(0xFFF2F2F2)    // Main surface
+val surfaceVariant = Color(0xFFE7E0D8)   // Light warm gray
+val outline = Color(0xFFB5B5B5)          // Same outline for consistency
 val shadow = Color(0xFF000000)            // Black shadow
 
 val text = Color(0xFF121212)     // Black text on background (light)

@@ -51,27 +51,29 @@ fun EasyGymTheme(
             background = background_dark,
             onBackground = text_dark,
             surface = surface_dark,
-            onSurface = text_dark
+            surfaceVariant = surfaceVariant_dark,
+            onSurface = text_dark,
+            outline = outline_dark,
         )
 
         else -> lightColorScheme(
             // Primary = Red
             primary = red,
-            onPrimary = text,
+            onPrimary = text_dark,
             primaryContainer = redContainer,
-            onPrimaryContainer = text,
+            onPrimaryContainer = text_dark,
 
             // Secondary = Yellow
             secondary = yellow,
-            onSecondary = text,
+            onSecondary = text_dark,
             secondaryContainer = yellowContainer,
-            onSecondaryContainer = text,
+            onSecondaryContainer = text_dark,
 
             // Tertiary = Green
             tertiary = green,
-            onTertiary = text,
+            onTertiary = text_dark,
             tertiaryContainer = greenContainer,
-            onTertiaryContainer = text,
+            onTertiaryContainer = text_dark,
 
             // Error
             error = red,
@@ -83,7 +85,9 @@ fun EasyGymTheme(
             background = background,
             onBackground = text,
             surface = surface,
-            onSurface = text
+            surfaceVariant = surfaceVariant,
+            onSurface = text,
+            outline = outline
         )
     }
 
