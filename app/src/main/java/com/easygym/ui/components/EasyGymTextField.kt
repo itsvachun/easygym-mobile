@@ -34,11 +34,7 @@ fun EasyGymTextField(
         Text(
             text = label.uppercase(),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.outline.copy(
-                red = 0.80f,
-                green = 0.80f,
-                blue = 0.80f,
-            ),
+            color = MaterialTheme.colorScheme.outlineVariant,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp,
         )

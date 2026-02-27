@@ -54,6 +54,7 @@ fun EasyGymTheme(
             surfaceVariant = surfaceVariant_dark,
             onSurface = text_dark,
             outline = outline_dark,
+            outlineVariant = outlineVariant_dark,
         )
 
         else -> lightColorScheme(
@@ -87,7 +88,8 @@ fun EasyGymTheme(
             surface = surface,
             surfaceVariant = surfaceVariant,
             onSurface = text,
-            outline = outline
+            outline = outline,
+            outlineVariant = outlineVariant
         )
     }
 

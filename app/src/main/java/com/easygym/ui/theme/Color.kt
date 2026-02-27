@@ -20,6 +20,7 @@ val background = Color(0xFFFFFFFF)       // Warm light background
 val surface = Color(0xFFF2F2F2)    // Main surface
 val surfaceVariant = Color(0xFFE7E0D8)   // Light warm gray
 val outline = Color(0xFFB5B5B5)          // Same outline for consistency
+val outlineVariant = Color(0xFF797979)           // Gray outline
 val shadow = Color(0xFF000000)            // Black shadow
 
 val text = Color(0xFF121212)     // Black text on background (light)
@@ -43,6 +44,7 @@ val background_dark = Color(0xFF121212)        // Dark background
 val surface_dark = Color(0xFF1C1C1C)           // Dark surface
 val surfaceVariant_dark = Color(0xFF3B3B3B)    // Dark gray surface variant
 val outline_dark = Color(0xFF8D8D8D)           // Gray outline
+val outlineVariant_dark = Color(0xFFC8C8C8)           // Gray outline
 val shadow_dark = Color(0xFF000000)            // Black shadow
 
 val text_dark = Color(0xFFFFFFFF) // White text on background (dark)
