@@ -40,7 +40,7 @@ val greenContainer_dark = Color(0xFF6EEB8F)    // Mountain Meadow light
 
 // Background and Surfaces
 val background_dark = Color(0xFF121212)        // Dark background
-val surface_dark = Color(0xFF1F1B16)           // Dark surface
+val surface_dark = Color(0xFF1C1C1C)           // Dark surface
 val surfaceVariant_dark = Color(0xFF3B3B3B)    // Dark gray surface variant
 val outline_dark = Color(0xFF8D8D8D)           // Gray outline
 val shadow_dark = Color(0xFF000000)            // Black shadow

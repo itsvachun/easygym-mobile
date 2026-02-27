@@ -1,7 +1,6 @@
 package com.easygym.ui.screens.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -10,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.easygym.ui.components.PrimaryButton
 
 data class BottomItem(
     val label: String,
@@ -17,9 +17,8 @@ data class BottomItem(
 )
 
 @Composable
-fun HomeScreen(
-    //onLogoutClick: () -> Unit
-) {
+fun HomeScreen() {
+
     Scaffold { paddingValues ->
         Box(
             modifier = Modifier
@@ -38,14 +37,7 @@ fun HomeScreen(
                     style = MaterialTheme.typography.headlineLarge
                 )
 
-                Button(
-                    onClick = { },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    Text("Logout", style = MaterialTheme.typography.headlineSmall)
-                }
+                PrimaryButton(text = "Logout") {}
             }
         }
     }

@@ -36,10 +36,14 @@ fun BottomBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
             .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 5.dp)
+                .padding(top = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             bottomDestinations.forEachIndexed { index, item ->

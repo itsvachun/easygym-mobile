@@ -2,11 +2,13 @@ package com.easygym.ui.screens.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,14 +16,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.easygym.R
+import com.easygym.ui.components.EmailTextField
+import com.easygym.ui.components.PasswordTextField
+import com.easygym.ui.components.PrimaryButton
 
 @Composable
 fun LoginScreen(
@@ -29,8 +32,6 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
 ) {
     val loginState by viewModel.state.collectAsState()
-
-    // Usa Scaffold e imposta il background per tutta la schermata
 
     Box(
         modifier = modifier
@@ -58,45 +59,26 @@ fun LoginScreen(
                 style = MaterialTheme.typography.headlineLarge
             )
 
-            OutlinedTextField(
-                shape = MaterialTheme.shapes.medium,
+            EmailTextField(
                 value = loginState.loginRequest.email,
                 onValueChange = viewModel::onEmailChanged,
-                label = { Text("Email") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
-                )
             )
 
-            OutlinedTextField(
-                shape = MaterialTheme.shapes.medium,
+            PasswordTextField(
                 value = loginState.loginRequest.password,
                 onValueChange = viewModel::onPasswordChanged,
-                label = { Text("Password") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = if (loginState.isPasswordVisible)
-                    VisualTransformation.None
-                else
-                    PasswordVisualTransformation(),
+                label = "Password",
+                visualTransformation = if (loginState.isPasswordVisible) VisualTransformation.None
+                else PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(onClick = viewModel::toggleVisibility) {
                         Icon(
-                            imageVector = if (loginState.isPasswordVisible)
-                                Icons.Default.Visibility
-                            else
-                                Icons.Default.VisibilityOff,
+                            imageVector = if (loginState.isPasswordVisible) Icons.Default.Visibility
+                            else Icons.Default.VisibilityOff,
                             contentDescription = null
                         )
                     }
                 },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
-                )
             )
 
             loginState.errorMessage?.let {
@@ -106,19 +88,12 @@ fun LoginScreen(
                 )
             }
 
-            Button(
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                shape = MaterialTheme.shapes.medium,
-                onClick = viewModel::login,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text("Accedi", style = MaterialTheme.typography.headlineSmall)
-            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            PrimaryButton(
+                text = "Accedi",
+                onClick = viewModel::login
+            )
         }
     }
 }
