@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.easygym.ui.components.PrimaryButton
 
 data class BottomItem(
@@ -17,7 +18,7 @@ data class BottomItem(
 )
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
     Scaffold { paddingValues ->
         Box(
@@ -37,7 +38,7 @@ fun HomeScreen() {
                     style = MaterialTheme.typography.headlineLarge
                 )
 
-                PrimaryButton(text = "Logout") {}
+                PrimaryButton(text = "Logout", onClick = viewModel::logout)
             }
         }
     }
