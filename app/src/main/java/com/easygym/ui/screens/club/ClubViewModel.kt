@@ -14,7 +14,7 @@ class ClubViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.launch {
-            authRepository.clearJwtToken()
+            authRepository.logout()
         }
     }
 }

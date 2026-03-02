@@ -3,12 +3,10 @@ package com.easygym.ui.navigation
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.easygym.data.remote.auth.model.Refresh
 import com.easygym.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import javax.inject.Inject
@@ -35,7 +33,13 @@ class NavViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.jwtToken.collect { token ->
+            repository.accessToken.collect { token ->
+                if (token == null) {
+                    val refreshToken = repository.refreshToken.first()
+                    refreshToken?.let { refreshToken ->
+                        repository.refresh(Refresh.Request(refreshToken))
+                    }
+                }
                 modifyNavStateByToken(token)
             }
         }
