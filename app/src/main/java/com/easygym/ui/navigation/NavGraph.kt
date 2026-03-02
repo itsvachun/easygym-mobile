@@ -20,7 +20,7 @@ import com.easygym.ui.screens.club.ClubScreen
 import com.easygym.ui.screens.home.HomeScreen
 import com.easygym.ui.screens.loadinggate.LoadingGateScreen
 import com.easygym.ui.screens.login.LoginScreen
-import com.easygym.ui.screens.payments.PaymentScreen
+import com.easygym.ui.screens.payments.PaymentsScreen
 
 @Composable
 fun NavGraph(
@@ -67,7 +67,7 @@ fun NavGraph(
                         NavDestination.BottomBar.HOME.route -> HomeScreen()
                         NavDestination.BottomBar.ATHLETES.route -> AthletesScreen()
                         NavDestination.BottomBar.CALENDAR.route -> CalendarScreen()
-                        NavDestination.BottomBar.PAYMENTS.route -> PaymentScreen()
+                        NavDestination.BottomBar.PAYMENTS.route -> PaymentsScreen()
                         NavDestination.BottomBar.CLUB.route -> ClubScreen()
                     }
                 }

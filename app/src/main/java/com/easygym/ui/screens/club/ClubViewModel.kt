@@ -1,4 +1,4 @@
-package com.easygym.ui.screens.home
+package com.easygym.ui.screens.club
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class ClubViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
@@ -17,5 +17,4 @@ class HomeViewModel @Inject constructor(
             authRepository.clearJwtToken()
         }
     }
-
 }

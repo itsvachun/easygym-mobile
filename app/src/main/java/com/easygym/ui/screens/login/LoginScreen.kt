@@ -28,8 +28,8 @@ import com.easygym.ui.components.PrimaryButton
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val loginState by viewModel.state.collectAsState()
 
@@ -71,7 +71,7 @@ fun LoginScreen(
                 visualTransformation = if (loginState.isPasswordVisible) VisualTransformation.None
                 else PasswordVisualTransformation(),
                 trailingIcon = {
-                    IconButton(onClick = viewModel::toggleVisibility) {
+                    IconButton(onClick = viewModel::togglePasswordVisibility) {
                         Icon(
                             imageVector = if (loginState.isPasswordVisible) Icons.Default.Visibility
                             else Icons.Default.VisibilityOff,
@@ -102,6 +102,5 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(
-    )
+    LoginScreen()
 }

@@ -53,7 +53,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun toggleVisibility() = _state.update { currentState ->
+    fun togglePasswordVisibility() = _state.update { currentState ->
         currentState.copy(isPasswordVisible = !currentState.isPasswordVisible)
     }
 
