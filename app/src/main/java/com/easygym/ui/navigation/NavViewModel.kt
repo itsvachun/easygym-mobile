@@ -34,18 +34,20 @@ class NavViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             repository.accessToken.collect { token ->
-                if (token == null) {
+                if (isAccessTokenNotValid(token)) {
+                    _state.update { it.copy(isLoading = true) }
                     val refreshToken = repository.refreshToken.first()
                     refreshToken?.let { refreshToken ->
                         repository.refresh(Refresh.Request(refreshToken))
+                        return@collect
                     }
+                    _state.update { NavState(isLoading = false) }
                 }
-                modifyNavStateByToken(token)
             }
         }
     }
 
-    private fun modifyNavStateByToken(token: String?) {
+    private fun isAccessTokenNotValid(token: String?): Boolean {
         if (!token.isNullOrBlank())
             runCatching {
                 val parts = token.split(".")
@@ -64,18 +66,11 @@ class NavViewModel @Inject constructor(
                             isLoading = false
                         )
                     }
-                    return
+                    return false
                 }
             }
-
-        _state.update { currentState ->
-            currentState.copy(
-                bottomDestinations = getBottomDestinationsByRole(),
-                isLoading = false
-            )
-        }
+        return true
     }
-
 
     private fun getBottomDestinationsByRole(role: UserRole? = null): List<NavDestination.BottomBar> =
         when (role) {
