@@ -1,5 +1,6 @@
 package com.easygym.di
 
+import com.easygym.BuildConfig
 import com.easygym.services.AuthInterceptor
 import com.easygym.services.TokenAuthenticator
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -34,7 +35,7 @@ object BaseRequestModule {
         val json = Json { ignoreUnknownKeys = true }
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.74:8080/api/v1/")
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
