@@ -1,6 +1,6 @@
 package com.easygym.services
 
-import com.easygym.data.remote.auth.model.Refresh
+import com.easygym.data.remote.auth.AuthDTO
 import com.easygym.domain.repository.AuthRepository
 import dagger.Lazy
 import kotlinx.coroutines.flow.first
@@ -27,7 +27,7 @@ class TokenAuthenticator @Inject constructor(
         }
 
         val newAccessToken = runBlocking {
-            authRepository.get().refresh(Refresh.Request(refreshToken))
+            authRepository.get().refresh(AuthDTO.Refresh(refreshToken))
             authRepository.get().accessToken.first()
         }
 

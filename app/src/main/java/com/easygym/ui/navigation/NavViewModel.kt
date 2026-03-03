@@ -3,7 +3,7 @@ package com.easygym.ui.navigation
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.easygym.data.remote.auth.model.Refresh
+import com.easygym.data.remote.auth.AuthDTO
 import com.easygym.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -38,7 +38,7 @@ class NavViewModel @Inject constructor(
                     _state.update { it.copy(isLoading = true) }
                     val refreshToken = repository.refreshToken.first()
                     refreshToken?.let { refreshToken ->
-                        repository.refresh(Refresh.Request(refreshToken))
+                        repository.refresh(AuthDTO.Refresh(refreshToken))
                         return@collect
                     }
                     _state.update { NavState(isLoading = false) }

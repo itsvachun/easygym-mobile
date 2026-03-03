@@ -3,7 +3,7 @@ package com.easygym.ui.screens.login
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.easygym.data.remote.auth.model.Login
+import com.easygym.data.remote.auth.AuthDTO
 import com.easygym.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class LoginState(
-    val loginRequest: Login.Request = Login.Request("", ""),
+    val loginRequest: AuthDTO.Login = AuthDTO.Login("", ""),
     val isLoggedIn: Boolean = false,
     val isPasswordVisible: Boolean = false,
     val errorMessage: String? = null,
