@@ -4,15 +4,16 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.easygym.data.remote.auth.Auth
-import com.easygym.data.remote.auth.AuthDTO
+import com.easygym.data.remote.datasource.AuthDataSource
+import com.easygym.data.remote.model.auth.LoginRequest
+import com.easygym.data.remote.model.auth.RefreshRequest
 import com.easygym.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val auth: Auth,
+    private val auth: AuthDataSource,
     private val dataStore: DataStore<Preferences>
 ) : AuthRepository {
 
@@ -40,7 +41,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun login(loginRequest: AuthDTO.Login) {
+    override suspend fun login(loginRequest: LoginRequest) {
         val loginResponse = auth.login(loginRequest)
         dataStore.edit { prefs ->
             prefs[Keys.ACCESS_TOKEN] = loginResponse.accessToken
@@ -49,7 +50,7 @@ class AuthRepositoryImpl @Inject constructor(
         println("Login successful: $loginResponse")
     }
 
-    override suspend fun refresh(refreshRequest: AuthDTO.Refresh) {
+    override suspend fun refresh(refreshRequest: RefreshRequest) {
         val refreshResponse = auth.refresh(refreshRequest)
         dataStore.edit { prefs ->
             prefs[Keys.ACCESS_TOKEN] = refreshResponse.accessToken
