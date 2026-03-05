@@ -4,17 +4,21 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.easygym.data.local.AppDatabase
 import com.easygym.data.remote.datasource.AuthDataSource
 import com.easygym.data.remote.model.auth.LoginRequest
 import com.easygym.data.remote.model.auth.RefreshRequest
 import com.easygym.domain.repository.AuthRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val auth: AuthDataSource,
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
+    private val db: AppDatabase
 ) : AuthRepository {
 
     private object Keys {
@@ -38,6 +42,9 @@ class AuthRepositoryImpl @Inject constructor(
         dataStore.edit { prefs ->
             prefs.remove(Keys.ACCESS_TOKEN)
             prefs.remove(Keys.REFRESH_TOKEN)
+        }
+        withContext(Dispatchers.IO) {
+            db.clearAllTables()
         }
     }
 

@@ -1,6 +1,7 @@
 package com.easygym.di
 
 import com.easygym.data.remote.datasource.AuthDataSource
+import com.easygym.data.remote.datasource.UserDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,6 +14,11 @@ import javax.inject.Singleton
 object DataSourceModule {
     @Provides
     @Singleton
-    fun provideAuth(retrofit: Retrofit): AuthDataSource =
+    fun provideAuthDataSource(retrofit: Retrofit): AuthDataSource =
         retrofit.create(AuthDataSource::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserDataSource(retrofit: Retrofit): UserDataSource =
+        retrofit.create(UserDataSource::class.java)
 }

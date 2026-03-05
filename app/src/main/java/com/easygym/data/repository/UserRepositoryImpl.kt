@@ -1,0 +1,22 @@
+package com.easygym.data.repository
+
+import com.easygym.data.local.dao.UserDAO
+import com.easygym.data.remote.datasource.UserDataSource
+import com.easygym.domain.model.User
+import com.easygym.domain.repository.UserRepository
+import jakarta.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+class UserRepositoryImpl @Inject constructor(private val userDAO: UserDAO, private val userDataSource: UserDataSource) :
+    UserRepository {
+
+    override val users: Flow<List<User>> = userDAO.getAll().map { users -> users.map { it.toDomain() } }
+
+    override suspend fun getAll() {
+        val response = userDataSource.getAll()
+        val entities = response.map { it.toEntity() }
+        userDAO.insertAll(entities)
+    }
+
+}
