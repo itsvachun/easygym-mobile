@@ -20,6 +20,8 @@ serialization = "1.7.1"
 hiltNavigationCompose = "1.2.0"
 room = "2.6.1"
 animation = "1.10.3"
+ui = "1.10.4"
+runtime = "1.10.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -64,6 +66,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 androidx-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "animation" }
+ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
