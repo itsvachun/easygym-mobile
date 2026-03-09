@@ -25,7 +25,6 @@ import com.easygym.R
 import com.easygym.ui.components.EmailTextField
 import com.easygym.ui.components.PasswordTextField
 import com.easygym.ui.components.PrimaryButton
-import com.easygym.ui.screens.users.UserScreen
 
 @Composable
 fun LoginScreen(
@@ -104,6 +103,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     MaterialTheme {
-        UserScreen()
+        LoginScreen()
     }
 }

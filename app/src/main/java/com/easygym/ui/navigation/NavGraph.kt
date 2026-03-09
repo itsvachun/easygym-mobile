@@ -17,10 +17,11 @@ import androidx.navigation.compose.rememberNavController
 import com.easygym.ui.screens.athletes.AthletesScreen
 import com.easygym.ui.screens.calendar.CalendarScreen
 import com.easygym.ui.screens.club.ClubScreen
-import com.easygym.ui.screens.home.HomeScreen
 import com.easygym.ui.screens.loadinggate.LoadingGateScreen
 import com.easygym.ui.screens.login.LoginScreen
 import com.easygym.ui.screens.payments.PaymentsScreen
+import com.easygym.ui.screens.users.CreateUserScreen
+import com.easygym.ui.screens.users.UsersScreen
 
 @Composable
 fun NavGraph(
@@ -64,13 +65,16 @@ fun NavGraph(
                     modifier = Modifier.fillMaxSize()
                 ) { page ->
                     when (navState.bottomDestinations[page].route) {
-                        NavDestination.BottomBar.HOME.route -> HomeScreen()
+                        NavDestination.BottomBar.HOME.route -> UsersScreen(navController = navController)
                         NavDestination.BottomBar.ATHLETES.route -> AthletesScreen()
                         NavDestination.BottomBar.CALENDAR.route -> CalendarScreen()
                         NavDestination.BottomBar.PAYMENTS.route -> PaymentsScreen()
                         NavDestination.BottomBar.CLUB.route -> ClubScreen()
                     }
                 }
+            }
+            composable(NavDestination.Common.CREATE_USER.route) {
+                CreateUserScreen(onNavigateBack = { navController.popBackStack() })
             }
         }
     }
