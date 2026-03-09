@@ -5,7 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.easygym.domain.model.User
 import com.easygym.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,9 +32,6 @@ class UsersViewModel @Inject constructor(
     val state: StateFlow<UsersState> = _state.asStateFlow()
 
     private var _allUsers: List<User> = emptyList()
-
-    private val _events = MutableSharedFlow<UsersEvent>()
-    val events = _events.asSharedFlow()
 
     init {
         loadUsers()
@@ -87,10 +87,6 @@ class UsersViewModel @Inject constructor(
             )
         }
 
-        fun addUserOnClick() {
-            viewModelScope.launch {
-                _events.emit(UsersEvent.NavigateToCreateUser)
-            }
-        }
+
     }
 }

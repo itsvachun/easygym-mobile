@@ -73,7 +73,7 @@ fun NavGraph(
                     }
                 }
             }
-            composable(NavDestination.Common.CREATE_USER.route) {
+            composable(NavDestination.Common.CreateUser.route) {
                 CreateUserScreen(onNavigateBack = { navController.popBackStack() })
             }
         }

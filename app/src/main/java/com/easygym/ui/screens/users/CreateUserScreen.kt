@@ -4,8 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.easygym.ui.components.EasyGymTextField
 import com.easygym.ui.components.EmailTextField
-import com.easygym.ui.components.IconButton
 import com.easygym.ui.components.PrimaryButton
+import com.easygym.ui.components.SecondaryButton
 
 
 @Composable
@@ -72,19 +70,32 @@ fun CreateUserScreen(
             ) {
 
                 Box(modifier = Modifier.weight(1f)) {
-                    IconButton(
-                        text = "Coach",
-                        icon = Icons.Default.Add,
-                        onClick = { viewModel.onRuoloSelected("Coach") }
-                    )
+                    if (state.ruolo == "Coach") {
+                        PrimaryButton(
+                            text = "Coach",
+                            onClick = {}
+                        )
+                    } else {
+                        SecondaryButton(
+                            text = "Coach",
+                            onClick = { viewModel.onRuoloSelected("Coach") }
+                        )
+                    }
                 }
 
+                // Bottone Athlete
                 Box(modifier = Modifier.weight(1f)) {
-                    IconButton(
-                        text = "Athlete",
-                        icon = Icons.Default.Add,
-                        onClick = { viewModel.onRuoloSelected("Athlete") }
-                    )
+                    if (state.ruolo == "Athlete") {
+                        PrimaryButton(
+                            text = "Atleta",
+                            onClick = {}
+                        )
+                    } else {
+                        SecondaryButton(
+                            text = "Atleta",
+                            onClick = { viewModel.onRuoloSelected("Athlete") }
+                        )
+                    }
                 }
             }
 

@@ -55,7 +55,7 @@ fun UsersScreen(
 
                 EasyGymFAB(
                     hasShadow = false,
-                    onClick = { navController.navigate(NavDestination.Common.CREATE_USER.route) },
+                    onClick = { navController.navigate(NavDestination.Common.CreateUser.route) },
 
                     )
             }

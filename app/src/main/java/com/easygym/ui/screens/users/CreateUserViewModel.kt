@@ -15,7 +15,7 @@ data class CreateUserState(
     val nome: String = "",
     val cognome: String = "",
     val email: String = "",
-    val ruolo: String? = null,
+    val ruolo: String? = "Athlete",
     val coachCertificazione: String = "",
     val athletePeso: String = "",
     val athleteAltezza: String = "",

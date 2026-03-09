@@ -9,7 +9,7 @@ sealed interface NavDestination {
         object LOADING : Common(route = "loading")
         object LOGIN : Common(route = "login")
         object BOTTOM : Common(route = "bottom")
-        object CREATE_USER : Common(route = "createUser")
+        object CreateUser : Common(route = "createUser")
     }
 
     sealed class BottomBar(override val route: String, val label: String, val iconId: Int) : NavDestination {
