@@ -5,6 +5,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+
+val LocalColors = staticCompositionLocalOf<EasyGymColors> { EasyGymColors.Light }
 
 @Composable
 fun EasyGymTheme(
@@ -13,28 +17,67 @@ fun EasyGymTheme(
 ) {
     val colorScheme = when {
         darkTheme -> darkColorScheme(
-            primary = DarkRed, onPrimary = DarkText,
-            secondary = DarkBlue, onSecondary = DarkText,
-            background = DarkBg, onBackground = DarkText,
-            surface = DarkSurface2, onSurface = DarkText,
-            surfaceVariant = DarkSurface3, outline = DarkSurface4,
-            error = DarkRed,
+            primary = LocalColors.current.red,
+            onPrimary = LocalColors.current.text,
+            primaryContainer = LocalColors.current.redDim,
+            onPrimaryContainer = LocalColors.current.text,
+            secondary = LocalColors.current.blue,
+            onSecondary = LocalColors.current.text,
+            secondaryContainer = LocalColors.current.blueDim,
+            onSecondaryContainer = LocalColors.current.text,
+            tertiary = LocalColors.current.green,
+            onTertiary = LocalColors.current.text,
+            tertiaryContainer = LocalColors.current.greenDim,
+            onTertiaryContainer = LocalColors.current.text,
+            background = LocalColors.current.bg,
+            onBackground = LocalColors.current.text,
+            surface = LocalColors.current.surface1,
+            onSurface = LocalColors.current.text,
+            surfaceVariant = LocalColors.current.surface2,
+            outline = LocalColors.current.surface3,
+            outlineVariant = LocalColors.current.surface4,
+            error = LocalColors.current.red,
+            onError = LocalColors.current.text,
+            errorContainer = LocalColors.current.redDim,
+            onErrorContainer = LocalColors.current.text,
         )
 
         else -> lightColorScheme(
-            primary = LightRed, onPrimary = LightText,
-            secondary = LightBlue, onSecondary = LightText,
-            background = LightBg, onBackground = LightText,
-            surface = LightSurface2, onSurface = LightText,
-            surfaceVariant = LightSurface3, outline = LightSurface4,
-            error = LightRed,
+            primary = LocalColors.current.red,
+            onPrimary = LocalColors.current.text,
+            primaryContainer = LocalColors.current.redDim,
+            onPrimaryContainer = LocalColors.current.text,
+            secondary = LocalColors.current.blue,
+            onSecondary = LocalColors.current.text,
+            secondaryContainer = LocalColors.current.blueDim,
+            onSecondaryContainer = LocalColors.current.text,
+            tertiary = LocalColors.current.green,
+            onTertiary = LocalColors.current.text,
+            tertiaryContainer = LocalColors.current.greenDim,
+            onTertiaryContainer = LocalColors.current.text,
+            background = LocalColors.current.bg,
+            onBackground = LocalColors.current.text,
+            surface = LocalColors.current.surface1,
+            onSurface = LocalColors.current.text,
+            surfaceVariant = LocalColors.current.surface2,
+            outline = LocalColors.current.surface3,
+            outlineVariant = LocalColors.current.surface4,
+            error = LocalColors.current.red,
+            onError = LocalColors.current.text,
+            errorContainer = LocalColors.current.redDim,
+            onErrorContainer = LocalColors.current.text,
         )
     }
 
-    // Usa la tipografia importata dal file Typography.kt
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = typography,  // Qui stai usando la tipografia definita in Typography.kt
-        content = content
-    )
+    CompositionLocalProvider(
+        value = LocalColors provides
+                if (darkTheme) EasyGymColors.Dark
+                else EasyGymColors.Light
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = typography,
+            content = content
+        )
+    }
 }

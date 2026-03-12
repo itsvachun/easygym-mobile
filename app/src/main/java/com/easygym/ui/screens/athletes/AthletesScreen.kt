@@ -29,6 +29,8 @@ fun AthletesScreen(
                 Text(errorMessage)
             }
 
+            arrayOf<Int>().filter { it > 0 }
+
             LazyColumn {
                 items(state.users.size) { index ->
                     val user = state.users[index]

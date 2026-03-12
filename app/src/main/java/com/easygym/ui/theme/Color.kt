@@ -2,6 +2,75 @@ package com.easygym.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+
+// -------------------- Color Structure --------------------
+sealed class EasyGymColors(
+    val red: Color,
+    val redDim: Color,
+    val bg: Color,
+    val surface1: Color,
+    val surface2: Color,
+    val surface3: Color,
+    val surface4: Color,
+    val text: Color,
+    val textSoft: Color,
+    val gray: Color,
+    val graySoft: Color,
+    val green: Color,
+    val greenDim: Color,
+    val amber: Color,
+    val amberDim: Color,
+    val blue: Color,
+    val blueDim: Color,
+    val purple: Color,
+    val purpleDim: Color
+) {
+
+    object Light : EasyGymColors(
+        red = LightRed,
+        redDim = LightRedDim,
+        bg = LightBg,
+        surface1 = LightSurface1,
+        surface2 = LightSurface2,
+        surface3 = LightSurface3,
+        surface4 = LightSurface4,
+        text = LightText,
+        textSoft = LightTextSoft,
+        gray = LightGray,
+        graySoft = LightGraySoft,
+        green = LightGreen,
+        greenDim = LightGreenDim,
+        amber = LightAmber,
+        amberDim = LightAmberDim,
+        blue = LightBlue,
+        blueDim = LightBlueDim,
+        purple = LightPurple,
+        purpleDim = LightPurpleDim,
+    )
+
+    object Dark : EasyGymColors(
+        red = DarkRed,
+        redDim = DarkRedDim,
+        bg = DarkBg,
+        surface1 = DarkSurface1,
+        surface2 = DarkSurface2,
+        surface3 = DarkSurface3,
+        surface4 = DarkSurface4,
+        text = DarkText,
+        textSoft = DarkTextSoft,
+        gray = DarkGray,
+        graySoft = DarkGraySoft,
+        green = DarkGreen,
+        greenDim = DarkGreenDim,
+        amber = DarkAmber,
+        amberDim = DarkAmberDim,
+        blue = DarkBlue,
+        blueDim = DarkBlueDim,
+        purple = DarkPurple,
+        purpleDim = DarkPurpleDim,
+    )
+}
+
 // -------------------- Dark Theme --------------------
 // Primary
 val DarkRed = Color(0xFFE8391D)
@@ -9,10 +78,10 @@ val DarkRedDim = Color(0x23E8391D)
 
 // Background / surfaces
 val DarkBg = Color(0xFF0A0A0A)
-val DarkSurface1 = Color(0xFF141414)
-val DarkSurface2 = Color(0xFF1C1C1C)
-val DarkSurface3 = Color(0xFF242424)
-val DarkSurface4 = Color(0xFF2E2E2E)
+val DarkSurface1 = Color(0xFF1C1C1C)
+val DarkSurface2 = Color(0xFF3B3B3B)
+val DarkSurface3 = Color(0xFF8D8D8D)
+val DarkSurface4 = Color(0xFFC8C8C8)
 
 // Text / neutrals
 val DarkText = Color(0xFFF4F3F0)
@@ -42,10 +111,10 @@ val LightRedDim = Color(0x23E8391D)
 
 // Background / surfaces
 val LightBg = Color(0xFFF4F3F0)
-val LightSurface1 = Color(0xFFEDECE9)
-val LightSurface2 = Color(0xFFE6E5E2)
-val LightSurface3 = Color(0xFFDDDCDA)
-val LightSurface4 = Color(0xFFD4D3D1)
+val LightSurface1 = Color(0xFFF2F2F2)
+val LightSurface2 = Color(0xFFE7E0D8)
+val LightSurface3 = Color(0xFFB5B5B5)
+val LightSurface4 = Color(0xFF797979)
 
 // Text / neutrals
 val LightText = Color(0xFF0A0A0A)
