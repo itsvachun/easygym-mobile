@@ -17,12 +17,12 @@ import com.easygym.ui.components.EasyGymTextField
 import com.easygym.ui.components.EmailTextField
 import com.easygym.ui.components.PrimaryButton
 import com.easygym.ui.components.SecondaryButton
-
+import java.time.LocalDate
 
 @Composable
 fun CreateUserScreen(
-    viewModel: CreateUserViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: CreateUserViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit
 ) {
 
@@ -38,129 +38,208 @@ fun CreateUserScreen(
 
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(scrollState),
         ) {
-
             Text(
                 text = "< Utenti",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable { onNavigateBack() }
+            )
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onNavigateBack() }
-            )
-
-            Text(
-                text = "Crea Utente",
-                style = MaterialTheme.typography.headlineLarge
-            )
-
-            Text(
-                text = "RUOLO",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    .verticalScroll(scrollState)
             ) {
 
-                Box(modifier = Modifier.weight(1f)) {
-                    if (state.ruolo == "Coach") {
-                        PrimaryButton(
-                            text = "Coach",
-                            onClick = {}
+                Text(
+                    text = "Crea Utente",
+                    style = MaterialTheme.typography.headlineLarge
+                )
+
+                Text(
+                    text = "RUOLO",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+
+                    Box(modifier = Modifier.weight(1f)) {
+                        if (state.ruolo == "Athlete") {
+                            PrimaryButton(text = "Atleta", onClick = {})
+                        } else {
+                            SecondaryButton(
+                                text = "Atleta",
+                                onClick = { viewModel.onRuoloSelected("Athlete") }
+                            )
+                        }
+                    }
+
+                    Box(modifier = Modifier.weight(1f)) {
+                        if (state.ruolo == "Coach") {
+                            PrimaryButton(text = "Coach", onClick = {})
+                        } else {
+                            SecondaryButton(
+                                text = "Coach",
+                                onClick = { viewModel.onRuoloSelected("Coach") }
+                            )
+                        }
+                    }
+
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Box(modifier = Modifier.weight(1f)) {
+                        EasyGymTextField(
+                            value = state.firstName,
+                            label = "Nome",
+                            placeholder = "Mario",
+                            onValueChange = { viewModel.onNomeChange(it) }
                         )
-                    } else {
-                        SecondaryButton(
-                            text = "Coach",
-                            onClick = { viewModel.onRuoloSelected("Coach") }
+                    }
+
+                    Box(modifier = Modifier.weight(1f)) {
+                        EasyGymTextField(
+                            value = state.lastName,
+                            label = "Cognome",
+                            placeholder = "Rossi",
+                            onValueChange = { viewModel.onCognomeChange(it) }
                         )
                     }
                 }
 
-                // Bottone Athlete
-                Box(modifier = Modifier.weight(1f)) {
-                    if (state.ruolo == "Athlete") {
-                        PrimaryButton(
-                            text = "Atleta",
-                            onClick = {}
+                EmailTextField(
+                    value = state.email,
+                    onValueChange = { viewModel.onEmailChange(it) }
+                )
+
+                EasyGymTextField(
+                    value = state.phone,
+                    label = "Telefono",
+                    placeholder = "+39 3331234567",
+                    onValueChange = { viewModel.onPhoneChange(it) }
+                )
+
+                EasyGymTextField(
+                    value = state.password,
+                    label = "Password",
+                    placeholder = "P4ssw0rd!",
+                    onValueChange = { viewModel.onPasswordChange(it) }
+                )
+
+                EasyGymTextField(
+                    value = state.groupId,
+                    label = "Gruppo",
+                    placeholder = "ID Gruppo",
+                    onValueChange = { viewModel.onGroupIdChange(it) }
+                )
+
+                when (state.ruolo) {
+
+                    "Coach" -> {
+
+                        EasyGymTextField(
+                            value = state.bio,
+                            label = "Bio Coach",
+                            placeholder = "Esperienza, certificazioni...",
+                            onValueChange = { viewModel.onBioChange(it) }
                         )
-                    } else {
-                        SecondaryButton(
-                            text = "Atleta",
-                            onClick = { viewModel.onRuoloSelected("Athlete") }
+
+                    }
+
+                    "Athlete" -> {
+
+                        EasyGymTextField(
+                            value = state.birthDate?.toString() ?: "",
+                            label = "Data di nascita",
+                            placeholder = "YYYY-MM-DD",
+                            onValueChange = {
+                                runCatching { LocalDate.parse(it) }
+                                    .onSuccess { date -> viewModel.onBirthDateChange(date) }
+                            }
+                        )
+
+                        EasyGymTextField(
+                            value = state.taxCode,
+                            label = "Codice fiscale",
+                            placeholder = "RSSMRA90A01H501X",
+                            onValueChange = { viewModel.onTaxCodeChange(it) }
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(2f)) {
+                                EasyGymTextField(
+                                    value = state.address,
+                                    label = "Indirizzo",
+                                    placeholder = "Via Roma 10",
+                                    onValueChange = { viewModel.onAddressChange(it) }
+                                )
+                            }
+
+                            Box(modifier = Modifier.weight(1f)) {
+                                EasyGymTextField(
+                                    value = state.city,
+                                    label = "Città",
+                                    placeholder = "Torino",
+                                    onValueChange = { viewModel.onCityChange(it) }
+                                )
+                            }
+
+                            Box(modifier = Modifier.weight(1f)) {
+                                EasyGymTextField(
+                                    value = state.postalCode,
+                                    label = "CAP",
+                                    placeholder = "10100",
+                                    onValueChange = { viewModel.onPostalCodeChange(it) }
+                                )
+                            }
+                        }
+
+                        EasyGymTextField(
+                            value = state.medicalExpDate?.toString() ?: "",
+                            label = "Scadenza certificato medico",
+                            placeholder = "YYYY-MM-DD",
+                            onValueChange = {
+                                runCatching { LocalDate.parse(it) }
+                                    .onSuccess { date -> viewModel.onMedicalExpDateChange(date) }
+                            }
+                        )
+
+                        EasyGymTextField(
+                            value = state.notes,
+                            label = "Note",
+                            placeholder = "Note atleta",
+                            onValueChange = { viewModel.onNotesChange(it) }
                         )
                     }
                 }
-            }
 
-            EasyGymTextField(
-                value = state.nome,
-                label = "Nome",
-                placeholder = "Mario",
-                onValueChange = { viewModel.onNomeChange(it) }
-            )
-            EasyGymTextField(
-                value = state.cognome,
-                label = "Cognome",
-                placeholder = "Rossi",
-                onValueChange = { viewModel.onCognomeChange(it) }
-            )
-            EmailTextField(
-                value = state.email,
-                onValueChange = { viewModel.onEmailChange(it) }
-            )
+                Spacer(modifier = Modifier.height(5.dp))
 
-            when (state.ruolo) {
-                "Coach" -> {
-                    EasyGymTextField(
-                        value = state.coachCertificazione,
-                        label = "Certificazione Coach",
-                        placeholder = "certificato",
-                        onValueChange = { viewModel.onCoachCertificazioneChange(it) }
-                    )
-                }
+                PrimaryButton(
+                    text = "Crea Account",
+                    onClick = { viewModel.createAccount() }
+                )
 
-                "Athlete" -> {
-                    EasyGymTextField(
-                        value = state.athletePeso,
-                        label = "Peso (kg)",
-                        placeholder = "80kg",
-                        onValueChange = { viewModel.onAthletePesoChange(it) }
-                    )
-                    EasyGymTextField(
-                        value = state.athleteAltezza,
-                        label = "Altezza (cm)",
-                        placeholder = "180cm",
-                        onValueChange = { viewModel.onAthleteAltezzaChange(it) }
-                    )
+                state.errorMessage?.let {
+                    Text(it, color = MaterialTheme.colorScheme.error)
                 }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            PrimaryButton(
-                text = "Crea Account",
-                onClick = { viewModel.createAccount() }
-            )
-
-
-
-            state.errorMessage?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-
         }
     }
 }
-/*
-@Preview(showBackground = true)
-@Composable
-fun CreateUserScreenPreview() {
-    MaterialTheme {
-        CreateUserScreen(nav)
-    }
-}*/
