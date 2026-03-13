@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun PrimaryButton(
@@ -32,8 +32,8 @@ fun PrimaryButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.headlineSmall,
-            color = Color(0xFFFFFFFF)
+            style = MaterialTheme.typography.titleLarge,
+            color = LocalColors.current.text
         )
     }
 }

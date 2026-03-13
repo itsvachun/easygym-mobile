@@ -10,6 +10,7 @@ sealed interface NavDestination {
         object LOGIN : Common(route = "login")
         object BOTTOM : Common(route = "bottom")
         object CreateUser : Common(route = "createUser")
+        object CHANGEPASSWORD : Common(route = "changePassword")
     }
 
     sealed class BottomBar(override val route: String, val label: String, val iconId: Int) : NavDestination {

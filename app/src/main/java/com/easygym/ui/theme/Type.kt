@@ -8,100 +8,127 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.easygym.R
 
-// Definiamo i font personalizzati
-val dmSansRegular = FontFamily(
-    Font(R.font.dm_sans_regular)  // Font regolare DM Sans
-)
-val dmSansBold = FontFamily(
-    Font(R.font.dm_sans_bold)  // Font bold DM Sans
-)
-val syneRegular = FontFamily(
-    Font(R.font.syne_regular)  // Font regolare Syne
-)
-val syneBold = FontFamily(
-    Font(R.font.syne_bold)  // Font bold Syne
-)
+// Definizione dei font personalizzati
+val dmSansRegular = FontFamily(Font(R.font.dm_sans_regular))
+val dmSansBold = FontFamily(Font(R.font.dm_sans_bold))
+val syneRegular = FontFamily(Font(R.font.syne_regular))
+val syneBold = FontFamily(Font(R.font.syne_bold))
 
-// La tipografia di Material 3
+// Tipografia completa Material 3
 val typography = Typography(
-    // Titolo principale (headlineLarge) - Usando Syne per un impatto maggiore
+    // Display (per casi speciali di testo molto grande)
+    displayLarge = TextStyle(
+        fontFamily = syneBold,
+        fontWeight = FontWeight.Bold,
+        fontSize = 50.sp,
+        lineHeight = 64.sp,
+        letterSpacing = (-0.5).sp
+    ),
+    displayMedium = TextStyle(
+        fontFamily = syneBold,
+        fontWeight = FontWeight.Bold,
+        fontSize = 45.sp,
+        lineHeight = 52.sp,
+        letterSpacing = 0.sp
+    ),
+    displaySmall = TextStyle(
+        fontFamily = syneBold,
+        fontWeight = FontWeight.Bold,
+        fontSize = 40.sp,
+        lineHeight = 44.sp,
+        letterSpacing = 0.sp
+    ),
+
+    // Titoli principali
     headlineLarge = TextStyle(
-        fontFamily = syneBold,  // Syne per titolo principale con enfasi
-        fontWeight = FontWeight.Bold,  // Enfasi con un peso bold
-        fontSize = 36.sp,  // Dimensione grande per il titolo principale
-        lineHeight = 44.sp,  // Linea alta per separare bene le righe
-        letterSpacing = (-0.5).sp  // Spazio leggermente negativo per accentuare il contrasto
+        fontFamily = syneBold,
+        fontWeight = FontWeight.Bold,
+        fontSize = 35.sp,
+        lineHeight = 44.sp,
+        letterSpacing = (-0.5).sp
     ),
-
-    // Titolo medio (headlineMedium) - Usando Syne per coerenza
     headlineMedium = TextStyle(
-        fontFamily = syneBold,  // Syne per titoli prominenti
-        fontWeight = FontWeight.Bold,  // Peso bold per maggiore impatto
-        fontSize = 28.sp,  // Titolo medio
-        lineHeight = 36.sp,  // Altezza linea per una lettura equilibrata
-        letterSpacing = 0.sp  // Spazio normale
+        fontFamily = syneBold,
+        fontWeight = FontWeight.Bold,
+        fontSize = 30.sp,
+        lineHeight = 36.sp,
+        letterSpacing = 0.sp
     ),
-
-    // Titolo piccolo (headlineSmall) - Usando DM Sans per una lettura fluida
     headlineSmall = TextStyle(
-        fontFamily = dmSansBold,  // DM Sans in versione bold per maggiore enfasi
-        fontWeight = FontWeight.SemiBold,  // Peso semi-bold per maggiore leggibilità
-        fontSize = 24.sp,  // Titolo più piccolo ma comunque prominente
-        lineHeight = 32.sp,  // Linea alta per separare le righe
-        letterSpacing = 0.sp  // Nessun spazio tra le lettere
+        fontFamily = dmSansBold,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 25.sp,
+        lineHeight = 32.sp,
+        letterSpacing = 0.sp
     ),
 
-    // Corpo del testo grande (bodyLarge) - DM Sans regolare per una lettura comoda
-    bodyLarge = TextStyle(
-        fontFamily = dmSansRegular,  // DM Sans regolare per il corpo principale
-        fontWeight = FontWeight.Normal,  // Peso normale per una lettura comoda
-        fontSize = 16.sp,  // Dimensione comoda per la lettura
-        lineHeight = 24.sp,  // Linea compatta per migliorare la leggibilità
-        letterSpacing = 0.5.sp  // Leggero spazio tra le lettere
+    // Titoli di livello medio
+    titleLarge = TextStyle(
+        fontFamily = dmSansBold,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
     ),
-
-    // Corpo del testo medio (bodyMedium) - DM Sans regolare per testo chiaro e leggibile
-    bodyMedium = TextStyle(
-        fontFamily = dmSansRegular,  // DM Sans regolare
-        fontWeight = FontWeight.Medium,  // Peso medio per contrasto visivo
-        fontSize = 14.sp,  // Testo leggibile, ma più piccolo
-        lineHeight = 20.sp,  // Linea compatta
-        letterSpacing = 0.25.sp  // Spazio moderato tra le lettere
-    ),
-
-    // Etichetta di medio livello (labelMedium) - Usando DM Sans in bold per visibilità
-    labelMedium = TextStyle(
-        fontFamily = dmSansBold,  // DM Sans in bold per un buon contrasto
-        fontWeight = FontWeight.SemiBold,  // Peso semi-bold per le etichette
-        fontSize = 12.sp,  // Dimensione piccola ma leggibile per etichette
-        lineHeight = 16.sp,  // Linea compatta
-        letterSpacing = 0.5.sp  // Maggiore spazio tra le lettere per chiarezza
-    ),
-
-    // Titolo medio (titleMedium) - DM Sans regolare per titoli di dimensione media
     titleMedium = TextStyle(
-        fontFamily = dmSansRegular,  // DM Sans regolare per titoli di livello medio
-        fontWeight = FontWeight.Normal,  // Peso normale
-        fontSize = 16.sp,  // Dimensione ideale per titoli medi
-        lineHeight = 24.sp,  // Linea compatta
-        letterSpacing = 0.sp  // Nessun spazio tra le lettere
+        fontFamily = dmSansBold,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp
     ),
-
-    // Titolo piccolo (titleSmall) - DM Sans regolare per titoli piccoli
     titleSmall = TextStyle(
-        fontFamily = dmSansRegular,  // DM Sans regolare
-        fontWeight = FontWeight.Normal,  // Peso normale
-        fontSize = 14.sp,  // Piccola dimensione per titoli
-        lineHeight = 20.sp,  // Linea compatta
-        letterSpacing = 0.1.sp  // Leggero spazio tra le lettere
+        fontFamily = dmSansRegular,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.1.sp
     ),
 
-    // Body small (bodySmall) - Usando DM Sans regolare per il testo più piccolo
-    bodySmall = TextStyle(
-        fontFamily = dmSansRegular,  // DM Sans regolare
-        fontWeight = FontWeight.Normal,  // Peso normale per testo più piccolo
-        fontSize = 12.sp,  // Testo molto piccolo
-        lineHeight = 16.sp,  // Linea compatta
-        letterSpacing = 0.2.sp  // Spazio moderato per maggiore leggibilità
+    // Corpo del testo
+    bodyLarge = TextStyle(
+        fontFamily = dmSansRegular,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
     ),
-)
+    bodyMedium = TextStyle(
+        fontFamily = dmSansRegular,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.25.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = dmSansRegular,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.2.sp
+    ),
+
+    // Label / Etichette
+    labelLarge = TextStyle(
+        fontFamily = dmSansBold,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.1.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = dmSansBold,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = dmSansBold,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
+
+    )
