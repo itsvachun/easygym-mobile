@@ -8,71 +8,71 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 
-val LocalColors = staticCompositionLocalOf<EasyGymColors> { EasyGymColors.Light }
+val LocalColors = staticCompositionLocalOf { Light }
 
 @Composable
 fun EasyGymTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val colors = if (darkTheme) Dark else Light
+
     val colorScheme = when {
         darkTheme -> darkColorScheme(
-            primary = LocalColors.current.red,
-            onPrimary = LocalColors.current.text,
-            primaryContainer = LocalColors.current.redDim,
-            onPrimaryContainer = LocalColors.current.text,
-            secondary = LocalColors.current.blue,
-            onSecondary = LocalColors.current.text,
-            secondaryContainer = LocalColors.current.blueDim,
-            onSecondaryContainer = LocalColors.current.text,
-            tertiary = LocalColors.current.green,
-            onTertiary = LocalColors.current.text,
-            tertiaryContainer = LocalColors.current.greenDim,
-            onTertiaryContainer = LocalColors.current.text,
-            background = LocalColors.current.bg,
-            onBackground = LocalColors.current.text,
-            surface = LocalColors.current.surface1,
-            onSurface = LocalColors.current.text,
-            surfaceVariant = LocalColors.current.surface2,
-            outline = LocalColors.current.surface3,
-            outlineVariant = LocalColors.current.surface4,
-            error = LocalColors.current.red,
-            onError = LocalColors.current.text,
-            errorContainer = LocalColors.current.redDim,
-            onErrorContainer = LocalColors.current.text,
+            primary = colors.red,
+            onPrimary = colors.text,
+            primaryContainer = colors.redDim,
+            onPrimaryContainer = colors.text,
+            secondary = colors.blue,
+            onSecondary = colors.text,
+            secondaryContainer = colors.blueDim,
+            onSecondaryContainer = colors.text,
+            tertiary = colors.green,
+            onTertiary = colors.text,
+            tertiaryContainer = colors.greenDim,
+            onTertiaryContainer = colors.text,
+            background = colors.bg,
+            onBackground = colors.text,
+            surface = colors.surface1,
+            onSurface = colors.text,
+            surfaceVariant = colors.surface2,
+            outline = colors.surface3,
+            outlineVariant = colors.surface4,
+            error = colors.red,
+            onError = colors.text,
+            errorContainer = colors.redDim,
+            onErrorContainer = colors.text,
         )
 
         else -> lightColorScheme(
-            primary = LocalColors.current.red,
-            onPrimary = LocalColors.current.text,
-            primaryContainer = LocalColors.current.redDim,
-            onPrimaryContainer = LocalColors.current.text,
-            secondary = LocalColors.current.blue,
-            onSecondary = LocalColors.current.text,
-            secondaryContainer = LocalColors.current.blueDim,
-            onSecondaryContainer = LocalColors.current.text,
-            tertiary = LocalColors.current.green,
-            onTertiary = LocalColors.current.text,
-            tertiaryContainer = LocalColors.current.greenDim,
-            onTertiaryContainer = LocalColors.current.text,
-            background = LocalColors.current.bg,
-            onBackground = LocalColors.current.text,
-            surface = LocalColors.current.surface1,
-            onSurface = LocalColors.current.text,
-            surfaceVariant = LocalColors.current.surface2,
-            outline = LocalColors.current.surface3,
-            outlineVariant = LocalColors.current.surface4,
-            error = LocalColors.current.red,
-            onError = LocalColors.current.text,
-            errorContainer = LocalColors.current.redDim,
-            onErrorContainer = LocalColors.current.text,
+            primary = colors.red,
+            onPrimary = colors.text,
+            primaryContainer = colors.redDim,
+            onPrimaryContainer = colors.text,
+            secondary = colors.blue,
+            onSecondary = colors.text,
+            secondaryContainer = colors.blueDim,
+            onSecondaryContainer = colors.text,
+            tertiary = colors.green,
+            onTertiary = colors.text,
+            tertiaryContainer = colors.greenDim,
+            onTertiaryContainer = colors.text,
+            background = colors.bg,
+            onBackground = colors.text,
+            surface = colors.surface1,
+            onSurface = colors.text,
+            surfaceVariant = colors.surface2,
+            outline = colors.surface3,
+            outlineVariant = colors.surface4,
+            error = colors.red,
+            onError = colors.text,
+            errorContainer = colors.redDim,
+            onErrorContainer = colors.text,
         )
     }
 
     CompositionLocalProvider(
-        value = LocalColors provides
-                if (darkTheme) EasyGymColors.Dark
-                else EasyGymColors.Light
+        LocalColors provides colors
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

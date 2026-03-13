@@ -1,6 +1,8 @@
 package com.easygym.di
 
 import com.easygym.BuildConfig
+import com.easygym.data.remote.datasource.AuthDataSource
+import com.easygym.data.remote.datasource.UserDataSource
 import com.easygym.services.AuthInterceptor
 import com.easygym.services.TokenAuthenticator
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -16,7 +18,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object BaseRequestModule {
+object RemoteModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
@@ -40,4 +42,14 @@ object BaseRequestModule {
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideAuthDataSource(retrofit: Retrofit): AuthDataSource =
+        retrofit.create(AuthDataSource::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserDataSource(retrofit: Retrofit): UserDataSource =
+        retrofit.create(UserDataSource::class.java)
 }
