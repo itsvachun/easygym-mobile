@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,67 +30,70 @@ fun LoginScreen(
 ) {
     val loginState by viewModel.state.collectAsState()
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Scaffold { innerPadding ->
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 24.dp),
+            contentAlignment = Alignment.Center
         ) {
 
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo EasyGym",
-                modifier = Modifier
-                    .size(120.dp)
-                    .padding(bottom = 16.dp),
-                contentScale = ContentScale.Fit
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-            Text(
-                text = "Login",
-                style = MaterialTheme.typography.headlineLarge
-            )
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "Logo EasyGym",
+                    modifier = Modifier
+                        .size(120.dp)
+                        .padding(bottom = 16.dp),
+                    contentScale = ContentScale.Fit
+                )
 
-            EmailTextField(
-                value = loginState.loginRequest.email,
-                onValueChange = viewModel::onEmailChanged,
-            )
-
-            PasswordTextField(
-                value = loginState.loginRequest.password,
-                onValueChange = viewModel::onPasswordChanged,
-                label = "Password",
-                visualTransformation = if (loginState.isPasswordVisible) VisualTransformation.None
-                else PasswordVisualTransformation(),
-                trailingIcon = {
-                    IconButton(onClick = viewModel::togglePasswordVisibility) {
-                        Icon(
-                            imageVector = if (loginState.isPasswordVisible) Icons.Default.Visibility
-                            else Icons.Default.VisibilityOff,
-                            contentDescription = null
-                        )
-                    }
-                },
-            )
-
-            loginState.errorMessage?.let {
                 Text(
-                    text = it,
-                    color = MaterialTheme.colorScheme.error
+                    text = "Login",
+                    style = MaterialTheme.typography.headlineLarge
+                )
+
+                EmailTextField(
+                    value = loginState.loginRequest.email,
+                    onValueChange = viewModel::onEmailChanged,
+                )
+
+                PasswordTextField(
+                    value = loginState.loginRequest.password,
+                    onValueChange = viewModel::onPasswordChanged,
+                    label = "Password",
+                    visualTransformation = if (loginState.isPasswordVisible) VisualTransformation.None
+                    else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = viewModel::togglePasswordVisibility) {
+                            Icon(
+                                imageVector = if (loginState.isPasswordVisible) Icons.Default.Visibility
+                                else Icons.Default.VisibilityOff,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                )
+
+                loginState.errorMessage?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                PrimaryButton(
+                    text = "Accedi",
+                    onClick = viewModel::login
                 )
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            PrimaryButton(
-                text = "Accedi",
-                onClick = viewModel::login
-            )
         }
     }
 }

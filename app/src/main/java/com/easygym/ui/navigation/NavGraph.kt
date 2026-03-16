@@ -34,12 +34,12 @@ fun NavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = NavDestination.Common.CHANGEPASSWORD.route
-//        startDestination = when {
-//            navState.isLoading -> NavDestination.Common.LOADING.route
-//            navState.bottomDestinations.isNotEmpty() -> NavDestination.Common.BOTTOM.route
-//            else -> NavDestination.Common.LOGIN.route
-//        },
+//        startDestination = NavDestination.Common.CHANGEPASSWORD.route
+        startDestination = when {
+            navState.isLoading -> NavDestination.Common.LOADING.route
+            navState.bottomDestinations.isNotEmpty() -> NavDestination.Common.BOTTOM.route
+            else -> NavDestination.Common.LOGIN.route
+        },
     ) {
         composable(NavDestination.Common.LOADING.route) {
             LoadingGateScreen()
