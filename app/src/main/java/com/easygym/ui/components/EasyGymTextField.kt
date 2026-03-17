@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun EasyGymTextField(
@@ -34,7 +35,7 @@ fun EasyGymTextField(
         Text(
             text = label.uppercase(),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.outlineVariant,
+            color = LocalColors.current.surface4,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp,
         )
@@ -47,10 +48,10 @@ fun EasyGymTextField(
                 .clip(RoundedCornerShape(12.dp))
                 .border(
                     width = 1.5.dp,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = if (isImportant) 1f else 0.3f),
+                    color = LocalColors.current.surface3.copy(alpha = if (isImportant) 1f else 0.3f),
                     shape = RoundedCornerShape(12.dp),
                 )
-                .background(MaterialTheme.colorScheme.surface),
+                .background(LocalColors.current.surface1),
             value = value,
             onValueChange = onValueChange,
             singleLine = singleLine,
@@ -63,7 +64,7 @@ fun EasyGymTextField(
             placeholder = {
                 Text(
                     text = placeholder,
-                    color = MaterialTheme.colorScheme.outline,
+                    color = LocalColors.current.surface3,
                 )
             }
         )

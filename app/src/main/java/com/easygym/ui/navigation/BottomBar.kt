@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.easygym.ui.theme.LocalColors
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,7 +36,7 @@ fun BottomBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(LocalColors.current.surface1)
             .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
         Row(
@@ -68,7 +68,7 @@ fun BottomBar(
                     label = "indicator_size_$index"
                 )
 
-                val tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
+                val tint = if (isSelected) LocalColors.current.red else Color.Gray
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier

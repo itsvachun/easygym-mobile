@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun IconButton(
@@ -27,10 +28,10 @@ fun IconButton(
             .clip(RoundedCornerShape(14.dp))
             .height(height.dp)
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(LocalColors.current.surface1)
             .border(
                 1.dp,
-                MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                LocalColors.current.surface3.copy(alpha = 0.3f),
                 RoundedCornerShape(14.dp)
             )
             .clickable(onClick = onClick),

@@ -22,6 +22,8 @@ import com.easygym.R
 import com.easygym.ui.components.EmailTextField
 import com.easygym.ui.components.PasswordTextField
 import com.easygym.ui.components.PrimaryButton
+import com.easygym.ui.theme.LocalColors
+
 
 @Composable
 fun LoginScreen(
@@ -83,7 +85,7 @@ fun LoginScreen(
                 loginState.errorMessage?.let {
                     Text(
                         text = it,
-                        color = MaterialTheme.colorScheme.error
+                        color = LocalColors.current.red,
                     )
                 }
 

@@ -18,6 +18,7 @@ import com.easygym.ui.components.EasyGymTextField
 import com.easygym.ui.components.EmailTextField
 import com.easygym.ui.components.PrimaryButton
 import com.easygym.ui.components.SecondaryButton
+import com.easygym.ui.theme.LocalColors
 import java.time.LocalDate
 
 @Composable
@@ -48,7 +49,7 @@ fun CreateUserScreen(
                 Text(
                     text = "< Utenti",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = LocalColors.current.red,
                     modifier = Modifier.clickable { onNavigateBack() }
                 )
 
@@ -240,7 +241,7 @@ fun CreateUserScreen(
                     )
 
                     state.errorMessage?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error)
+                        Text(it, color = LocalColors.current.red)
                     }
                 }
             }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun PasswordTextField(
@@ -34,7 +35,7 @@ fun PasswordTextField(
         Text(
             text = label.uppercase(),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.outlineVariant,
+            color = LocalColors.current.surface4,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp,
         )
@@ -47,9 +48,9 @@ fun PasswordTextField(
                 .clip(RoundedCornerShape(12.dp))
                 .border(
                     width = 1.5.dp,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                    color = LocalColors.current.surface3.copy(alpha = 0.3f),
                 )
-                .background(MaterialTheme.colorScheme.surface),
+                .background(LocalColors.current.surface1),
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
@@ -64,7 +65,7 @@ fun PasswordTextField(
             placeholder = {
                 Text(
                     text = "P4ssw0rd^123",
-                    color = MaterialTheme.colorScheme.outline,
+                    color = LocalColors.current.surface3,
                 )
             }
         )

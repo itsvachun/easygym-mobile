@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun EmailTextField(
@@ -30,7 +31,7 @@ fun EmailTextField(
         Text(
             text = "EMAIL",
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.outlineVariant,
+            color = LocalColors.current.surface3,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp,
         )
@@ -43,10 +44,10 @@ fun EmailTextField(
                 .clip(RoundedCornerShape(12.dp))
                 .border(
                     width = 1.5.dp,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                    color = LocalColors.current.surface3.copy(alpha = 0.3f),
                     shape = RoundedCornerShape(12.dp),
                 )
-                .background(MaterialTheme.colorScheme.surface),
+                .background(LocalColors.current.surface1),
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
@@ -59,7 +60,7 @@ fun EmailTextField(
             placeholder = {
                 Text(
                     text = "example@mail.com",
-                    color = MaterialTheme.colorScheme.outline,
+                    color = LocalColors.current.surface3,
                 )
             }
         )

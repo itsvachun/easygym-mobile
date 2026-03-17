@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun SecondaryButton(
@@ -26,8 +27,8 @@ fun SecondaryButton(
             .clip(RoundedCornerShape(14.dp))
             .height(height.dp)
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3F), RoundedCornerShape(14.dp))
+            .background(LocalColors.current.surface1)
+            .border(1.dp, LocalColors.current.surface3.copy(alpha = 0.3F), RoundedCornerShape(14.dp))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     )

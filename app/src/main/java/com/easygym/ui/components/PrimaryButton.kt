@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.easygym.ui.theme.Dark
 import com.easygym.ui.theme.LocalColors
 
 @Composable
@@ -26,14 +27,14 @@ fun PrimaryButton(
             .height(height.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(14.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .background(LocalColors.current.red)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.titleLarge,
-            color = LocalColors.current.text
+            color = Dark.text
         )
     }
 }

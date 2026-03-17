@@ -19,6 +19,7 @@ import com.easygym.ui.components.EasyGymTextField
 import com.easygym.ui.components.PrimaryButton
 import com.easygym.ui.components.SecondaryButton
 import com.easygym.ui.navigation.NavDestination
+import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun UsersScreen(
@@ -141,14 +142,14 @@ fun UsersScreen(
                                             modifier = Modifier
                                                 .size(40.dp)
                                                 .background(
-                                                    color = MaterialTheme.colorScheme.primaryContainer,
+                                                    color = LocalColors.current.redDim,
                                                     shape = MaterialTheme.shapes.small
                                                 ),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Text(
                                                 text = "${user.firstName.first()}${user.lastName.first()}",
-                                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                                color = LocalColors.current.text,
                                                 fontSize = 16.sp
                                             )
                                         }
