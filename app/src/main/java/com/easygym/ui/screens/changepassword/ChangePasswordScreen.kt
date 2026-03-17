@@ -7,23 +7,23 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easygym.ui.components.PasswordTextField
 import com.easygym.ui.components.PrimaryButton
 import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun ChangePasswordScreen(
-    onSaved: () -> Unit = {},
-    onBack: () -> Unit = {},
+    viewModel: ChangePasswordViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
-    var current by remember { mutableStateOf("") }
-    var newPwd by remember { mutableStateOf("") }
-    var confirm by remember { mutableStateOf("") }
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     Scaffold { innerPadding ->
         Column(
@@ -35,6 +35,9 @@ fun ChangePasswordScreen(
                 .padding(horizontal = 18.dp)
                 .verticalScroll(rememberScrollState()),
         ) {
+            state.errorMessage?.let { message ->
+                Text("Errore durante il cambio password: $message")
+            }
 //        BackButton(label = "Profilo", onClick = onBack)
             Text(
                 "Cambio password",
@@ -53,27 +56,27 @@ fun ChangePasswordScreen(
             ) {
                 PasswordTextField(
                     label = "Password attuale",
-                    value = current,
+                    value = state.updatePassword.oldPassword,
                     visualTransformation = PasswordVisualTransformation(),
-                    onValueChange = { current = it },
+                    onValueChange = { viewModel.updateState(oldPassword = it) },
                 )
                 Spacer(Modifier.height(12.dp))
                 PasswordTextField(
                     label = "Nuova password",
-                    value = newPwd,
+                    value = state.updatePassword.newPassword,
                     visualTransformation = PasswordVisualTransformation(),
-                    onValueChange = { newPwd = it },
+                    onValueChange = { viewModel.updateState(newPassword = it) },
                 )
                 Spacer(Modifier.height(12.dp))
                 PasswordTextField(
                     label = "Conferma nuova password",
-                    value = confirm,
+                    value = state.confirmNewPassword,
                     visualTransformation = PasswordVisualTransformation(),
-                    onValueChange = { confirm = it },
+                    onValueChange = { viewModel.updateState(confirmNewPassword = it) },
                 )
             }
             Spacer(Modifier.height(70.dp))
-            PrimaryButton(text = "Salva nuova password", onClick = onSaved)
+            PrimaryButton(text = "Salva nuova password", onClick = viewModel::changePassword)
         }
     }
 }

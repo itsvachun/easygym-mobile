@@ -34,7 +34,6 @@ fun NavGraph(
 
     NavHost(
         navController = navController,
-//        startDestination = NavDestination.Common.CHANGEPASSWORD.route
         startDestination = when {
             navState.isLoading -> NavDestination.Common.LOADING.route
             navState.bottomDestinations.isNotEmpty() -> NavDestination.Common.BOTTOM.route
@@ -70,7 +69,9 @@ fun NavGraph(
                         NavDestination.BottomBar.ATHLETES.route -> AthletesScreen()
                         NavDestination.BottomBar.CALENDAR.route -> CalendarScreen()
                         NavDestination.BottomBar.PAYMENTS.route -> PaymentsScreen()
-                        NavDestination.BottomBar.CLUB.route -> ClubScreen()
+                        NavDestination.BottomBar.CLUB.route -> ClubScreen {
+                            navController.navigate(NavDestination.Common.CHANGEPASSWORD.route)
+                        }
                     }
                 }
             }
