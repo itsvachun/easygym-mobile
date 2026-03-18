@@ -1,5 +1,6 @@
 package com.easygym.ui.screens.users
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,11 +17,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.easygym.ui.components.EasyGymFAB
 import com.easygym.ui.components.EasyGymTextField
-import com.easygym.ui.components.PrimaryButton
-import com.easygym.ui.components.SecondaryButton
+import com.easygym.ui.components.PrimaryFilterButton
+import com.easygym.ui.components.SecondaryFilterButton
 import com.easygym.ui.navigation.NavDestination
 import com.easygym.ui.theme.LocalColors
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun UsersScreen(
     viewModel: UsersViewModel = hiltViewModel(),
@@ -35,11 +37,10 @@ fun UsersScreen(
     val selectedRole = state.selectedRole
 
 
-    Scaffold { innerPadding ->
+    Scaffold {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
                 .padding(horizontal = 24.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -77,12 +78,12 @@ fun UsersScreen(
 
                     Box(modifier = Modifier.weight(1f)) {
                         if (selectedRole == "Tutti") {
-                            PrimaryButton(
+                            PrimaryFilterButton(
                                 text = "Tutti",
                                 onClick = { }
                             )
                         } else {
-                            SecondaryButton(
+                            SecondaryFilterButton(
                                 text = "Tutti",
                                 onClick = { viewModel.onRoleSelected("Tutti") }
                             )
@@ -91,12 +92,12 @@ fun UsersScreen(
 
                     Box(modifier = Modifier.weight(1f)) {
                         if (selectedRole == "Coach") {
-                            PrimaryButton(
+                            PrimaryFilterButton(
                                 text = "Coach",
                                 onClick = { }
                             )
                         } else {
-                            SecondaryButton(
+                            SecondaryFilterButton(
                                 text = "Coach",
                                 onClick = { viewModel.onRoleSelected("Coach") }
                             )
@@ -105,12 +106,12 @@ fun UsersScreen(
 
                     Box(modifier = Modifier.weight(1f)) {
                         if (selectedRole == "Atleti") {
-                            PrimaryButton(
+                            PrimaryFilterButton(
                                 text = "Atleti",
                                 onClick = { }
                             )
                         } else {
-                            SecondaryButton(
+                            SecondaryFilterButton(
                                 text = "Atleti",
                                 onClick = { viewModel.onRoleSelected("Atleti") }
                             )
@@ -122,7 +123,7 @@ fun UsersScreen(
                     state.isLoading -> CircularProgressIndicator()
                     else -> Box(
                         modifier = Modifier
-                            .padding(24.dp)
+                            .padding(6.dp)
                             .fillMaxSize(),
                     ) {
                         state.errorMessage?.let { errorMessage ->

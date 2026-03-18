@@ -1,4 +1,4 @@
-package com.easygym.ui.screens.users
+package com.easygym.ui.screens.createuser
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,16 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.easygym.ui.components.EasyGymTextField
-import com.easygym.ui.components.EmailTextField
-import com.easygym.ui.components.PrimaryButton
-import com.easygym.ui.components.SecondaryButton
+import com.easygym.ui.components.*
 import com.easygym.ui.theme.LocalColors
-import java.time.LocalDate
 
 @Composable
 fun CreateUserScreen(
-    modifier: Modifier = Modifier,
     viewModel: CreateUserViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit
 ) {
@@ -78,23 +73,23 @@ fun CreateUserScreen(
                     ) {
 
                         Box(modifier = Modifier.weight(1f)) {
-                            if (state.ruolo == "Athlete") {
+                            if (state.createUser is CreateUser.Athlete) {
                                 PrimaryButton(text = "Atleta", onClick = {})
                             } else {
                                 SecondaryButton(
                                     text = "Atleta",
-                                    onClick = { viewModel.onRuoloSelected("Athlete") }
+                                    onClick = { viewModel.onRoleSelected(CreateUser.Athlete()) }
                                 )
                             }
                         }
 
                         Box(modifier = Modifier.weight(1f)) {
-                            if (state.ruolo == "Coach") {
+                            if (state.createUser is CreateUser.Coach) {
                                 PrimaryButton(text = "Coach", onClick = {})
                             } else {
                                 SecondaryButton(
                                     text = "Coach",
-                                    onClick = { viewModel.onRuoloSelected("Coach") }
+                                    onClick = { viewModel.onRoleSelected(CreateUser.Coach()) }
                                 )
                             }
                         }
@@ -107,128 +102,122 @@ fun CreateUserScreen(
                     ) {
                         Box(modifier = Modifier.weight(1f)) {
                             EasyGymTextField(
-                                value = state.firstName,
+                                value = state.createUser.firstName,
                                 label = "Nome",
                                 placeholder = "Mario",
-                                onValueChange = { viewModel.onNomeChange(it) }
+                                onValueChange = { viewModel.updateState(firstName = it) }
                             )
                         }
 
                         Box(modifier = Modifier.weight(1f)) {
                             EasyGymTextField(
-                                value = state.lastName,
+                                value = state.createUser.lastname,
                                 label = "Cognome",
                                 placeholder = "Rossi",
-                                onValueChange = { viewModel.onCognomeChange(it) }
+                                onValueChange = { viewModel.updateState(lastName = it) }
                             )
                         }
                     }
 
                     EmailTextField(
-                        value = state.email,
-                        onValueChange = { viewModel.onEmailChange(it) }
+                        value = state.createUser.email,
+                        onValueChange = { viewModel.updateState(email = it) }
                     )
 
                     EasyGymTextField(
-                        value = state.phone,
+                        value = state.createUser.phone,
                         label = "Telefono",
                         placeholder = "+39 3331234567",
-                        onValueChange = { viewModel.onPhoneChange(it) }
+                        onValueChange = { viewModel.updateState(phone = it) }
                     )
 
                     EasyGymTextField(
-                        value = state.password,
+                        value = state.createUser.password,
                         label = "Password",
                         placeholder = "P4ssw0rd!",
-                        onValueChange = { viewModel.onPasswordChange(it) }
+                        onValueChange = { viewModel.updateState(password = it) }
                     )
 
-                    EasyGymTextField(
+                    /*EasyGymTextField(
                         value = state.groupId,
                         label = "Gruppo",
                         placeholder = "ID Gruppo",
                         onValueChange = { viewModel.onGroupIdChange(it) }
-                    )
+                    )*/
 
-                    when (state.ruolo) {
-
-                        "Coach" -> {
-
+                    when (val user = state.createUser) {
+                        is CreateUser.Coach -> {
                             EasyGymTextField(
-                                value = state.bio,
+                                value = user.bio,
                                 label = "Bio Coach",
                                 placeholder = "Esperienza, certificazioni...",
-                                onValueChange = { viewModel.onBioChange(it) }
+                                onValueChange = { viewModel.updateState(bio = it) }
                             )
-
                         }
 
-                        "Athlete" -> {
+                        is CreateUser.Athlete -> {
 
-                            EasyGymTextField(
-                                value = state.birthDate?.toString() ?: "",
+                            EasyGymDatePicker(
+                                value = user.birthDate,
                                 label = "Data di nascita",
-                                placeholder = "YYYY-MM-DD",
-                                onValueChange = {
-                                    runCatching { LocalDate.parse(it) }
-                                        .onSuccess { date -> viewModel.onBirthDateChange(date) }
+                                onDateSelected = {
+                                    println(it)
+                                    viewModel.updateState(birthDate = it)
                                 }
                             )
 
                             EasyGymTextField(
-                                value = state.taxCode,
+                                value = user.taxCode,
                                 label = "Codice fiscale",
                                 placeholder = "RSSMRA90A01H501X",
-                                onValueChange = { viewModel.onTaxCodeChange(it) }
+                                onValueChange = { viewModel.updateState(taxCode = it) }
+                            )
+
+                            EasyGymTextField(
+                                value = user.address,
+                                label = "Indirizzo",
+                                placeholder = "Via Roma 10",
+                                onValueChange = { viewModel.updateState(address = it) }
                             )
 
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
-                                Box(modifier = Modifier.weight(2f)) {
-                                    EasyGymTextField(
-                                        value = state.address,
-                                        label = "Indirizzo",
-                                        placeholder = "Via Roma 10",
-                                        onValueChange = { viewModel.onAddressChange(it) }
-                                    )
-                                }
 
                                 Box(modifier = Modifier.weight(1f)) {
                                     EasyGymTextField(
-                                        value = state.city,
+                                        value = user.city,
                                         label = "Città",
                                         placeholder = "Torino",
-                                        onValueChange = { viewModel.onCityChange(it) }
+                                        onValueChange = { viewModel.updateState(city = it) }
                                     )
                                 }
 
                                 Box(modifier = Modifier.weight(1f)) {
                                     EasyGymTextField(
-                                        value = state.postalCode,
+                                        value = user.postalCode,
                                         label = "CAP",
                                         placeholder = "10100",
-                                        onValueChange = { viewModel.onPostalCodeChange(it) }
+                                        onValueChange = { viewModel.updateState(postalCode = it) }
                                     )
                                 }
                             }
 
-                            EasyGymTextField(
-                                value = state.medicalExpDate?.toString() ?: "",
+                            EasyGymDatePicker(
+                                value = user.medicalExpDate,
                                 label = "Scadenza certificato medico",
-                                placeholder = "YYYY-MM-DD",
-                                onValueChange = {
-                                    runCatching { LocalDate.parse(it) }
-                                        .onSuccess { date -> viewModel.onMedicalExpDateChange(date) }
+                                onDateSelected = {
+                                    println(it)
+                                    viewModel.updateState(medicalExpDate = it)
                                 }
                             )
 
                             EasyGymTextField(
-                                value = state.notes,
+                                value = user.notes,
                                 label = "Note",
                                 placeholder = "Note atleta",
-                                onValueChange = { viewModel.onNotesChange(it) }
+                                onValueChange = { viewModel.updateState(notes = it) }
                             )
                         }
                     }
