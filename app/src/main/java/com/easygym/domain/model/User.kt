@@ -2,10 +2,10 @@ package com.easygym.domain.model
 
 import com.easygym.ui.navigation.UserRole
 
-data class User(
-    val firstName: String,
-    val lastName: String,
-    val email: String?,
-    val phone: String,
-    val role: UserRole,
+open class User(
+    open val firstName: String,
+    open val lastName: String,
+    open val email: String?,
+    open val phone: String,
+    open val role: UserRole,
 )

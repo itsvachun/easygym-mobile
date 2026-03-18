@@ -35,7 +35,6 @@ open class CreateUserViewModel @Inject constructor(
         )
     }
 
-
     fun updateState(
         firstName: String? = null,
         lastName: String? = null,
