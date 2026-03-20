@@ -27,74 +27,156 @@ fun CreateUserScreen(
     val scrollState = rememberScrollState()
 
     Scaffold { innerPadding ->
-        Box(
+
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 24.dp),
-            contentAlignment = Alignment.Center
+                .padding(horizontal = 24.dp)
+                .padding(vertical = 10.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.Start
         ) {
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
+            Text(
+                text = "< Utenti",
+                style = MaterialTheme.typography.bodyMedium,
+                color = LocalColors.current.red,
+                modifier = Modifier.clickable { onNavigateBack() }
+            )
+
+            Text(
+                text = "Crea Utente",
+                style = MaterialTheme.typography.headlineLarge
+            )
+
+            Text(
+                text = "RUOLO",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
-                    text = "< Utenti",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = LocalColors.current.red,
-                    modifier = Modifier.clickable { onNavigateBack() }
-                )
 
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(scrollState)
-                ) {
-
-                    Text(
-                        text = "Crea Utente",
-                        style = MaterialTheme.typography.headlineLarge
-                    )
-
-                    Text(
-                        text = "RUOLO",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-
-                        Box(modifier = Modifier.weight(1f)) {
-                            if (state.createUser is CreateUser.Athlete) {
-                                PrimaryButton(text = "Atleta", onClick = {})
-                            } else {
-                                SecondaryButton(
-                                    text = "Atleta",
-                                    onClick = { viewModel.onRoleSelected(CreateUser.Athlete()) }
-                                )
-                            }
-                        }
-
-                        Box(modifier = Modifier.weight(1f)) {
-                            if (state.createUser is CreateUser.Coach) {
-                                PrimaryButton(text = "Coach", onClick = {})
-                            } else {
-                                SecondaryButton(
-                                    text = "Coach",
-                                    onClick = { viewModel.onRoleSelected(CreateUser.Coach()) }
-                                )
-                            }
-                        }
-
+                Box(modifier = Modifier.weight(1f)) {
+                    if (state.createUser is CreateUser.Athlete) {
+                        EasyGymIconButton(
+                            text = "Atleta",
+                            iconText = "\uD83C\uDFCB\uFE0F",
+                            height = 80,
+                            borderColor = LocalColors.current.purple,
+                            textColor = LocalColors.current.purple,
+                            backgroundColor = LocalColors.current.purpleDim,
+                            onClick = {}
+                        )
+                    } else {
+                        EasyGymIconButton(
+                            text = "Atleta",
+                            iconText = "\uD83C\uDFCB\uFE0F",
+                            height = 80,
+                            onClick = { viewModel.onRoleSelected(CreateUser.Athlete()) },
+                        )
                     }
+                }
+
+                Box(modifier = Modifier.weight(1f)) {
+                    if (state.createUser is CreateUser.Coach) {
+                        EasyGymIconButton(
+                            text = "Coach",
+                            iconText = "\uD83E\uDD4B",
+                            height = 80,
+                            borderColor = LocalColors.current.blue,
+                            textColor = LocalColors.current.blue,
+                            backgroundColor = LocalColors.current.blueDim,
+                            onClick = {}
+                        )
+                    } else {
+                        EasyGymIconButton(
+                            text = "Coach",
+                            iconText = "\uD83E\uDD4B",
+                            height = 80,
+                            onClick = { viewModel.onRoleSelected(CreateUser.Coach()) },
+                        )
+                    }
+                }
+
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    EasyGymTextField(
+                        value = state.createUser.firstName,
+                        label = "Nome",
+                        placeholder = "Mario",
+                        onValueChange = { viewModel.updateState(firstName = it) }
+                    )
+                }
+                Box(modifier = Modifier.weight(1f)) {
+                    EasyGymTextField(
+                        value = state.createUser.lastname,
+                        label = "Cognome",
+                        placeholder = "Rossi",
+                        onValueChange = { viewModel.updateState(lastName = it) }
+                    )
+                }
+            }
+
+            EmailTextField(
+                value = state.createUser.email,
+                onValueChange = { viewModel.updateState(email = it) }
+            )
+
+            EasyGymTextField(
+                value = state.createUser.phone,
+                label = "Telefono",
+                placeholder = "+39 3331234567",
+                onValueChange = { viewModel.updateState(phone = it) }
+            )
+
+            EasyGymTextField(
+                value = state.createUser.password,
+                label = "Password",
+                placeholder = "P4ssw0rd!",
+                onValueChange = { viewModel.updateState(password = it) }
+            )
+
+            when (val user = state.createUser) {
+                is CreateUser.Coach -> {
+                    EasyGymTextField(
+                        value = user.bio,
+                        label = "Bio Coach",
+                        placeholder = "Esperienza, certificazioni...",
+                        onValueChange = { viewModel.updateState(bio = it) }
+                    )
+                }
+
+                is CreateUser.Athlete -> {
+                    EasyGymDatePicker(
+                        value = user.birthDate,
+                        label = "Data di nascita",
+                        onDateSelected = { viewModel.updateState(birthDate = it) }
+                    )
+
+                    EasyGymTextField(
+                        value = user.taxCode,
+                        label = "Codice fiscale",
+                        placeholder = "RSSMRA90A01H501X",
+                        onValueChange = { viewModel.updateState(taxCode = it) }
+                    )
+
+                    EasyGymTextField(
+                        value = user.address,
+                        label = "Indirizzo",
+                        placeholder = "Via Roma 10",
+                        onValueChange = { viewModel.updateState(address = it) }
+                    )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -102,137 +184,44 @@ fun CreateUserScreen(
                     ) {
                         Box(modifier = Modifier.weight(1f)) {
                             EasyGymTextField(
-                                value = state.createUser.firstName,
-                                label = "Nome",
-                                placeholder = "Mario",
-                                onValueChange = { viewModel.updateState(firstName = it) }
+                                value = user.city,
+                                label = "Città",
+                                placeholder = "Torino",
+                                onValueChange = { viewModel.updateState(city = it) }
                             )
                         }
-
                         Box(modifier = Modifier.weight(1f)) {
                             EasyGymTextField(
-                                value = state.createUser.lastname,
-                                label = "Cognome",
-                                placeholder = "Rossi",
-                                onValueChange = { viewModel.updateState(lastName = it) }
+                                value = user.postalCode,
+                                label = "CAP",
+                                placeholder = "10100",
+                                onValueChange = { viewModel.updateState(postalCode = it) }
                             )
                         }
                     }
 
-                    EmailTextField(
-                        value = state.createUser.email,
-                        onValueChange = { viewModel.updateState(email = it) }
+                    EasyGymDatePicker(
+                        value = user.medicalExpDate,
+                        label = "Scadenza certificato medico",
+                        onDateSelected = { viewModel.updateState(medicalExpDate = it) }
                     )
 
                     EasyGymTextField(
-                        value = state.createUser.phone,
-                        label = "Telefono",
-                        placeholder = "+39 3331234567",
-                        onValueChange = { viewModel.updateState(phone = it) }
+                        value = user.notes,
+                        label = "Note",
+                        placeholder = "Note atleta",
+                        onValueChange = { viewModel.updateState(notes = it) }
                     )
-
-                    EasyGymTextField(
-                        value = state.createUser.password,
-                        label = "Password",
-                        placeholder = "P4ssw0rd!",
-                        onValueChange = { viewModel.updateState(password = it) }
-                    )
-
-                    /*EasyGymTextField(
-                        value = state.groupId,
-                        label = "Gruppo",
-                        placeholder = "ID Gruppo",
-                        onValueChange = { viewModel.onGroupIdChange(it) }
-                    )*/
-
-                    when (val user = state.createUser) {
-                        is CreateUser.Coach -> {
-                            EasyGymTextField(
-                                value = user.bio,
-                                label = "Bio Coach",
-                                placeholder = "Esperienza, certificazioni...",
-                                onValueChange = { viewModel.updateState(bio = it) }
-                            )
-                        }
-
-                        is CreateUser.Athlete -> {
-
-                            EasyGymDatePicker(
-                                value = user.birthDate,
-                                label = "Data di nascita",
-                                onDateSelected = {
-                                    println(it)
-                                    viewModel.updateState(birthDate = it)
-                                }
-                            )
-
-                            EasyGymTextField(
-                                value = user.taxCode,
-                                label = "Codice fiscale",
-                                placeholder = "RSSMRA90A01H501X",
-                                onValueChange = { viewModel.updateState(taxCode = it) }
-                            )
-
-                            EasyGymTextField(
-                                value = user.address,
-                                label = "Indirizzo",
-                                placeholder = "Via Roma 10",
-                                onValueChange = { viewModel.updateState(address = it) }
-                            )
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-
-                                Box(modifier = Modifier.weight(1f)) {
-                                    EasyGymTextField(
-                                        value = user.city,
-                                        label = "Città",
-                                        placeholder = "Torino",
-                                        onValueChange = { viewModel.updateState(city = it) }
-                                    )
-                                }
-
-                                Box(modifier = Modifier.weight(1f)) {
-                                    EasyGymTextField(
-                                        value = user.postalCode,
-                                        label = "CAP",
-                                        placeholder = "10100",
-                                        onValueChange = { viewModel.updateState(postalCode = it) }
-                                    )
-                                }
-                            }
-
-                            EasyGymDatePicker(
-                                value = user.medicalExpDate,
-                                label = "Scadenza certificato medico",
-                                onDateSelected = {
-                                    println(it)
-                                    viewModel.updateState(medicalExpDate = it)
-                                }
-                            )
-
-                            EasyGymTextField(
-                                value = user.notes,
-                                label = "Note",
-                                placeholder = "Note atleta",
-                                onValueChange = { viewModel.updateState(notes = it) }
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(5.dp))
-
-                    PrimaryButton(
-                        text = "Crea Account",
-                        onClick = { viewModel.createAccount() }
-                    )
-
-                    state.errorMessage?.let {
-                        Text(it, color = LocalColors.current.red)
-                    }
                 }
+            }
+            
+            PrimaryButton(
+                text = "Crea Account",
+                onClick = { viewModel.createAccount() }
+            )
+
+            state.errorMessage?.let {
+                Text(it, color = LocalColors.current.red)
             }
         }
     }

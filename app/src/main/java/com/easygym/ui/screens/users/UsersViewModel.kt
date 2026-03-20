@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easygym.domain.model.User
 import com.easygym.domain.repository.UserRepository
+import com.easygym.ui.navigation.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,9 +16,16 @@ import javax.inject.Inject
 data class UsersState(
     val isLoading: Boolean = true,
     val users: List<User> = listOf(),
-    val selectedRole: String = "Tutti",
-    val errorMessage: String? = null
-)
+    val selectedRole: UserRole? = null,
+    val errorMessage: String? = null,
+    val search: String = ""
+) {
+    val filteredUsers = users
+        .filter {
+            println(it.role)
+            it.role == selectedRole
+        }
+}
 
 sealed class UsersEvent {
     object NavigateToCreateUser : UsersEvent()
@@ -31,7 +39,6 @@ class UsersViewModel @Inject constructor(
     private val _state = MutableStateFlow(UsersState())
     val state: StateFlow<UsersState> = _state.asStateFlow()
 
-    private var _allUsers: List<User> = emptyList()
 
     init {
         loadUsers()
@@ -41,11 +48,7 @@ class UsersViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 userRepository.getAll()
-
                 userRepository.users.collect { users ->
-
-                    _allUsers = users
-
                     _state.update {
                         it.copy(
                             isLoading = false,
@@ -65,28 +68,7 @@ class UsersViewModel @Inject constructor(
         }
     }
 
-    fun onRoleSelected(role: String) {
+    fun onRoleSelected(role: UserRole?) = _state.update { it.copy(selectedRole = role) }
 
-        val filteredUsers = when (role) {
-
-            "Coach" -> _allUsers.filter {
-                it.role.toString() == "COACH"
-            }
-
-            "Atleti" -> _allUsers.filter {
-                it.role.toString() == "ATHLETE"
-            }
-
-            else -> _allUsers
-        }
-
-        _state.update {
-            it.copy(
-                selectedRole = role,
-                users = filteredUsers
-            )
-        }
-
-
-    }
+    fun onSearchChanged(search: String) = _state.update { it.copy(search = search) }
 }

@@ -8,7 +8,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,10 +18,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.easygym.ui.components.EasyGymFAB
-import com.easygym.ui.components.EasyGymTextField
+import com.easygym.ui.components.EasyGymSearchField
 import com.easygym.ui.components.PrimaryFilterButton
 import com.easygym.ui.components.SecondaryFilterButton
 import com.easygym.ui.navigation.NavDestination
+import com.easygym.ui.navigation.UserRole
 import com.easygym.ui.theme.LocalColors
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -30,12 +33,7 @@ fun UsersScreen(
     navController: NavHostController
 
 ) {
-
     val state by viewModel.state.collectAsState()
-
-    var ricerca by remember { mutableStateOf("") }
-    val selectedRole = state.selectedRole
-
 
     Scaffold {
         Box(
@@ -64,11 +62,11 @@ fun UsersScreen(
 
                         )
                 }
-                EasyGymTextField(
-                    value = ricerca,
-                    label = "",
+                EasyGymSearchField(
+                    query = state.search,
+                    onQueryChange = viewModel::onSearchChanged,
                     placeholder = "Cerca per nome",
-                    onValueChange = {}
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Row(
@@ -77,7 +75,7 @@ fun UsersScreen(
                 ) {
 
                     Box(modifier = Modifier.weight(1f)) {
-                        if (selectedRole == "Tutti") {
+                        if (state.selectedRole == null) {
                             PrimaryFilterButton(
                                 text = "Tutti",
                                 onClick = { }
@@ -85,13 +83,13 @@ fun UsersScreen(
                         } else {
                             SecondaryFilterButton(
                                 text = "Tutti",
-                                onClick = { viewModel.onRoleSelected("Tutti") }
+                                onClick = { viewModel.onRoleSelected(null) }
                             )
                         }
                     }
 
                     Box(modifier = Modifier.weight(1f)) {
-                        if (selectedRole == "Coach") {
+                        if (state.selectedRole == UserRole.COACH) {
                             PrimaryFilterButton(
                                 text = "Coach",
                                 onClick = { }
@@ -99,13 +97,13 @@ fun UsersScreen(
                         } else {
                             SecondaryFilterButton(
                                 text = "Coach",
-                                onClick = { viewModel.onRoleSelected("Coach") }
+                                onClick = { viewModel.onRoleSelected(UserRole.COACH) }
                             )
                         }
                     }
 
                     Box(modifier = Modifier.weight(1f)) {
-                        if (selectedRole == "Atleti") {
+                        if (state.selectedRole == UserRole.ATHLETE) {
                             PrimaryFilterButton(
                                 text = "Atleti",
                                 onClick = { }
@@ -113,7 +111,7 @@ fun UsersScreen(
                         } else {
                             SecondaryFilterButton(
                                 text = "Atleti",
-                                onClick = { viewModel.onRoleSelected("Atleti") }
+                                onClick = { viewModel.onRoleSelected(UserRole.ATHLETE) }
                             )
                         }
                     }
@@ -131,7 +129,7 @@ fun UsersScreen(
                         }
 
                         LazyColumn {
-                            items(state.users.size) { index ->
+                            items(state.filteredUsers.size) { index ->
                                 val user = state.users[index]
 
                                 Column(modifier = Modifier.padding(vertical = 8.dp)) {
