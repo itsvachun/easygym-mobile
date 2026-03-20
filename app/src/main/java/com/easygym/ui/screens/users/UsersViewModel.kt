@@ -22,7 +22,7 @@ data class UsersState(
 ) {
     val filteredUsers = users
         .filter {
-            println(it.role)
+            selectedRole == null ||
             it.role == selectedRole
         }
 }

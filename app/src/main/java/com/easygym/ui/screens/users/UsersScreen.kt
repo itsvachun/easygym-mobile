@@ -130,7 +130,7 @@ fun UsersScreen(
 
                         LazyColumn {
                             items(state.filteredUsers.size) { index ->
-                                val user = state.users[index]
+                                val user = state.filteredUsers[index]
 
                                 Column(modifier = Modifier.padding(vertical = 8.dp)) {
                                     Row(
