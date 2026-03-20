@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.androidx.animation)
     implementation(libs.ui)
     implementation(libs.androidx.runtime)
+    implementation(libs.material3)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 

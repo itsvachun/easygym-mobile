@@ -1,4 +1,4 @@
-package com.easygym.services
+package com.easygym.utils
 
 import com.easygym.domain.repository.AuthRepository
 import dagger.Lazy

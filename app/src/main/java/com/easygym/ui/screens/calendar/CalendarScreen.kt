@@ -1,59 +1,112 @@
 package com.easygym.ui.screens.calendar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.easygym.ui.components.PrimaryFilterButton
-import com.easygym.ui.components.SecondaryFilterButton
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.easygym.ui.components.EasyGymFAB
+import com.easygym.ui.components.EventCard
+import com.easygym.ui.components.SectionHeader
+import com.easygym.ui.theme.LocalColors
 
 @Composable
-fun CalendarScreen() {
-    Scaffold { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+fun CalendarScreen(
+    viewModel: CalendarViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(LocalColors.current.bg)
+            .padding(horizontal = 18.dp)
+            .verticalScroll(rememberScrollState()),
+    ) {
+        Spacer(Modifier.height(8.dp))
+
+        Row(
+            Modifier.fillMaxWidth().padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            val lista = listOf("1", "2", "3")
-            var selectedIndex by remember { mutableStateOf(0) }
-            Text("Calendar Screen")
-            SingleChoiceSegmentedButtonRow {
-                lista.forEachIndexed { index, string ->
-                    SegmentedButton(
-                        selected = index == selectedIndex,
-                        onClick = { selectedIndex = index },
-                        shape = SegmentedButtonDefaults.itemShape(
-                            index = index,
-                            count = lista.size
-                        )
-                    ) {
-                        Text(string)
-                    }
-                }
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    PrimaryFilterButton(text = "prova", onClick = {})
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    PrimaryFilterButton(text = "prova", onClick = {})
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    SecondaryFilterButton(text = "prova", onClick = {})
-                }
-
-            }
-
+            Text(
+                "Calendario",
+                style = MaterialTheme.typography.headlineLarge,
+                color = LocalColors.current.text
+            )
+            EasyGymFAB(onClick = {}, hasShadow = true)
         }
+
+        EasyGymCalendar {}
+
+        Spacer(Modifier.height(10.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            EventType.entries.forEach { eventType ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    Box(
+                        Modifier
+                            .size(7.dp)
+                            .clip(CircleShape)
+                            .background(
+                                when (eventType) {
+                                    EventType.TRAINING -> LocalColors.current.blue
+                                    EventType.COMPETITION -> LocalColors.current.amber
+                                    EventType.OTHER -> LocalColors.current.purple
+                                }
+                            )
+                    )
+                    Text(
+                        text = eventType.label,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = LocalColors.current.graySoft
+                    )
+                }
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+
+        SectionHeader(state.selectedDayLabel)
+
+        if (state.selectedDayEvents.isEmpty()) {
+            Text(
+                "Nessun evento",
+                style = MaterialTheme.typography.bodyMedium,
+                color = LocalColors.current.gray,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        } else {
+            state.selectedDayEvents.forEachIndexed { index, ev ->
+                EventCard(
+                    "${ev.timeStart}\n${ev.timeEnd}",
+                    ev.title,
+                    ev.subtitle,
+                    when (ev.type) {
+                        EventType.TRAINING -> LocalColors.current.blue
+                        EventType.COMPETITION -> LocalColors.current.amber
+                        EventType.OTHER -> LocalColors.current.purple
+                    },
+                    onClick = { }
+                )
+                if (index < state.selectedDayEvents.lastIndex) Spacer(Modifier.height(8.dp))
+            }
+        }
+
+        Spacer(Modifier.height(80.dp))
     }
 }
