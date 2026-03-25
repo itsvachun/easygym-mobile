@@ -30,7 +30,9 @@ fun EasyGymCalendar(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Row(
-        Modifier.fillMaxWidth().padding(vertical = 10.dp),
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -38,6 +40,7 @@ fun EasyGymCalendar(
         Text(state.monthLabel, style = MaterialTheme.typography.titleLarge, color = LocalColors.current.text)
         NavArrow("›", onClick = viewModel::onNextMonth)
     }
+
     Spacer(Modifier.height(8.dp))
 
     Row(Modifier.fillMaxWidth()) {

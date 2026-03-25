@@ -2,7 +2,6 @@ package com.easygym.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -23,14 +22,12 @@ fun EventCard(
     title: String,
     subtitle: String,
     barColor: Color,
-    onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
 
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
@@ -38,16 +35,24 @@ fun EventCard(
             style = MaterialTheme.typography.labelSmall,
             color = LocalColors.current.graySoft,
             textAlign = TextAlign.End,
-            modifier = Modifier.width(38.dp).padding(top = 2.dp),
+            modifier = Modifier
+                .width(38.dp)
+                .padding(top = 2.dp),
             lineHeight = 13.sp
         )
-        Box(Modifier.width(3.dp).height(52.dp).clip(RoundedCornerShape(2.dp)).background(barColor))
+        Box(
+            Modifier
+                .width(3.dp)
+                .height(52.dp)
+                .clip(RoundedCornerShape(2.dp))
+                .background(barColor)
+        )
         Column(
             modifier = Modifier
                 .weight(1f)
                 .clip(RoundedCornerShape(12.dp))
-                .background(LocalColors.current.surface3)
-                .border(1.dp, LocalColors.current.surface4, RoundedCornerShape(12.dp))
+                .background(LocalColors.current.surface1)
+                .border(1.dp, LocalColors.current.surface2, RoundedCornerShape(12.dp))
                 .padding(horizontal = 12.dp, vertical = 9.dp),
         ) {
             Text(

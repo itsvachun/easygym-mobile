@@ -22,8 +22,10 @@ data class UsersState(
 ) {
     val filteredUsers = users
         .filter {
-            selectedRole == null ||
-            it.role == selectedRole
+            (selectedRole == null || it.role == selectedRole)
+                    &&
+                    (search.lowercase() in it.firstName.lowercase()
+                            || search.lowercase() in it.lastName.lowercase())
         }
 }
 

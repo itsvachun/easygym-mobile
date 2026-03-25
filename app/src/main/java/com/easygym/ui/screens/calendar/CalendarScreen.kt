@@ -37,7 +37,9 @@ fun CalendarScreen(
         Spacer(Modifier.height(8.dp))
 
         Row(
-            Modifier.fillMaxWidth().padding(vertical = 16.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -101,12 +103,11 @@ fun CalendarScreen(
                         EventType.COMPETITION -> LocalColors.current.amber
                         EventType.OTHER -> LocalColors.current.purple
                     },
-                    onClick = { }
                 )
                 if (index < state.selectedDayEvents.lastIndex) Spacer(Modifier.height(8.dp))
             }
         }
 
-        Spacer(Modifier.height(80.dp))
+        Spacer(Modifier.height(50.dp))
     }
 }
