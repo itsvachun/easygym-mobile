@@ -120,7 +120,7 @@ fun CreateUserScreen(
                 }
                 Box(modifier = Modifier.weight(1f)) {
                     EasyGymTextField(
-                        value = state.createUser.lastname,
+                        value = state.createUser.lastName,
                         label = "Cognome",
                         placeholder = "Rossi",
                         onValueChange = { viewModel.updateState(lastName = it) }
@@ -145,6 +145,13 @@ fun CreateUserScreen(
                 label = "Password",
                 placeholder = "P4ssw0rd!",
                 onValueChange = { viewModel.updateState(password = it) }
+            )
+
+            EasyGymTextField(
+                value = state.groupId.toString(),
+                label = "Password",
+                placeholder = "P4ssw0rd!",
+                onValueChange = { viewModel.updateState(groupId = it) }
             )
 
             when (val user = state.createUser) {
@@ -214,10 +221,10 @@ fun CreateUserScreen(
                     )
                 }
             }
-            
+
             PrimaryButton(
                 text = "Crea Account",
-                onClick = { viewModel.createAccount() }
+                onClick = viewModel::createUser
             )
 
             state.errorMessage?.let {

@@ -5,8 +5,9 @@ import com.easygym.data.remote.datasource.CoachDataSource
 import com.easygym.data.remote.model.coach.CoachRequest
 import com.easygym.data.remote.model.coach.CoachResponse
 import com.easygym.domain.repository.CoachRepository
+import javax.inject.Inject
 
-class CoachRepositoryImpl(
+class CoachRepositoryImpl @Inject constructor(
     val coachDataSource: CoachDataSource,
     val coachDAO: CoachDAO
 ) : CoachRepository {

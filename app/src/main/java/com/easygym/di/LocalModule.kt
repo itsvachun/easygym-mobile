@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.easygym.data.local.AppDatabase
+import com.easygym.data.local.dao.AthleteDAO
+import com.easygym.data.local.dao.CoachDAO
 import com.easygym.data.local.dao.UserDAO
 import dagger.Module
 import dagger.Provides
@@ -36,4 +38,12 @@ object LocalModule {
     @Provides
     @Singleton
     fun provideUserDAO(db: AppDatabase): UserDAO = db.userDAO
+
+    @Provides
+    @Singleton
+    fun provideAthleteDAO(db: AppDatabase): AthleteDAO = db.athleteDAO
+
+    @Provides
+    @Singleton
+    fun provideCoachDAO(db: AppDatabase): CoachDAO = db.coachDAO
 }

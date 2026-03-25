@@ -1,12 +1,14 @@
 package com.easygym.ui.screens.createuser
 
+import com.easygym.data.remote.model.athlete.AthleteRequest
+import com.easygym.data.remote.model.coach.CoachRequest
 import com.easygym.ui.navigation.UserRole
 import java.time.LocalDate
 
 sealed class CreateUser(
     open val role: UserRole,
     open var firstName: String,
-    open var lastname: String,
+    open var lastName: String,
     open var email: String,
     open var password: String,
     open var phone: String,
@@ -21,21 +23,50 @@ sealed class CreateUser(
         val notes: String = "",
 
         override var firstName: String = "",
-        override var lastname: String = "",
+        override var lastName: String = "",
         override var email: String = "",
         override var password: String = "",
         override var phone: String = "",
-    ) : CreateUser(UserRole.ATHLETE, firstName, lastname, email, password, phone)
+    ) : CreateUser(UserRole.ATHLETE, firstName, lastName, email, password, phone) {
+        fun toRequest(
+            groupId: String
+        ) = AthleteRequest(
+            firstName = firstName,
+            lastName = lastName,
+            birthDate = birthDate,
+            taxCode = taxCode,
+            email = email,
+            password = password,
+            phone = phone,
+            address = address,
+            city = city,
+            postalCode = postalCode,
+            medicalExpDate = medicalExpDate,
+            groupId = groupId,
+            notes = notes
+        )
+    }
 
 
     data class Coach(
         val bio: String = "",
 
         override var firstName: String = "",
-        override var lastname: String = "",
+        override var lastName: String = "",
         override var email: String = "",
         override var password: String = "",
         override var phone: String = "",
-    ) : CreateUser(UserRole.COACH, firstName, lastname, email, password, phone)
+    ) : CreateUser(UserRole.COACH, firstName, lastName, email, password, phone) {
+        fun toRequest(
+            groupId: String
+        ) = CoachRequest(
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
+            bio = bio,
+            password = password,
+            groupId = groupId,
+        )
+    }
 }
 

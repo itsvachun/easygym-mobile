@@ -3,6 +3,7 @@ package com.easygym.ui.screens.createuser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easygym.domain.repository.UserRepository
+import com.easygym.domain.usecase.CreateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,12 +16,14 @@ import javax.inject.Inject
 data class CreateUserState(
     val createUser: CreateUser = CreateUser.Athlete(),
     val isLoading: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val groupId: String? = null
 )
 
 @HiltViewModel
 open class CreateUserViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CreateUserState())
@@ -40,6 +43,7 @@ open class CreateUserViewModel @Inject constructor(
         lastName: String? = null,
         email: String? = null,
         password: String? = null,
+        groupId: String? = null,
         phone: String? = null,
         birthDate: LocalDate? = null,
         taxCode: String? = null,
@@ -52,10 +56,11 @@ open class CreateUserViewModel @Inject constructor(
     ) =
         _state.update { currentState ->
             currentState.copy(
+                groupId = groupId,
                 createUser = when (currentState.createUser) {
                     is CreateUser.Coach -> currentState.createUser.copy(
                         firstName = firstName ?: currentState.createUser.firstName,
-                        lastname = lastName ?: currentState.createUser.lastname,
+                        lastName = lastName ?: currentState.createUser.lastName,
                         email = email ?: currentState.createUser.email,
                         password = password ?: currentState.createUser.password,
                         phone = phone ?: currentState.createUser.phone,
@@ -64,7 +69,7 @@ open class CreateUserViewModel @Inject constructor(
 
                     is CreateUser.Athlete -> currentState.createUser.copy(
                         firstName = firstName ?: currentState.createUser.firstName,
-                        lastname = lastName ?: currentState.createUser.lastname,
+                        lastName = lastName ?: currentState.createUser.lastName,
                         email = email ?: currentState.createUser.email,
                         password = password ?: currentState.createUser.password,
                         phone = phone ?: currentState.createUser.phone,
@@ -80,24 +85,24 @@ open class CreateUserViewModel @Inject constructor(
             )
         }
 
-    fun createAccount() {
+    fun createUser() {
         val currentState = _state.value
 
         val currentUser = currentState.createUser
-        if (currentUser.firstName.isBlank() || currentUser.lastname.isBlank() || currentUser.email.isBlank()
+        if (currentUser.firstName.isBlank() || currentUser.lastName.isBlank() || currentUser.email.isBlank()
         ) {
             _state.update { it.copy(errorMessage = "Compila tutti i campi obbligatori") }
             return
         }
 
+
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, errorMessage = null) }
-
+            println(currentState.groupId)
             try {
-                _state.update { it.copy(isLoading = false) }
-
+                createUserUseCase.createUser(user = currentState.createUser, currentState.groupId!!)
+                _state.update { it.copy(isLoading = true, errorMessage = null) }
             } catch (e: Exception) {
-                _state.update { it.copy(isLoading = false, errorMessage = e.message) }
+                println(e)
             }
         }
     }
