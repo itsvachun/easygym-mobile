@@ -16,12 +16,12 @@ import androidx.navigation.compose.rememberNavController
 import com.easygym.ui.screens.athletes.AthletesScreen
 import com.easygym.ui.screens.calendar.CalendarScreen
 import com.easygym.ui.screens.changepassword.ChangePasswordScreen
-import com.easygym.ui.screens.club.ClubScreen
 import com.easygym.ui.screens.createuser.CreateUserScreen
 import com.easygym.ui.screens.home.HomeScreen
 import com.easygym.ui.screens.loadinggate.LoadingGateScreen
 import com.easygym.ui.screens.login.LoginScreen
 import com.easygym.ui.screens.payments.PaymentsScreen
+import com.easygym.ui.screens.profile.ClubScreen
 import com.easygym.ui.screens.users.UsersScreen
 
 @Composable

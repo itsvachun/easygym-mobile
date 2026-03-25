@@ -16,12 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.easygym.ui.components.EasyGymFAB
 import com.easygym.ui.components.EasyGymSearchField
 import com.easygym.ui.components.PrimaryFilterButton
 import com.easygym.ui.components.SecondaryFilterButton
-import com.easygym.ui.navigation.NavDestination
 import com.easygym.ui.navigation.UserRole
 import com.easygym.ui.theme.LocalColors
 
@@ -41,149 +39,159 @@ fun UsersScreen(
                 .padding(horizontal = 18.dp),
             contentAlignment = Alignment.Center
         ) {
-            Spacer(Modifier.height(8.dp))
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Row (
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                )
-                {
-                    Text(
-                        text = "Utenti",
-                        style = MaterialTheme.typography.headlineLarge
-                    )
+            when {
+                state.isLoading -> CircularProgressIndicator()
+                else -> {
+                    Spacer(Modifier.height(8.dp))
 
-                    EasyGymFAB(
-                        hasShadow = false,
-                        onClick = onNavigateToUserCreate,
-                        )
-                }
-                EasyGymSearchField(
-                    query = state.search,
-                    onQueryChange = viewModel::onSearchChanged,
-                    placeholder = "Cerca per nome",
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-
-                    Box(modifier = Modifier.weight(1f)) {
-                        if (state.selectedRole == null) {
-                            PrimaryFilterButton(
-                                text = "Tutti",
-                                onClick = { }
-                            )
-                        } else {
-                            SecondaryFilterButton(
-                                text = "Tutti",
-                                onClick = { viewModel.onRoleSelected(null) }
-                            )
-                        }
-                    }
-
-                    Box(modifier = Modifier.weight(1f)) {
-                        if (state.selectedRole == UserRole.COACH) {
-                            PrimaryFilterButton(
-                                text = "Coach",
-                                onClick = { }
-                            )
-                        } else {
-                            SecondaryFilterButton(
-                                text = "Coach",
-                                onClick = { viewModel.onRoleSelected(UserRole.COACH) }
-                            )
-                        }
-                    }
-
-                    Box(modifier = Modifier.weight(1f)) {
-                        if (state.selectedRole == UserRole.ATHLETE) {
-                            PrimaryFilterButton(
-                                text = "Atleti",
-                                onClick = { }
-                            )
-                        } else {
-                            SecondaryFilterButton(
-                                text = "Atleti",
-                                onClick = { viewModel.onRoleSelected(UserRole.ATHLETE) }
-                            )
-                        }
-                    }
-                }
-
-                when {
-                    state.isLoading -> CircularProgressIndicator()
-                    else -> Box(
-                        modifier = Modifier
-                            .padding(6.dp)
-                            .fillMaxSize(),
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        state.errorMessage?.let { errorMessage ->
-                            Text(errorMessage)
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(vertical = 16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        )
+                        {
+                            Text(
+                                text = "Utenti",
+                                style = MaterialTheme.typography.headlineLarge
+                            )
+
+                            EasyGymFAB(
+                                hasShadow = false,
+                                onClick = onNavigateToUserCreate,
+                            )
+                        }
+                        EasyGymSearchField(
+                            query = state.search,
+                            onQueryChange = viewModel::onSearchChanged,
+                            placeholder = "Cerca per nome",
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+
+                            Box(modifier = Modifier.weight(1f)) {
+                                if (state.selectedRole == null) {
+                                    PrimaryFilterButton(
+                                        text = "Tutti",
+                                        onClick = { }
+                                    )
+                                } else {
+                                    SecondaryFilterButton(
+                                        text = "Tutti",
+                                        onClick = { viewModel.onRoleSelected(null) }
+                                    )
+                                }
+                            }
+
+                            Box(modifier = Modifier.weight(1f)) {
+                                if (state.selectedRole == UserRole.COACH) {
+                                    PrimaryFilterButton(
+                                        text = "Coach",
+                                        onClick = { }
+                                    )
+                                } else {
+                                    SecondaryFilterButton(
+                                        text = "Coach",
+                                        onClick = { viewModel.onRoleSelected(UserRole.COACH) }
+                                    )
+                                }
+                            }
+
+                            Box(modifier = Modifier.weight(1f)) {
+                                if (state.selectedRole == UserRole.ATHLETE) {
+                                    PrimaryFilterButton(
+                                        text = "Atleti",
+                                        onClick = { }
+                                    )
+                                } else {
+                                    SecondaryFilterButton(
+                                        text = "Atleti",
+                                        onClick = { viewModel.onRoleSelected(UserRole.ATHLETE) }
+                                    )
+                                }
+                            }
                         }
 
-                        LazyColumn {
-                            items(state.filteredUsers.size) { index ->
-                                val user = state.filteredUsers[index]
+                        when {
+                            else -> Box(
+                                modifier = Modifier
+                                    .padding(6.dp)
+                                    .fillMaxSize(),
+                            ) {
+                                state.errorMessage?.let { errorMessage ->
+                                    Text(errorMessage)
+                                }
 
-                                Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
+                                LazyColumn {
+                                    items(state.filteredUsers.size) { index ->
+                                        val user = state.filteredUsers[index]
 
-                                        Box(
-                                            modifier = Modifier
-                                                .size(40.dp)
-                                                .background(
-                                                    color = LocalColors.current.redDim,
-                                                    shape = MaterialTheme.shapes.small
-                                                ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = "${user.firstName.first()}${user.lastName.first()}",
-                                                color = LocalColors.current.text,
-                                                fontSize = 16.sp
-                                            )
-                                        }
-
-                                        Spacer(modifier = Modifier.width(12.dp))
-
-                                        Column(
-                                            verticalArrangement = Arrangement.Center
-                                        ) {
-
+                                        Column(modifier = Modifier.padding(vertical = 8.dp)) {
                                             Row(
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
 
-                                                Text(user.firstName, style = MaterialTheme.typography.titleLarge)
-                                                Spacer(modifier = Modifier.width(8.dp))
-                                                Text(user.lastName, style = MaterialTheme.typography.titleLarge)
-                                                Spacer(modifier = Modifier.width(8.dp))
-                                                Text(user.role.toString(), style = MaterialTheme.typography.bodyMedium)
-                                            }
+                                                Box(
+                                                    modifier = Modifier
+                                                        .size(40.dp)
+                                                        .background(
+                                                            color = LocalColors.current.redDim,
+                                                            shape = MaterialTheme.shapes.small
+                                                        ),
+                                                    contentAlignment = Alignment.Center
+                                                ) {
+                                                    Text(
+                                                        text = "${user.firstName.first()}${user.lastName.first()}",
+                                                        color = LocalColors.current.text,
+                                                        fontSize = 16.sp
+                                                    )
+                                                }
 
-                                            Text(
-                                                user.email ?: "Email non disponibile",
-                                                style = MaterialTheme.typography.bodyMedium
-                                            )
+                                                Spacer(modifier = Modifier.width(12.dp))
+
+                                                Column(
+                                                    verticalArrangement = Arrangement.Center
+                                                ) {
+
+                                                    Row(
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+
+                                                        Text(
+                                                            user.firstName,
+                                                            style = MaterialTheme.typography.titleLarge
+                                                        )
+                                                        Spacer(modifier = Modifier.width(8.dp))
+                                                        Text(user.lastName, style = MaterialTheme.typography.titleLarge)
+                                                        Spacer(modifier = Modifier.width(8.dp))
+                                                        Text(
+                                                            user.role.toString(),
+                                                            style = MaterialTheme.typography.bodyMedium
+                                                        )
+                                                    }
+
+                                                    Text(
+                                                        user.email ?: "Email non disponibile",
+                                                        style = MaterialTheme.typography.bodyMedium
+                                                    )
+                                                }
+                                            }
                                         }
                                     }
-
                                 }
                             }
                         }
+
                     }
                 }
-
             }
         }
     }

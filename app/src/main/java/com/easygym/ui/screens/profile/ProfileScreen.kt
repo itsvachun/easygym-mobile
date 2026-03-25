@@ -1,13 +1,10 @@
-package com.easygym.ui.screens.club
+package com.easygym.ui.screens.profile
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,7 +13,7 @@ import com.easygym.ui.components.SecondaryButton
 
 @Composable
 fun ClubScreen(
-    viewModel: ClubViewModel = hiltViewModel(),
+    viewModel: ProfileViewModel = hiltViewModel(),
     onNavigateToChangePassword: () -> Unit,
     onNavigateToUsers: () -> Unit,
 ) {
@@ -26,14 +23,19 @@ fun ClubScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround,
         ) {
-            Text("Club Screen")
-            Text("Admin Tools")
-            SecondaryButton(text = "Gestisci Utenti", onClick = onNavigateToUsers)
-            Text("Settings")
-            SecondaryButton(text = "Cambia Password", onClick = onNavigateToChangePassword)
+            Text("Profile Screen", style = MaterialTheme.typography.displaySmall)
+            Column {
+                Text("Impostazioni Admin", style = MaterialTheme.typography.headlineSmall)
+                Spacer(Modifier.height(16.dp))
+                SecondaryButton(text = "Gestisci Utenti", onClick = onNavigateToUsers)
+            }
+            Column {
+                Text("Impostazioni Generali", style = MaterialTheme.typography.headlineSmall)
+                Spacer(Modifier.height(16.dp))
+                SecondaryButton(text = "Cambia Password", onClick = onNavigateToChangePassword)
+            }
             PrimaryButton(text = "Logout", onClick = viewModel::logout)
         }
     }
