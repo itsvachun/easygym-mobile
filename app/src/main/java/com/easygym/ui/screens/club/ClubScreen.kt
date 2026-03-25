@@ -18,6 +18,7 @@ import com.easygym.ui.components.SecondaryButton
 fun ClubScreen(
     viewModel: ClubViewModel = hiltViewModel(),
     onNavigateToChangePassword: () -> Unit,
+    onNavigateToUsers: () -> Unit,
 ) {
     Scaffold { innerPadding ->
         Column(
@@ -29,6 +30,9 @@ fun ClubScreen(
             verticalArrangement = Arrangement.SpaceAround,
         ) {
             Text("Club Screen")
+            Text("Admin Tools")
+            SecondaryButton(text = "Gestisci Utenti", onClick = onNavigateToUsers)
+            Text("Settings")
             SecondaryButton(text = "Cambia Password", onClick = onNavigateToChangePassword)
             PrimaryButton(text = "Logout", onClick = viewModel::logout)
         }

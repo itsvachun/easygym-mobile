@@ -29,26 +29,28 @@ import com.easygym.ui.theme.LocalColors
 @Composable
 fun UsersScreen(
     viewModel: UsersViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier,
-    navController: NavHostController
-
+    onNavigateToUserCreate: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
 
-    Scaffold {
+    Scaffold { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp),
+                .padding(innerPadding)
+                .padding(horizontal = 18.dp),
             contentAlignment = Alignment.Center
         ) {
+            Spacer(Modifier.height(8.dp))
+
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(150.dp)
+                Row (
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 )
                 {
                     Text(
@@ -58,8 +60,7 @@ fun UsersScreen(
 
                     EasyGymFAB(
                         hasShadow = false,
-                        onClick = { navController.navigate(NavDestination.Common.CreateUser.route) },
-
+                        onClick = onNavigateToUserCreate,
                         )
                 }
                 EasyGymSearchField(

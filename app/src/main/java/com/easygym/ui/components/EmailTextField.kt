@@ -31,7 +31,7 @@ fun EmailTextField(
         Text(
             text = "EMAIL",
             style = MaterialTheme.typography.titleMedium,
-            color = LocalColors.current.surface3,
+            color = LocalColors.current.surface4,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp,
         )

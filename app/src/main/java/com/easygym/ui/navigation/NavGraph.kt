@@ -18,6 +18,7 @@ import com.easygym.ui.screens.calendar.CalendarScreen
 import com.easygym.ui.screens.changepassword.ChangePasswordScreen
 import com.easygym.ui.screens.club.ClubScreen
 import com.easygym.ui.screens.createuser.CreateUserScreen
+import com.easygym.ui.screens.home.HomeScreen
 import com.easygym.ui.screens.loadinggate.LoadingGateScreen
 import com.easygym.ui.screens.login.LoginScreen
 import com.easygym.ui.screens.payments.PaymentsScreen
@@ -35,21 +36,26 @@ fun NavGraph(
     NavHost(
         navController = navController,
         startDestination = when {
-            navState.isLoading -> NavDestination.Common.LOADING.route
-            navState.bottomDestinations.isNotEmpty() -> NavDestination.Common.BOTTOM.route
-            else -> NavDestination.Common.LOGIN.route
+            navState.isLoading -> NavDestination.Common.Loading.route
+            navState.bottomDestinations.isNotEmpty() -> NavDestination.Common.Bottom.route
+            else -> NavDestination.Common.Login.route
         },
     ) {
-        composable(NavDestination.Common.LOADING.route) {
+        composable(NavDestination.Common.Loading.route) {
             LoadingGateScreen()
         }
-        composable(NavDestination.Common.LOGIN.route) {
+        composable(NavDestination.Common.Login.route) {
             LoginScreen()
         }
-        composable(NavDestination.Common.CHANGEPASSWORD.route) {
+        composable(NavDestination.Common.ChangePassword.route) {
             ChangePasswordScreen()
         }
-        composable(NavDestination.Common.BOTTOM.route) {
+        composable(NavDestination.Common.Users.route) {
+            UsersScreen {
+                navController.navigate(NavDestination.Common.CreateUser.route)
+            }
+        }
+        composable(NavDestination.Common.Bottom.route) {
             Scaffold(
                 bottomBar = {
                     BottomBar(
@@ -65,13 +71,18 @@ fun NavGraph(
                         .fillMaxSize()
                 ) { page ->
                     when (navState.bottomDestinations[page].route) {
-                        NavDestination.BottomBar.HOME.route -> UsersScreen(navController = navController)
-                        NavDestination.BottomBar.ATHLETES.route -> AthletesScreen()
-                        NavDestination.BottomBar.CALENDAR.route -> CalendarScreen()
-                        NavDestination.BottomBar.PAYMENTS.route -> PaymentsScreen()
-                        NavDestination.BottomBar.CLUB.route -> ClubScreen {
-                            navController.navigate(NavDestination.Common.CHANGEPASSWORD.route)
-                        }
+                        NavDestination.BottomBar.Home.route -> HomeScreen()
+                        NavDestination.BottomBar.Athletes.route -> AthletesScreen()
+                        NavDestination.BottomBar.Calendar.route -> CalendarScreen()
+                        NavDestination.BottomBar.Payments.route -> PaymentsScreen()
+                        NavDestination.BottomBar.Club.route -> ClubScreen(
+                            onNavigateToChangePassword = {
+                                navController.navigate(NavDestination.Common.ChangePassword.route)
+                            },
+                            onNavigateToUsers = {
+                                navController.navigate(NavDestination.Common.Users.route)
+                            }
+                        )
                     }
                 }
             }

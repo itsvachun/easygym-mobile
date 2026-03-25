@@ -30,7 +30,6 @@ fun CalendarScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(LocalColors.current.bg)
             .padding(horizontal = 18.dp)
             .verticalScroll(rememberScrollState()),
     ) {

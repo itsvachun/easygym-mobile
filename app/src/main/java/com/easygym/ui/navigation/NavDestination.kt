@@ -6,18 +6,19 @@ sealed interface NavDestination {
     val route: String
 
     sealed class Common(override val route: String) : NavDestination {
-        object LOADING : Common(route = "loading")
-        object LOGIN : Common(route = "login")
-        object BOTTOM : Common(route = "bottom")
+        object Loading : Common(route = "loading")
+        object Login : Common(route = "login")
+        object Bottom : Common(route = "bottom")
         object CreateUser : Common(route = "createUser")
-        object CHANGEPASSWORD : Common(route = "changePassword")
+        object ChangePassword : Common(route = "changePassword")
+        object Users : Common(route = "users")
     }
 
     sealed class BottomBar(override val route: String, val label: String, val iconId: Int) : NavDestination {
-        object HOME : BottomBar(route = "home", label = "Home", iconId = R.drawable.home_icon)
-        object ATHLETES : BottomBar(route = "atlethes", label = "Atleti", iconId = R.drawable.athletes_icon)
-        object CALENDAR : BottomBar(route = "calendar", label = "Calendario", iconId = R.drawable.calendar_icon)
-        object PAYMENTS : BottomBar(route = "payments", label = "Pagamenti", iconId = R.drawable.payments_icon)
-        object CLUB : BottomBar(route = "club", label = "Club", iconId = R.drawable.club_icon)
+        object Home : BottomBar(route = "home", label = "Home", iconId = R.drawable.home_icon)
+        object Athletes : BottomBar(route = "atlethes", label = "Atleti", iconId = R.drawable.athletes_icon)
+        object Calendar : BottomBar(route = "calendar", label = "Calendario", iconId = R.drawable.calendar_icon)
+        object Payments : BottomBar(route = "payments", label = "Pagamenti", iconId = R.drawable.payments_icon)
+        object Club : BottomBar(route = "club", label = "Club", iconId = R.drawable.club_icon)
     }
 }

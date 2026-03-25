@@ -75,22 +75,22 @@ class NavViewModel @Inject constructor(
     private fun getBottomDestinationsByRole(role: UserRole? = null): List<NavDestination.BottomBar> =
         when (role) {
             UserRole.ADMIN -> listOf(
-                NavDestination.BottomBar.HOME,
-                NavDestination.BottomBar.ATHLETES,
-                NavDestination.BottomBar.CALENDAR,
-                NavDestination.BottomBar.PAYMENTS,
-                NavDestination.BottomBar.CLUB,
+                NavDestination.BottomBar.Home,
+                NavDestination.BottomBar.Athletes,
+                NavDestination.BottomBar.Calendar,
+                NavDestination.BottomBar.Payments,
+                NavDestination.BottomBar.Club,
             )
 
             UserRole.COACH -> listOf(
-                NavDestination.BottomBar.ATHLETES,
-                NavDestination.BottomBar.CALENDAR,
-                NavDestination.BottomBar.CLUB,
+                NavDestination.BottomBar.Athletes,
+                NavDestination.BottomBar.Calendar,
+                NavDestination.BottomBar.Club,
             )
 
             UserRole.ATHLETE -> listOf(
-                NavDestination.BottomBar.CALENDAR,
-                NavDestination.BottomBar.CLUB,
+                NavDestination.BottomBar.Calendar,
+                NavDestination.BottomBar.Club,
             )
 
             else -> listOf()
