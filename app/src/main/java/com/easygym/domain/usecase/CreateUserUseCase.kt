@@ -11,14 +11,8 @@ class CreateUserUseCase @Inject constructor(
     private val athleteRepository: AthleteRepository,
     private val coachRepository: CoachRepository
 ) {
-    suspend fun createUser(user: CreateUser, groupId: String) = when (user) {
-        is CreateUser.Athlete -> {
-            athleteRepository.post(user.toRequest(groupId))
-        }
-
-        is CreateUser.Coach -> {
-            coachRepository.post(user.toRequest(groupId))
-        }
+    suspend operator fun invoke(user: CreateUser, groupId: String) = when (user) {
+        is CreateUser.Athlete -> athleteRepository.post(user.toRequest(groupId))
+        is CreateUser.Coach -> coachRepository.post(user.toRequest(groupId))
     }
-
 }

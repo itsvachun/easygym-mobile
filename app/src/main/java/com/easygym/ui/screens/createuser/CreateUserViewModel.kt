@@ -23,7 +23,7 @@ data class CreateUserState(
 @HiltViewModel
 open class CreateUserViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    val createUserUseCase: CreateUserUseCase
+    private val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CreateUserState())
@@ -99,7 +99,7 @@ open class CreateUserViewModel @Inject constructor(
         viewModelScope.launch {
             println(currentState.groupId)
             try {
-                createUserUseCase.createUser(user = currentState.createUser, currentState.groupId!!)
+                createUserUseCase(user = currentState.createUser, currentState.groupId!!)
                 _state.update { it.copy(isLoading = true, errorMessage = null) }
             } catch (e: Exception) {
                 println(e)

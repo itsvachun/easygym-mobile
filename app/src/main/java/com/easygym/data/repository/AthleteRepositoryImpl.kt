@@ -4,18 +4,32 @@ import com.easygym.data.local.dao.AthleteDAO
 import com.easygym.data.remote.datasource.AthleteDataSource
 import com.easygym.data.remote.model.athlete.AthleteRequest
 import com.easygym.data.remote.model.athlete.AthleteResponse
+import com.easygym.domain.model.Athlete
 import com.easygym.domain.repository.AthleteRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AthleteRepositoryImpl @Inject constructor(
     private val athleteDataSource: AthleteDataSource,
     private val athleteDAO: AthleteDAO
-) :
-    AthleteRepository {
+) : AthleteRepository {
 
-    override suspend fun post(athleteRequest: AthleteRequest): AthleteResponse {
-        val response: AthleteResponse = athleteDataSource.postAthlete(athleteRequest)
-        athleteDAO.insertAthlete(response.toEntity())
-        return response
+    override val athletes: Flow<List<Athlete>> = athleteDAO.getAll().map { users ->
+        users.map { it.toDomain() }
     }
+
+    override suspend fun fetchAll(): Result<Unit> =
+        runCatching {
+            val response = athleteDataSource.getAll()
+            val entities = response.map { it.toEntity() }
+            athleteDAO.insertAll(entities)
+        }.onFailure { Result.failure<Exception>(it) }
+
+    override suspend fun post(athleteRequest: AthleteRequest): Result<AthleteResponse> =
+        runCatching {
+            val response: AthleteResponse = athleteDataSource.postAthlete(athleteRequest)
+            athleteDAO.insert(response.toEntity())
+            response
+        }.onFailure { Result.failure<Exception>(it) }
 }
