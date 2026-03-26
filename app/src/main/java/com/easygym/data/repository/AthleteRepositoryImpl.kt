@@ -21,7 +21,7 @@ class AthleteRepositoryImpl @Inject constructor(
 
     override suspend fun fetchAll(): Result<Unit> =
         runCatching {
-            val response = athleteDataSource.getAll()
+            val response = athleteDataSource.getAll().content
             val entities = response.map { it.toEntity() }
             athleteDAO.insertAll(entities)
         }.onFailure { Result.failure<Exception>(it) }

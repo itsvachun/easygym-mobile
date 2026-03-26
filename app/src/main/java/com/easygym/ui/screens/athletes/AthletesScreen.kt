@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.easygym.domain.model.MedicalStatus
 import com.easygym.ui.components.EasyGymSearchField
 import com.easygym.ui.theme.LocalColors
 
@@ -28,7 +29,7 @@ fun AthletesScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .padding(horizontal = 18.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -41,23 +42,12 @@ fun AthletesScreen(
                     Column(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        Row(
+                        Text(
                             modifier = Modifier.fillMaxWidth()
-                                .padding(vertical = 16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(vertical = 8.dp),
+                            text = "Atleti",
+                            style = MaterialTheme.typography.headlineLarge
                         )
-                        {
-                            Text(
-                                text = "Utenti",
-                                style = MaterialTheme.typography.headlineLarge
-                            )
-
-//                            EasyGymFAB(
-//                                hasShadow = false,
-//                                onClick = onNavigateToUserCreate,
-//                            )
-                        }
                         EasyGymSearchField(
                             query = "",
                             onQueryChange = {},
@@ -65,69 +55,90 @@ fun AthletesScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
 
-                        Box(
-                            modifier = Modifier
-                                .padding(6.dp)
-                                .fillMaxSize(),
-                        ) {
-                            state.errorMessage?.let { errorMessage ->
-                                Text(errorMessage)
+                        LazyColumn {
+                            item {
+                                state.errorMessage?.let { errorMessage ->
+                                    Text(errorMessage)
+                                }
                             }
 
-                            LazyColumn {
-                                items(state.athletes.size) { index ->
-                                    val user = state.athletes[index]
+                            items(state.athletes.size) { index ->
+                                val athlete = state.athletes[index]
 
-                                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Row {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(40.dp)
+                                                .background(
+                                                    color = LocalColors.current.redDim,
+                                                    shape = MaterialTheme.shapes.small
+                                                ),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = "${athlete.firstName.first()}${athlete.lastName.first()}",
+                                                color = LocalColors.current.text,
+                                                fontSize = 16.sp
+                                            )
+                                        }
+
+                                        Spacer(modifier = Modifier.width(12.dp))
+
+                                        Column(
+                                            verticalArrangement = Arrangement.Center
                                         ) {
 
-                                            Box(
-                                                modifier = Modifier
-                                                    .size(40.dp)
-                                                    .background(
-                                                        color = LocalColors.current.redDim,
-                                                        shape = MaterialTheme.shapes.small
-                                                    ),
-                                                contentAlignment = Alignment.Center
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically
                                             ) {
+
                                                 Text(
-                                                    text = "${user.firstName.first()}${user.lastName.first()}",
-                                                    color = LocalColors.current.text,
-                                                    fontSize = 16.sp
+                                                    athlete.firstName,
+                                                    style = MaterialTheme.typography.titleLarge
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(
+                                                    athlete.lastName,
+                                                    style = MaterialTheme.typography.titleLarge
                                                 )
                                             }
 
-                                            Spacer(modifier = Modifier.width(12.dp))
-
-                                            Column(
-                                                verticalArrangement = Arrangement.Center
-                                            ) {
-
-                                                Row(
-                                                    verticalAlignment = Alignment.CenterVertically
-                                                ) {
-
-                                                    Text(
-                                                        user.firstName,
-                                                        style = MaterialTheme.typography.titleLarge
-                                                    )
-                                                    Spacer(modifier = Modifier.width(8.dp))
-                                                    Text(user.lastName, style = MaterialTheme.typography.titleLarge)
-                                                }
-
-                                                Text(
-                                                    user.email,
-                                                    style = MaterialTheme.typography.bodyMedium
-                                                )
-                                            }
+                                            Text(
+                                                athlete.email,
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
                                         }
+                                    }
+
+                                    Box(
+                                        modifier = Modifier
+                                            .background(
+                                                color = when (athlete.medicalStatus) {
+                                                    MedicalStatus.VALID -> LocalColors.current.greenDim
+                                                    MedicalStatus.EXPIRING -> LocalColors.current.amberDim
+                                                    MedicalStatus.EXPIRED -> LocalColors.current.redDim
+                                                },
+                                                shape = MaterialTheme.shapes.small
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.padding(6.dp),
+                                            text = athlete.medicalStatus.label,
+                                            color = LocalColors.current.text,
+                                            style = MaterialTheme.typography.labelLarge
+                                        )
                                     }
                                 }
                             }
                         }
-
                     }
                 }
             }

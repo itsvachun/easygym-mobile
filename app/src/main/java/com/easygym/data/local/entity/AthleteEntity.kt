@@ -3,16 +3,16 @@ package com.easygym.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.easygym.domain.model.Athlete
+import com.easygym.domain.model.MedicalStatus
 import java.time.LocalDate
-import java.util.*
 
 @Entity(tableName = "athlete")
 data class AthleteEntity(
     @PrimaryKey
-    val id: String = UUID.randomUUID().toString(),
+    val id: String,
     val firstName: String,
     val lastName: String,
-    val email: String,
+    val email: String?,
     val phone: String,
     val enabled: Boolean,
     val birthDate: String,
@@ -24,7 +24,7 @@ data class AthleteEntity(
     val medicalStatus: String,
 ) {
     fun toDomain(): Athlete = Athlete(
-        firstName, lastName, email, phone, enabled, LocalDate.parse(birthDate),
-        taxCode, address, city, postalCode, LocalDate.parse(medicalExpDate), medicalStatus
+        firstName, lastName, email ?: "Email non disponibile", phone, enabled, LocalDate.parse(birthDate),
+        taxCode, address, city, postalCode, LocalDate.parse(medicalExpDate), MedicalStatus.valueOf(medicalStatus)
     )
 }

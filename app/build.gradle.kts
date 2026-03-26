@@ -102,6 +102,7 @@ dependencies {
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)

@@ -2,8 +2,15 @@ package com.easygym.domain.model
 
 import java.time.LocalDate
 
-data class Athlete(
+enum class MedicalStatus(
+    val label: String,
+) {
+    VALID("Valido"),
+    EXPIRING("in Scadenza"),
+    EXPIRED("Scaduto")
+}
 
+data class Athlete(
     val firstName: String,
     val lastName: String,
     val email: String,
@@ -15,6 +22,5 @@ data class Athlete(
     val city: String,
     val postalCode: String,
     val medicalExpDate: LocalDate,
-    val medicalStatus: String,
-
-    )
+    val medicalStatus: MedicalStatus
+)
