@@ -9,6 +9,7 @@ import androidx.room.Room
 import com.easygym.data.local.AppDatabase
 import com.easygym.data.local.dao.AthleteDAO
 import com.easygym.data.local.dao.CoachDAO
+import com.easygym.data.local.dao.GroupDAO
 import com.easygym.data.local.dao.UserDAO
 import dagger.Module
 import dagger.Provides
@@ -46,4 +47,8 @@ object LocalModule {
     @Provides
     @Singleton
     fun provideCoachDAO(db: AppDatabase): CoachDAO = db.coachDAO
+
+    @Provides
+    @Singleton
+    fun provideGroupDAO(db: AppDatabase): GroupDAO = db.groupDAO
 }

@@ -21,6 +21,7 @@ import com.easygym.ui.theme.LocalColors
 fun CreateUserScreen(
     viewModel: CreateUserViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit
+
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -147,11 +148,12 @@ fun CreateUserScreen(
                 onValueChange = { viewModel.updateState(password = it) }
             )
 
-            EasyGymTextField(
-                value = state.groupId.toString(),
-                label = "Password",
-                placeholder = "P4ssw0rd!",
-                onValueChange = { viewModel.updateState(groupId = it) }
+            EasyGymDropDownMenu(
+                items = state.groups,
+                selectedItem = state.groups.find { it.id == state.groupId },
+                onItemSelected = { group -> viewModel.onGroupSelected(group) },
+                label = "Gruppo",
+                itemLabel = { it.name }
             )
 
             when (val user = state.createUser) {

@@ -1,13 +1,7 @@
 package com.easygym.di
 
-import com.easygym.data.repository.AthleteRepositoryImpl
-import com.easygym.data.repository.AuthRepositoryImpl
-import com.easygym.data.repository.CoachRepositoryImpl
-import com.easygym.data.repository.UserRepositoryImpl
-import com.easygym.domain.repository.AthleteRepository
-import com.easygym.domain.repository.AuthRepository
-import com.easygym.domain.repository.CoachRepository
-import com.easygym.domain.repository.UserRepository
+import com.easygym.data.repository.*
+import com.easygym.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -32,4 +26,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideCoachRepository(coachRepositoryImpl: CoachRepositoryImpl): CoachRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideGroupRepository(groupRepositoryImpl: GroupRepositoryImpl): GroupRepository
 }

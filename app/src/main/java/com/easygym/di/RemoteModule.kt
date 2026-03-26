@@ -1,10 +1,7 @@
 package com.easygym.di
 
 import com.easygym.BuildConfig
-import com.easygym.data.remote.datasource.AthleteDataSource
-import com.easygym.data.remote.datasource.AuthDataSource
-import com.easygym.data.remote.datasource.CoachDataSource
-import com.easygym.data.remote.datasource.UserDataSource
+import com.easygym.data.remote.datasource.*
 import com.easygym.utils.AuthInterceptor
 import com.easygym.utils.TokenAuthenticator
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -64,4 +61,9 @@ object RemoteModule {
     @Singleton
     fun provideCoachDataSource(retrofit: Retrofit): CoachDataSource =
         retrofit.create(CoachDataSource::class.java)
+
+    @Provides
+    @Singleton
+    fun provideGroupDataSource(retrofit: Retrofit): GroupDataSource =
+        retrofit.create(GroupDataSource::class.java)
 }

@@ -2,7 +2,8 @@ package com.easygym.ui.screens.createuser
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.easygym.domain.repository.UserRepository
+import com.easygym.domain.model.Group
+import com.easygym.domain.usecase.GetGroupsUseCase
 import com.easygym.domain.usecase.user.CreateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,17 +18,39 @@ data class CreateUserState(
     val createUser: CreateUser = CreateUser.Athlete(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val groupId: String? = null
+    val groupId: String? = null,
+    val groups: List<Group> = emptyList()
 )
 
 @HiltViewModel
-open class CreateUserViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val createUserUseCase: CreateUserUseCase
+class CreateUserViewModel @Inject constructor(
+    private val createUserUseCase: CreateUserUseCase,
+    private val getGroupsUseCase: GetGroupsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CreateUserState())
     val state: StateFlow<CreateUserState> = _state.asStateFlow()
+
+    init {
+        loadGroups()
+    }
+
+    private fun loadGroups() {
+        viewModelScope.launch {
+            try {
+                val groups: List<Group> = getGroupsUseCase()
+                _state.update { it.copy(groups = groups) }
+            } catch (e: Exception) {
+                _state.update { it.copy(errorMessage = "Errore nel caricamento gruppi") }
+            }
+        }
+    }
+
+    fun onGroupSelected(group: Group) {
+        _state.update {
+            it.copy(groupId = group.id)
+        }
+    }
 
     fun onRoleSelected(user: CreateUser) = _state.update { currentState ->
         currentState.copy(
@@ -56,7 +79,7 @@ open class CreateUserViewModel @Inject constructor(
     ) =
         _state.update { currentState ->
             currentState.copy(
-                groupId = groupId,
+                groupId = groupId ?: currentState.groupId,
                 createUser = when (currentState.createUser) {
                     is CreateUser.Coach -> currentState.createUser.copy(
                         firstName = firstName ?: currentState.createUser.firstName,
@@ -94,7 +117,6 @@ open class CreateUserViewModel @Inject constructor(
             _state.update { it.copy(errorMessage = "Compila tutti i campi obbligatori") }
             return
         }
-
 
         viewModelScope.launch {
             println(currentState.groupId)
