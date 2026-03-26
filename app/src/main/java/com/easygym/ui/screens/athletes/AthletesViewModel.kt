@@ -5,22 +5,19 @@ import androidx.lifecycle.viewModelScope
 import com.easygym.domain.model.Athlete
 import com.easygym.domain.usecase.athlete.AthletesUseCase
 import com.easygym.domain.usecase.athlete.FetchAthletesUseCase
+import com.easygym.utils.PaginationHandler
+import com.easygym.utils.PaginationState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 data class AthletesState(
-    val isLoading: Boolean = false,
-    val isFetchingNextPage: Boolean = false,
-    val search: String = "",
-    val athletes: List<Athlete> = listOf(),
-    val errorMessage: String? = null
+    val pagination: PaginationState<Athlete> = PaginationState()
 )
 
-@OptIn(FlowPreview::class)
 @HiltViewModel
 class AthletesViewModel @Inject constructor(
     private val athletesUseCase: AthletesUseCase,
@@ -30,59 +27,16 @@ class AthletesViewModel @Inject constructor(
     private val _state = MutableStateFlow(AthletesState())
     val state: StateFlow<AthletesState> = _state.asStateFlow()
 
-    private var currentPage = 0
-    private var isLastPage = false
-    private var fetchJob: Job? = null
-
-    init {
-        _state.update { it.copy(isLoading = true) }
-
-        viewModelScope.launch {
-            athletesUseCase().combine(_state.map { it.search }.distinctUntilChanged()) { athletes, query ->
-                if (query.isBlank()) athletes
-                else athletes.filter {
-                    it.firstName.contains(query, ignoreCase = true) ||
-                            it.lastName.contains(query, ignoreCase = true)
-                }
-            }.collect { filteredAthletes ->
-                _state.update { it.copy(athletes = filteredAthletes, isLoading = false) }
-            }
+    private val paginationHandler = PaginationHandler(
+        scope = viewModelScope,
+        fetchItems = { search, page -> fetchAthletesUseCase(search, page) },
+        localItemsFlow = athletesUseCase(),
+        onStateUpdate = { pagination ->
+            _state.update { it.copy(pagination = pagination) }
         }
+    )
 
-        _state
-            .map { it.search }
-            .distinctUntilChanged()
-            .debounce(1000)
-            .onEach { resetAndFetch() }
-            .launchIn(viewModelScope)
-    }
+    fun onSearchChanged(search: String) = paginationHandler.onSearchChanged(search)
 
-    private fun resetAndFetch() {
-        currentPage = 0
-        isLastPage = false
-        fetchJob?.cancel()
-        _state.update { it.copy(errorMessage = null) }
-        loadNextPage()
-    }
-
-    fun onSearchChanged(search: String) = _state.update { it.copy(search = search) }
-
-    fun loadNextPage() {
-        if (isLastPage || _state.value.isFetchingNextPage) return
-
-        fetchJob = viewModelScope.launch {
-            _state.update { it.copy(isFetchingNextPage = true, errorMessage = null) }
-
-            val result = fetchAthletesUseCase(_state.value.search, currentPage)
-
-            result.onSuccess { last ->
-                isLastPage = last
-                currentPage++
-            }.onFailure { e ->
-                _state.update { it.copy(errorMessage = e.message) }
-            }
-
-            _state.update { it.copy(isFetchingNextPage = false) }
-        }
-    }
+    fun loadNextPage() = paginationHandler.loadNextPage()
 }
