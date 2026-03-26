@@ -1,4 +1,4 @@
-package com.easygym.domain.usecase
+package com.easygym.domain.usecase.user
 
 import com.easygym.domain.repository.AthleteRepository
 import com.easygym.domain.repository.CoachRepository

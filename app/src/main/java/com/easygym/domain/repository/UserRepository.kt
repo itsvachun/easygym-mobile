@@ -8,7 +8,7 @@ interface UserRepository {
 
     val users: Flow<List<User>>
 
-    suspend fun getAll()
+    suspend fun fetch(search: String, page: Int): Result<Boolean>
 
     suspend fun updatePassword(request: UpdatePasswordRequest): Result<Unit>
 }

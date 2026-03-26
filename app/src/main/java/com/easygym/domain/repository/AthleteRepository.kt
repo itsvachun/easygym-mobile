@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AthleteRepository {
     val athletes: Flow<List<Athlete>>
-    suspend fun fetchAll(): Result<Unit>
+    suspend fun fetch(search: String, page: Int): Result<Boolean>
     suspend fun post(athleteRequest: AthleteRequest): Result<AthleteResponse>
 }

@@ -120,76 +120,90 @@ fun UsersScreen(
                             }
                         }
 
-                        when {
-                            else -> Box(
-                                modifier = Modifier
-                                    .padding(6.dp)
-                                    .fillMaxSize(),
-                            ) {
-                                state.errorMessage?.let { errorMessage ->
-                                    Text(errorMessage)
+                        LazyColumn {
+                            items(state.users.size) { index ->
+                                val user = state.users[index]
+
+                                if (index >= state.users.size - 1 && !state.isFetchingNextPage && state.errorMessage == null) {
+                                    viewModel.loadNextPage()
                                 }
 
-                                LazyColumn {
-                                    items(state.filteredUsers.size) { index ->
-                                        val user = state.filteredUsers[index]
+                                Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
 
-                                        Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(40.dp)
+                                                .background(
+                                                    color = when (user.role) {
+                                                        UserRole.COACH -> LocalColors.current.purpleDim.copy(
+                                                            alpha = 0.6f
+                                                        )
+
+                                                        UserRole.ATHLETE -> LocalColors.current.blueDim.copy(
+                                                            alpha = 0.6f
+                                                        )
+
+                                                        else -> LocalColors.current.redDim
+                                                    },
+                                                    shape = MaterialTheme.shapes.small
+                                                ),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = "${user.firstName.first()}${user.lastName.first()}",
+                                                color = LocalColors.current.text,
+                                                fontSize = 16.sp
+                                            )
+                                        }
+
+                                        Spacer(modifier = Modifier.width(12.dp))
+
+                                        Column(
+                                            verticalArrangement = Arrangement.Center
+                                        ) {
+
                                             Row(
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
 
-                                                Box(
-                                                    modifier = Modifier
-                                                        .size(40.dp)
-                                                        .background(
-                                                            color = LocalColors.current.redDim,
-                                                            shape = MaterialTheme.shapes.small
-                                                        ),
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    Text(
-                                                        text = "${user.firstName.first()}${user.lastName.first()}",
-                                                        color = LocalColors.current.text,
-                                                        fontSize = 16.sp
-                                                    )
-                                                }
-
-                                                Spacer(modifier = Modifier.width(12.dp))
-
-                                                Column(
-                                                    verticalArrangement = Arrangement.Center
-                                                ) {
-
-                                                    Row(
-                                                        verticalAlignment = Alignment.CenterVertically
-                                                    ) {
-
-                                                        Text(
-                                                            user.firstName,
-                                                            style = MaterialTheme.typography.titleLarge
-                                                        )
-                                                        Spacer(modifier = Modifier.width(8.dp))
-                                                        Text(user.lastName, style = MaterialTheme.typography.titleLarge)
-                                                        Spacer(modifier = Modifier.width(8.dp))
-                                                        Text(
-                                                            user.role.toString(),
-                                                            style = MaterialTheme.typography.bodyMedium
-                                                        )
-                                                    }
-
-                                                    Text(
-                                                        user.email ?: "Email non disponibile",
-                                                        style = MaterialTheme.typography.bodyMedium
-                                                    )
-                                                }
+                                                Text(
+                                                    user.firstName,
+                                                    style = MaterialTheme.typography.titleLarge
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(user.lastName, style = MaterialTheme.typography.titleLarge)
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Text(
+                                                    user.role.toString(),
+                                                    style = MaterialTheme.typography.bodyMedium
+                                                )
                                             }
+
+                                            Text(
+                                                user.email ?: "Email non disponibile",
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
                                         }
                                     }
                                 }
                             }
-                        }
 
+                            if (state.isFetchingNextPage) {
+                                item {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

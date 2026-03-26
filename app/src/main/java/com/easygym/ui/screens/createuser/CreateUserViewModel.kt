@@ -3,7 +3,7 @@ package com.easygym.ui.screens.createuser
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easygym.domain.repository.UserRepository
-import com.easygym.domain.usecase.CreateUserUseCase
+import com.easygym.domain.usecase.user.CreateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

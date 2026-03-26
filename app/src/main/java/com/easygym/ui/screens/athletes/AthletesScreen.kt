@@ -3,10 +3,7 @@ package com.easygym.ui.screens.athletes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,7 +28,7 @@ fun AthletesScreen(
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding())
                 .padding(horizontal = 18.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.TopCenter
         ) {
 
             when {
@@ -48,22 +45,42 @@ fun AthletesScreen(
                             text = "Atleti",
                             style = MaterialTheme.typography.headlineLarge
                         )
+
                         EasyGymSearchField(
-                            query = "",
-                            onQueryChange = {},
+                            query = state.search,
+                            onQueryChange = viewModel::onSearchChanged,
                             placeholder = "Cerca per nome",
                             modifier = Modifier.fillMaxWidth()
                         )
 
-                        LazyColumn {
-                            item {
-                                state.errorMessage?.let { errorMessage ->
-                                    Text(errorMessage)
+                        state.errorMessage?.let { errorMessage ->
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = errorMessage,
+                                    color = MaterialTheme.colorScheme.error,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.padding(bottom = 8.dp)
+                                )
+                                TextButton(
+                                    onClick = { viewModel.loadNextPage() }
+                                ) {
+                                    Text("Riprova")
                                 }
                             }
+                        }
 
+                        LazyColumn {
                             items(state.athletes.size) { index ->
                                 val athlete = state.athletes[index]
+
+                                if (index >= state.athletes.size - 1 && !state.isFetchingNextPage && state.errorMessage == null) {
+                                    viewModel.loadNextPage()
+                                }
 
                                 Row(
                                     modifier = Modifier
@@ -77,7 +94,7 @@ fun AthletesScreen(
                                             modifier = Modifier
                                                 .size(40.dp)
                                                 .background(
-                                                    color = LocalColors.current.redDim,
+                                                    color = LocalColors.current.blueDim.copy(alpha = 0.6f),
                                                     shape = MaterialTheme.shapes.small
                                                 ),
                                             contentAlignment = Alignment.Center
@@ -121,9 +138,9 @@ fun AthletesScreen(
                                         modifier = Modifier
                                             .background(
                                                 color = when (athlete.medicalStatus) {
-                                                    MedicalStatus.VALID -> LocalColors.current.greenDim
-                                                    MedicalStatus.EXPIRING -> LocalColors.current.amberDim
-                                                    MedicalStatus.EXPIRED -> LocalColors.current.redDim
+                                                    MedicalStatus.VALID -> LocalColors.current.greenDim.copy(alpha = 0.3f)
+                                                    MedicalStatus.EXPIRING -> LocalColors.current.amberDim.copy(alpha = 0.3f)
+                                                    MedicalStatus.EXPIRED -> LocalColors.current.redDim.copy(alpha = 0.3f)
                                                 },
                                                 shape = MaterialTheme.shapes.small
                                             ),
@@ -135,6 +152,19 @@ fun AthletesScreen(
                                             color = LocalColors.current.text,
                                             style = MaterialTheme.typography.labelLarge
                                         )
+                                    }
+                                }
+                            }
+
+                            if (state.isFetchingNextPage) {
+                                item {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
                                     }
                                 }
                             }

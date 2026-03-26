@@ -16,11 +16,14 @@ class UserRepositoryImpl @Inject constructor(
 
     override val users: Flow<List<User>> = userDAO.getAll().map { users -> users.map { it.toDomain() } }
 
-    override suspend fun getAll() {
-        val response = userDataSource.getAll()
-        val entities = response.map { it.toEntity() }
-        userDAO.insertAll(entities)
-    }
+    override suspend fun fetch(search: String, page: Int): Result<Boolean> =
+        runCatching {
+            val response = userDataSource.fetch(search, page)
+            val entities = response.content.map { it.toEntity() }
+            userDAO.insertAll(entities)
+            response.last
+        }
+
 
     override suspend fun updatePassword(request: UpdatePasswordRequest): Result<Unit> =
         runCatching<UserRepositoryImpl, Unit> {

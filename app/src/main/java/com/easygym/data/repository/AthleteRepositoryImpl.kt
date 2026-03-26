@@ -19,17 +19,18 @@ class AthleteRepositoryImpl @Inject constructor(
         users.map { it.toDomain() }
     }
 
-    override suspend fun fetchAll(): Result<Unit> =
+    override suspend fun fetch(search: String, page: Int): Result<Boolean> =
         runCatching {
-            val response = athleteDataSource.getAll().content
-            val entities = response.map { it.toEntity() }
+            val response = athleteDataSource.fetch(search, page)
+            val entities = response.content.map { it.toEntity() }
             athleteDAO.insertAll(entities)
-        }.onFailure { Result.failure<Exception>(it) }
+            response.last
+        }
 
     override suspend fun post(athleteRequest: AthleteRequest): Result<AthleteResponse> =
         runCatching {
             val response: AthleteResponse = athleteDataSource.postAthlete(athleteRequest)
             athleteDAO.insert(response.toEntity())
             response
-        }.onFailure { Result.failure<Exception>(it) }
+        }
 }
