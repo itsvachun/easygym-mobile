@@ -11,8 +11,8 @@ enum class MedicalStatus(
 }
 
 data class Athlete(
-    val firstName: String,
-    val lastName: String,
+    override val firstName: String,
+    override val lastName: String,
     val email: String,
     val phone: String,
     val enabled: Boolean,
@@ -23,4 +23,4 @@ data class Athlete(
     val postalCode: String,
     val medicalExpDate: LocalDate,
     val medicalStatus: MedicalStatus
-)
+) : Searchable
