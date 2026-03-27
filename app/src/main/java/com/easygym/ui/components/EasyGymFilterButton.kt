@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.easygym.ui.theme.Dark
 import com.easygym.ui.theme.LocalColors
 
 @Composable
@@ -39,6 +40,10 @@ fun EasyGymFilterButton(
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
-        Text(text, style = MaterialTheme.typography.bodyLarge)
+        Text(
+            text = text,
+            color = if (selected) Dark.text else LocalColors.current.text,
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }

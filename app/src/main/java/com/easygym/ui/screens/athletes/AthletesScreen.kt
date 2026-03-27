@@ -100,14 +100,14 @@ fun AthletesScreen(
                                             modifier = Modifier
                                                 .size(40.dp)
                                                 .background(
-                                                    color = LocalColors.current.blueDim.copy(alpha = 0.6f),
+                                                    color = LocalColors.current.blueDim,
                                                     shape = MaterialTheme.shapes.small
                                                 ),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Text(
                                                 text = "${athlete.firstName.first()}${athlete.lastName.first()}",
-                                                color = LocalColors.current.text,
+                                                color = LocalColors.current.blue,
                                                 fontSize = 16.sp
                                             )
                                         }
@@ -144,9 +144,9 @@ fun AthletesScreen(
                                         modifier = Modifier
                                             .background(
                                                 color = when (athlete.medicalStatus) {
-                                                    MedicalStatus.VALID -> LocalColors.current.greenDim.copy(alpha = 0.3f)
-                                                    MedicalStatus.EXPIRING -> LocalColors.current.amberDim.copy(alpha = 0.3f)
-                                                    MedicalStatus.EXPIRED -> LocalColors.current.redDim.copy(alpha = 0.3f)
+                                                    MedicalStatus.VALID -> LocalColors.current.greenDim
+                                                    MedicalStatus.EXPIRING -> LocalColors.current.amberDim
+                                                    MedicalStatus.EXPIRED -> LocalColors.current.redDim
                                                 },
                                                 shape = MaterialTheme.shapes.small
                                             ),
@@ -155,8 +155,12 @@ fun AthletesScreen(
                                         Text(
                                             modifier = Modifier.padding(6.dp),
                                             text = athlete.medicalStatus.label,
-                                            color = LocalColors.current.text,
-                                            style = MaterialTheme.typography.labelLarge
+                                            color = when (athlete.medicalStatus) {
+                                                MedicalStatus.VALID -> LocalColors.current.green
+                                                MedicalStatus.EXPIRING -> LocalColors.current.amber
+                                                MedicalStatus.EXPIRED -> LocalColors.current.red
+                                            },
+                                            style = MaterialTheme.typography.labelMedium
                                         )
                                     }
                                 }

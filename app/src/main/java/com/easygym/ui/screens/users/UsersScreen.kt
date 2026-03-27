@@ -145,14 +145,8 @@ fun UsersScreen(
                                                 .size(40.dp)
                                                 .background(
                                                     color = when (user.role) {
-                                                        UserRole.COACH -> LocalColors.current.purpleDim.copy(
-                                                            alpha = 0.6f
-                                                        )
-
-                                                        UserRole.ATHLETE -> LocalColors.current.blueDim.copy(
-                                                            alpha = 0.6f
-                                                        )
-
+                                                        UserRole.COACH -> LocalColors.current.purpleDim
+                                                        UserRole.ATHLETE -> LocalColors.current.blueDim
                                                         else -> LocalColors.current.redDim
                                                     },
                                                     shape = MaterialTheme.shapes.small
@@ -161,7 +155,11 @@ fun UsersScreen(
                                         ) {
                                             Text(
                                                 text = "${user.firstName.first()}${user.lastName.first()}",
-                                                color = LocalColors.current.text,
+                                                color = when (user.role) {
+                                                    UserRole.COACH -> LocalColors.current.purple
+                                                    UserRole.ATHLETE -> LocalColors.current.blue
+                                                    else -> LocalColors.current.red
+                                                },
                                                 fontSize = 16.sp
                                             )
                                         }
