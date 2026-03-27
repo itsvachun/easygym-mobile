@@ -1,7 +1,9 @@
 package com.easygym.ui.components
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,8 +34,6 @@ fun <T> EasyGymDropDownMenu(
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp
         )
-
-        Spacer(modifier = Modifier.height(8.dp))
 
         ExposedDropdownMenuBox(
             expanded = expanded,
@@ -69,7 +69,7 @@ fun <T> EasyGymDropDownMenu(
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+                modifier = Modifier.fillMaxWidth(fraction = 0.885f)
             ) {
                 items.forEach { item ->
                     DropdownMenuItem(
@@ -78,7 +78,7 @@ fun <T> EasyGymDropDownMenu(
                                 itemLabel(item),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(8.dp) // Padding aggiuntivo per le voci
+                                    .padding(8.dp)
                             )
                         },
                         onClick = {
@@ -86,7 +86,7 @@ fun <T> EasyGymDropDownMenu(
                             expanded = false
                         },
                         modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp)) // Riquadro arrotondato per ogni elemento
+                            .clip(RoundedCornerShape(12.dp))
                             .border(
                                 width = 1.dp,
                                 color = LocalColors.current.surface3.copy(alpha = 0.3f),
@@ -95,6 +95,7 @@ fun <T> EasyGymDropDownMenu(
                     )
                 }
             }
+
         }
     }
 }

@@ -17,9 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.easygym.ui.components.EasyGymFAB
+import com.easygym.ui.components.EasyGymFilterButton
 import com.easygym.ui.components.EasyGymSearchField
-import com.easygym.ui.components.PrimaryFilterButton
-import com.easygym.ui.components.SecondaryFilterButton
 import com.easygym.ui.navigation.UserRole
 import com.easygym.ui.theme.LocalColors
 
@@ -78,45 +77,30 @@ fun UsersScreen(
                         ) {
 
                             Box(modifier = Modifier.weight(1f)) {
-                                if (state.selectedRole == null) {
-                                    PrimaryFilterButton(
-                                        text = "Tutti",
-                                        onClick = { }
-                                    )
-                                } else {
-                                    SecondaryFilterButton(
-                                        text = "Tutti",
-                                        onClick = { viewModel.onRoleSelected(null) }
-                                    )
-                                }
+                                EasyGymFilterButton(
+                                    text = "Tutti",
+                                    selected = state.selectedRole == null,
+                                    onClick = { viewModel.onRoleSelected(null) }
+                                )
+
                             }
 
                             Box(modifier = Modifier.weight(1f)) {
-                                if (state.selectedRole == UserRole.COACH) {
-                                    PrimaryFilterButton(
-                                        text = "Coach",
-                                        onClick = { }
-                                    )
-                                } else {
-                                    SecondaryFilterButton(
-                                        text = "Coach",
-                                        onClick = { viewModel.onRoleSelected(UserRole.COACH) }
-                                    )
-                                }
+                                EasyGymFilterButton(
+                                    text = "Coach",
+                                    selected = state.selectedRole == UserRole.COACH,
+                                    onClick = { viewModel.onRoleSelected(UserRole.COACH) }
+                                )
+
                             }
 
                             Box(modifier = Modifier.weight(1f)) {
-                                if (state.selectedRole == UserRole.ATHLETE) {
-                                    PrimaryFilterButton(
-                                        text = "Atleti",
-                                        onClick = { }
-                                    )
-                                } else {
-                                    SecondaryFilterButton(
-                                        text = "Atleti",
-                                        onClick = { viewModel.onRoleSelected(UserRole.ATHLETE) }
-                                    )
-                                }
+                                EasyGymFilterButton(
+                                    text = "Atleti",
+                                    selected = state.selectedRole == UserRole.ATHLETE,
+                                    onClick = { viewModel.onRoleSelected(UserRole.ATHLETE) }
+                                )
+
                             }
                         }
 
