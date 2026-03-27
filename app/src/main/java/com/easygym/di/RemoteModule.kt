@@ -2,8 +2,8 @@ package com.easygym.di
 
 import com.easygym.BuildConfig
 import com.easygym.data.remote.datasource.*
-import com.easygym.utils.AuthInterceptor
-import com.easygym.utils.TokenAuthenticator
+import com.easygym.utils.authentication.AuthInterceptor
+import com.easygym.utils.authentication.TokenAuthenticator
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides

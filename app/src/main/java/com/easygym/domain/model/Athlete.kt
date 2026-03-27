@@ -1,14 +1,8 @@
 package com.easygym.domain.model
 
+import com.easygym.utils.enums.MedicalStatus
+import com.easygym.utils.pagination.Searchable
 import java.time.LocalDate
-
-enum class MedicalStatus(
-    val label: String,
-) {
-    VALID("Valido"),
-    EXPIRING("in Scadenza"),
-    EXPIRED("Scaduto")
-}
 
 data class Athlete(
     override val firstName: String,

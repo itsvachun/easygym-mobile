@@ -1,12 +1,13 @@
 package com.easygym.data.remote.model.user
 
 import com.easygym.data.local.entity.UserEntity
-import com.easygym.ui.navigation.UserRole
+import com.easygym.utils.enums.UserRole
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserResponse(
+    @SerialName("id") val id: String,
     @SerialName("firstName") val firstName: String,
     @SerialName("lastName") val lastName: String,
     @SerialName("email") val email: String?,
@@ -14,6 +15,7 @@ data class UserResponse(
     @SerialName("role") val role: UserRole,
 ) {
     fun toEntity(): UserEntity = UserEntity(
+        id = id,
         firstName = firstName,
         lastName = lastName,
         email = email,

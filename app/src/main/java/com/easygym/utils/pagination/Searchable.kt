@@ -1,4 +1,4 @@
-package com.easygym.domain.model
+package com.easygym.utils.pagination
 
 interface Searchable {
     val firstName: String

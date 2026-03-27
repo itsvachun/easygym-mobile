@@ -11,11 +11,11 @@ sealed interface NavDestination {
         object Bottom : Common(route = "bottom")
         object CreateUser : Common(route = "createUser")
         object ChangePassword : Common(route = "changePassword")
-        object Users : Common(route = "users")
     }
 
     sealed class BottomBar(override val route: String, val label: String, val iconId: Int) : NavDestination {
         object Home : BottomBar(route = "home", label = "Home", iconId = R.drawable.home_icon)
+        object Users : BottomBar(route = "users", label = "Utenti", iconId = R.drawable.athletes_icon)
         object Athletes : BottomBar(route = "atlethes", label = "Atleti", iconId = R.drawable.athletes_icon)
         object Calendar : BottomBar(route = "calendar", label = "Calendario", iconId = R.drawable.calendar_icon)
         object Payments : BottomBar(route = "payments", label = "Pagamenti", iconId = R.drawable.payments_icon)

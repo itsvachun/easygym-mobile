@@ -15,12 +15,12 @@ class CoachResponse(
     @SerialName("bio") val bio: String
 ) {
     fun toEntity(): CoachEntity = CoachEntity(
-        id = this.id,
-        firstName = this.firstName,
-        lastName = this.lastName,
-        email = this.email,
-        phone = this.phone,
-        enabled = this.enabled,
-        bio = this.bio
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+        phone = phone,
+        enabled = enabled,
+        bio = bio
     )
 }

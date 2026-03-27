@@ -22,18 +22,18 @@ data class AthleteResponse(
     @SerialName("medicalStatus") val medicalStatus: String,
 ) {
     fun toEntity(): AthleteEntity = AthleteEntity(
-        id = this.id,
-        firstName = this.firstName,
-        lastName = this.lastName,
-        email = this.email,
-        phone = this.phone,
-        enabled = this.enabled,
-        birthDate = this.birthDate.toString(),
-        taxCode = this.taxCode,
-        address = this.address,
-        city = this.city,
-        postalCode = this.postalCode,
-        medicalExpDate = this.medicalExpDate.toString(),
-        medicalStatus = this.medicalStatus
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+        phone = phone,
+        enabled = enabled,
+        birthDate = birthDate.toString(),
+        taxCode = taxCode,
+        address = address,
+        city = city,
+        postalCode = postalCode,
+        medicalExpDate = medicalExpDate.toString(),
+        medicalStatus = medicalStatus
     )
 }

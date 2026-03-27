@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.easygym.domain.model.Athlete
 import com.easygym.domain.usecase.athlete.AthletesUseCase
 import com.easygym.domain.usecase.athlete.FetchAthletesUseCase
-import com.easygym.utils.PaginationHandler
-import com.easygym.utils.PaginationState
+import com.easygym.utils.pagination.PaginationHandler
+import com.easygym.utils.pagination.PaginationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

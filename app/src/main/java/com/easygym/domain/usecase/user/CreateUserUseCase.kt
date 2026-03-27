@@ -4,9 +4,7 @@ import com.easygym.domain.repository.AthleteRepository
 import com.easygym.domain.repository.CoachRepository
 import com.easygym.ui.screens.createuser.CreateUser
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class CreateUserUseCase @Inject constructor(
     private val athleteRepository: AthleteRepository,
     private val coachRepository: CoachRepository

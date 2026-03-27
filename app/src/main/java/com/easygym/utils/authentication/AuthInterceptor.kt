@@ -1,4 +1,4 @@
-package com.easygym.utils
+package com.easygym.utils.authentication
 
 import com.easygym.domain.repository.AuthRepository
 import dagger.Lazy
@@ -7,9 +7,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class AuthInterceptor @Inject constructor(
     private val authRepository: Lazy<AuthRepository>
 ) : Interceptor {

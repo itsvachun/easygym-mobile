@@ -2,7 +2,7 @@ package com.easygym.ui.screens.createuser
 
 import com.easygym.data.remote.model.athlete.AthleteRequest
 import com.easygym.data.remote.model.coach.CoachRequest
-import com.easygym.ui.navigation.UserRole
+import com.easygym.utils.enums.UserRole
 import java.time.LocalDate
 
 sealed class CreateUser(

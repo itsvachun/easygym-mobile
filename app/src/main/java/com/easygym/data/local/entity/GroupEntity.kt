@@ -19,6 +19,14 @@ data class GroupEntity(
     val active: Boolean,
 ) {
     fun toDomain(): Group = Group(
-        id, name, description, coachFullName, coachId, ageMin, ageMax, athleteCount, active
+        id = id,
+        name = name,
+        description = description,
+        coachFullName = coachFullName,
+        coachId = coachId,
+        ageMin = ageMin,
+        ageMax = ageMax,
+        athleteCount = athleteCount,
+        active = active
     )
 }

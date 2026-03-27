@@ -1,6 +1,5 @@
 package com.easygym.ui.screens.users
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,10 +18,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.easygym.ui.components.EasyGymFAB
 import com.easygym.ui.components.EasyGymFilterButton
 import com.easygym.ui.components.EasyGymSearchField
-import com.easygym.ui.navigation.UserRole
 import com.easygym.ui.theme.LocalColors
+import com.easygym.utils.enums.UserRole
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun UsersScreen(
     viewModel: UsersViewModel = hiltViewModel(),
@@ -34,22 +32,22 @@ fun UsersScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .padding(horizontal = 18.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.TopCenter
         ) {
 
             when {
-                state.pagination.isLoading -> CircularProgressIndicator()
-                else -> {
-                    Spacer(Modifier.height(8.dp))
+                state.pagination.isLoading -> CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                )
 
+                else -> {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(vertical = 16.dp),
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         )
@@ -60,7 +58,7 @@ fun UsersScreen(
                             )
 
                             EasyGymFAB(
-                                hasShadow = false,
+                                hasShadow = true,
                                 onClick = onNavigateToUserCreate,
                             )
                         }
@@ -129,7 +127,11 @@ fun UsersScreen(
                             items(state.pagination.items.size) { index ->
                                 val user = state.pagination.items[index]
 
-                                if (index >= state.pagination.items.size - 1 && !state.pagination.isFetchingNextPage && state.pagination.errorMessage == null) {
+                                if (index >= state.pagination.items.size - 1 &&
+                                    !state.pagination.isFetchingNextPage &&
+                                    !state.pagination.isLastPage &&
+                                    state.pagination.errorMessage == null
+                                ) {
                                     viewModel.loadNextPage()
                                 }
 
@@ -182,7 +184,7 @@ fun UsersScreen(
                                                 Text(user.lastName, style = MaterialTheme.typography.titleLarge)
                                                 Spacer(modifier = Modifier.width(8.dp))
                                                 Text(
-                                                    user.role.toString(),
+                                                    user.role.label,
                                                     style = MaterialTheme.typography.bodyMedium
                                                 )
                                             }

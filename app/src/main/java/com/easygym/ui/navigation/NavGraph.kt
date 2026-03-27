@@ -50,11 +50,6 @@ fun NavGraph(
         composable(NavDestination.Common.ChangePassword.route) {
             ChangePasswordScreen()
         }
-        composable(NavDestination.Common.Users.route) {
-            UsersScreen {
-                navController.navigate(NavDestination.Common.CreateUser.route)
-            }
-        }
         composable(NavDestination.Common.Bottom.route) {
             Scaffold(
                 bottomBar = {
@@ -72,6 +67,12 @@ fun NavGraph(
                 ) { page ->
                     when (navState.bottomDestinations[page].route) {
                         NavDestination.BottomBar.Home.route -> HomeScreen()
+                        NavDestination.BottomBar.Users.route -> {
+                            UsersScreen {
+                                navController.navigate(NavDestination.Common.CreateUser.route)
+                            }
+                        }
+
                         NavDestination.BottomBar.Athletes.route -> AthletesScreen()
                         NavDestination.BottomBar.Calendar.route -> CalendarScreen()
                         NavDestination.BottomBar.Payments.route -> PaymentsScreen()
@@ -79,9 +80,6 @@ fun NavGraph(
                             onNavigateToChangePassword = {
                                 navController.navigate(NavDestination.Common.ChangePassword.route)
                             },
-                            onNavigateToUsers = {
-                                navController.navigate(NavDestination.Common.Users.route)
-                            }
                         )
                     }
                 }

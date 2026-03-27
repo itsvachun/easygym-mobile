@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.easygym.domain.model.User
 import com.easygym.domain.usecase.user.FetchUsersUseCase
 import com.easygym.domain.usecase.user.UsersUseCase
-import com.easygym.ui.navigation.UserRole
-import com.easygym.utils.PaginationHandler
-import com.easygym.utils.PaginationState
+import com.easygym.utils.enums.UserRole
+import com.easygym.utils.pagination.PaginationHandler
+import com.easygym.utils.pagination.PaginationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*

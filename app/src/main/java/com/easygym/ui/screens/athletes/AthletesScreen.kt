@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.easygym.domain.model.MedicalStatus
 import com.easygym.ui.components.EasyGymSearchField
 import com.easygym.ui.theme.LocalColors
+import com.easygym.utils.enums.MedicalStatus
 
 @Composable
 fun AthletesScreen(
@@ -32,15 +32,17 @@ fun AthletesScreen(
         ) {
 
             when {
-                state.pagination.isLoading -> CircularProgressIndicator()
-                else -> {
-                    Spacer(Modifier.height(8.dp))
+                state.pagination.isLoading -> CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                )
 
+                else -> {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         Text(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(vertical = 8.dp),
                             text = "Atleti",
                             style = MaterialTheme.typography.headlineLarge
@@ -78,14 +80,18 @@ fun AthletesScreen(
                             items(state.pagination.items.size) { index ->
                                 val athlete = state.pagination.items[index]
 
-                                if (index >= state.pagination.items.size - 1 && !state.pagination.isFetchingNextPage && state.pagination.errorMessage == null) {
+                                if (index >= state.pagination.items.size - 1 &&
+                                    !state.pagination.isFetchingNextPage &&
+                                    !state.pagination.isLastPage &&
+                                    state.pagination.errorMessage == null
+                                ) {
                                     viewModel.loadNextPage()
                                 }
 
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(vertical = 8.dp),
+                                        .padding(vertical = 10.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {

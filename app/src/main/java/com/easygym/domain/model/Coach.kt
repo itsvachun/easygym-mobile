@@ -7,5 +7,4 @@ data class Coach(
     val bio: String,
     val password: String,
     val groupId: String
-
 )
