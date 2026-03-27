@@ -32,7 +32,7 @@ fun AthletesScreen(
         ) {
 
             when {
-                state.pagination.isLoading -> CircularProgressIndicator()
+                state.isLoading -> CircularProgressIndicator()
                 else -> {
                     Spacer(Modifier.height(8.dp))
 
@@ -47,13 +47,13 @@ fun AthletesScreen(
                         )
 
                         EasyGymSearchField(
-                            query = state.pagination.search,
+                            query = state.search,
                             onQueryChange = viewModel::onSearchChanged,
                             placeholder = "Cerca per nome",
                             modifier = Modifier.fillMaxWidth()
                         )
 
-                        state.pagination.errorMessage?.let { errorMessage ->
+                        state.errorMessage?.let { errorMessage ->
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -75,10 +75,10 @@ fun AthletesScreen(
                         }
 
                         LazyColumn {
-                            items(state.pagination.items.size) { index ->
-                                val athlete = state.pagination.items[index]
+                            items(state.athletes.size) { index ->
+                                val athlete = state.athletes[index]
 
-                                if (index >= state.pagination.items.size - 1 && !state.pagination.isFetchingNextPage && state.pagination.errorMessage == null) {
+                                if (index >= state.athletes.size - 1 && !state.isFetchingNextPage && state.errorMessage == null) {
                                     viewModel.loadNextPage()
                                 }
 
@@ -156,7 +156,7 @@ fun AthletesScreen(
                                 }
                             }
 
-                            if (state.pagination.isFetchingNextPage) {
+                            if (state.isFetchingNextPage) {
                                 item {
                                     Box(
                                         modifier = Modifier

@@ -41,7 +41,7 @@ fun UsersScreen(
         ) {
 
             when {
-                state.pagination.isLoading -> CircularProgressIndicator()
+                state.isLoading -> CircularProgressIndicator()
                 else -> {
                     Spacer(Modifier.height(8.dp))
 
@@ -66,32 +66,11 @@ fun UsersScreen(
                             )
                         }
                         EasyGymSearchField(
-                            query = state.pagination.search,
+                            query = state.search,
                             onQueryChange = viewModel::onSearchChanged,
                             placeholder = "Cerca per nome",
                             modifier = Modifier.fillMaxWidth()
                         )
-
-                        state.pagination.errorMessage?.let { errorMessage ->
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = errorMessage,
-                                    color = MaterialTheme.colorScheme.error,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
-                                androidx.compose.material3.TextButton(
-                                    onClick = { viewModel.loadNextPage() }
-                                ) {
-                                    Text("Riprova")
-                                }
-                            }
-                        }
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -142,10 +121,10 @@ fun UsersScreen(
                         }
 
                         LazyColumn {
-                            items(state.pagination.items.size) { index ->
-                                val user = state.pagination.items[index]
+                            items(state.users.size) { index ->
+                                val user = state.users[index]
 
-                                if (index >= state.pagination.items.size - 1 && !state.pagination.isFetchingNextPage && state.pagination.errorMessage == null) {
+                                if (index >= state.users.size - 1 && !state.isFetchingNextPage && state.errorMessage == null) {
                                     viewModel.loadNextPage()
                                 }
 
@@ -212,7 +191,7 @@ fun UsersScreen(
                                 }
                             }
 
-                            if (state.pagination.isFetchingNextPage) {
+                            if (state.isFetchingNextPage) {
                                 item {
                                     Box(
                                         modifier = Modifier
