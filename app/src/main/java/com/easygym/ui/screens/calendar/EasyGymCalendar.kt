@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,19 +15,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.easygym.ui.components.NavArrow
 import com.easygym.ui.theme.LocalColors
 import java.time.LocalDate
 
 @Composable
 fun EasyGymCalendar(
-    viewModel: CalendarViewModel = viewModel(),
+    state: CalendarState,
+    onPreviousMonth: () -> Unit,
+    onNextMonth: () -> Unit,
     onDaySelected: (LocalDate) -> Unit,
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
     Row(
         Modifier
             .fillMaxWidth()
@@ -36,9 +33,9 @@ fun EasyGymCalendar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        NavArrow("‹", onClick = viewModel::onPreviousMonth)
+        NavArrow("‹", onClick = onPreviousMonth)
         Text(state.monthLabel, style = MaterialTheme.typography.titleLarge, color = LocalColors.current.text)
-        NavArrow("›", onClick = viewModel::onNextMonth)
+        NavArrow("›", onClick = onNextMonth)
     }
 
     Spacer(Modifier.height(8.dp))
@@ -63,25 +60,25 @@ fun EasyGymCalendar(
             row.forEach { (day, inMonth, date) ->
                 val isSelected = inMonth && date == state.selectedDay
                 val isToday = date == state.today
-                val isGaraDay = inMonth && date in state.garaDates
+                val isCompetitionDay = inMonth && date in state.competitionDates
                 val hasEvent = inMonth && date in state.datesWithEvent
 
                 Box(
                     modifier = Modifier
                         .weight(1f)
                         .aspectRatio(1f)
+                        .padding(2.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(
                             when {
-                                isSelected && isToday -> LocalColors.current.red
-                                isSelected -> LocalColors.current.red.copy(alpha = 0.75f)
-                                isGaraDay -> LocalColors.current.amberDim
+                                isSelected -> LocalColors.current.red
+                                isToday -> LocalColors.current.redDim.copy(alpha = 0.3f)
+                                isCompetitionDay -> LocalColors.current.purpleDim.copy(alpha = 0.3f)
                                 else -> Color.Transparent
                             }
                         )
                         .then(
                             if (inMonth) Modifier.clickable {
-                                viewModel.onDaySelected(date)
                                 onDaySelected(date)
                             } else Modifier
                         ),
@@ -93,7 +90,7 @@ fun EasyGymCalendar(
                             style = MaterialTheme.typography.labelMedium,
                             color = when {
                                 isSelected -> LocalColors.current.text
-                                isGaraDay -> LocalColors.current.amber
+                                isCompetitionDay -> LocalColors.current.purple
                                 !inMonth -> LocalColors.current.gray.copy(alpha = 0.4f)
                                 else -> LocalColors.current.graySoft
                             },
@@ -106,7 +103,7 @@ fun EasyGymCalendar(
                                     .size(4.dp)
                                     .clip(CircleShape)
                                     .background(
-                                        if (isSelected) LocalColors.current.text else LocalColors.current.blue
+                                        if (isSelected) LocalColors.current.text else LocalColors.current.green
                                     )
                             )
                         }

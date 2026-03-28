@@ -66,4 +66,9 @@ object RemoteModule {
     @Singleton
     fun provideGroupDataSource(retrofit: Retrofit): GroupDataSource =
         retrofit.create(GroupDataSource::class.java)
+
+    @Provides
+    @Singleton
+    fun provideEventDataSource(retrofit: Retrofit): EventDataSource =
+        retrofit.create(EventDataSource::class.java)
 }

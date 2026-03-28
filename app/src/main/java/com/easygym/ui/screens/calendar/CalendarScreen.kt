@@ -2,9 +2,8 @@ package com.easygym.ui.screens.calendar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,12 +19,16 @@ import com.easygym.ui.components.EasyGymFAB
 import com.easygym.ui.components.EventCard
 import com.easygym.ui.components.SectionHeader
 import com.easygym.ui.theme.LocalColors
+import com.easygym.utils.enums.EventType
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CalendarScreen(
     viewModel: CalendarViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     Scaffold { innerPadding ->
         Column(
@@ -33,7 +36,6 @@ fun CalendarScreen(
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding())
                 .padding(horizontal = 18.dp)
-                .verticalScroll(rememberScrollState()),
         ) {
 
             Row(
@@ -49,7 +51,16 @@ fun CalendarScreen(
                 EasyGymFAB(onClick = {}, hasShadow = true)
             }
 
-            EasyGymCalendar {}
+            state.errorMessage?.let {
+                Text(text = it, style = MaterialTheme.typography.bodyMedium)
+            }
+
+            EasyGymCalendar(
+                state = state,
+                onPreviousMonth = viewModel::onPreviousMonth,
+                onNextMonth = viewModel::onNextMonth,
+                onDaySelected = viewModel::onDaySelected
+            )
 
             Spacer(Modifier.height(10.dp))
 
@@ -66,8 +77,8 @@ fun CalendarScreen(
                                 .background(
                                     when (eventType) {
                                         EventType.TRAINING -> LocalColors.current.blue
-                                        EventType.COMPETITION -> LocalColors.current.amber
-                                        EventType.OTHER -> LocalColors.current.purple
+                                        EventType.COMPETITION -> LocalColors.current.purple
+                                        EventType.OTHER -> LocalColors.current.amber
                                     }
                                 )
                         )
@@ -91,18 +102,25 @@ fun CalendarScreen(
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             } else {
-                state.selectedDayEvents.forEachIndexed { index, ev ->
-                    EventCard(
-                        "${ev.timeStart}\n${ev.timeEnd}",
-                        ev.title,
-                        ev.subtitle,
-                        when (ev.type) {
-                            EventType.TRAINING -> LocalColors.current.blue
-                            EventType.COMPETITION -> LocalColors.current.amber
-                            EventType.OTHER -> LocalColors.current.purple
-                        },
-                    )
-                    if (index < state.selectedDayEvents.lastIndex) Spacer(Modifier.height(8.dp))
+                LazyColumn {
+                    items(state.selectedDayEvents.size) { index ->
+                        val event = state.selectedDayEvents[index]
+
+                        val startTime = event.startDateTime.atZone(ZoneId.systemDefault()).format(timeFormatter)
+                        val endTime = event.endDateTime.atZone(ZoneId.systemDefault()).format(timeFormatter)
+
+                        EventCard(
+                            "$startTime\n$endTime",
+                            event.title,
+                            "${event.groupName} · ${event.location}",
+                            when (event.eventType) {
+                                EventType.TRAINING -> LocalColors.current.blue
+                                EventType.COMPETITION -> LocalColors.current.purple
+                                EventType.OTHER -> LocalColors.current.amber
+                            },
+                        )
+                        Spacer(Modifier.height(8.dp))
+                    }
                 }
             }
         }

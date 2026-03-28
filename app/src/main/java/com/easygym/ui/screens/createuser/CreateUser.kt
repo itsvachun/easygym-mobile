@@ -33,7 +33,7 @@ sealed class CreateUser(
         ) = AthleteRequest(
             firstName = firstName,
             lastName = lastName,
-            birthDate = birthDate,
+            birthDate = birthDate.toString(),
             taxCode = taxCode,
             email = email,
             password = password,
@@ -41,7 +41,7 @@ sealed class CreateUser(
             address = address,
             city = city,
             postalCode = postalCode,
-            medicalExpDate = medicalExpDate,
+            medicalExpDate = medicalExpDate.toString(),
             groupId = groupId,
             notes = notes
         )

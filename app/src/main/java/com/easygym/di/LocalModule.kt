@@ -7,10 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.easygym.data.local.AppDatabase
-import com.easygym.data.local.dao.AthleteDAO
-import com.easygym.data.local.dao.CoachDAO
-import com.easygym.data.local.dao.GroupDAO
-import com.easygym.data.local.dao.UserDAO
+import com.easygym.data.local.dao.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,4 +48,8 @@ object LocalModule {
     @Provides
     @Singleton
     fun provideGroupDAO(db: AppDatabase): GroupDAO = db.groupDAO
+
+    @Provides
+    @Singleton
+    fun provideEventDAO(db: AppDatabase): EventDAO = db.eventDAO
 }

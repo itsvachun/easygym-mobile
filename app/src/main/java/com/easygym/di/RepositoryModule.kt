@@ -30,4 +30,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideGroupRepository(groupRepositoryImpl: GroupRepositoryImpl): GroupRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideEventRepository(eventRepositoryImpl: EventRepositoryImpl): EventRepository
 }
