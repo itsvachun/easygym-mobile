@@ -36,7 +36,7 @@ fun CreateUserScreen(
                 .padding(horizontal = 24.dp)
                 .padding(vertical = 10.dp)
                 .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.Start
         ) {
 
@@ -224,6 +224,8 @@ fun CreateUserScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(6.dp))
+
             PrimaryButton(
                 text = "Crea Account",
                 onClick = viewModel::createUser
@@ -232,6 +234,8 @@ fun CreateUserScreen(
             state.errorMessage?.let {
                 Text(it, color = LocalColors.current.red)
             }
+
+            Spacer(modifier = Modifier.height(6.dp))
         }
     }
 }

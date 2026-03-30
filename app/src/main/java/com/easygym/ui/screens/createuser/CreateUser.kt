@@ -65,6 +65,7 @@ sealed class CreateUser(
             email = email,
             bio = bio,
             password = password,
+            phone = phone,
             groupId = groupId,
         )
     }

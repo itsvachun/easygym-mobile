@@ -11,10 +11,13 @@ class CoachRepositoryImpl @Inject constructor(
     val coachDataSource: CoachDataSource,
     val coachDAO: CoachDAO
 ) : CoachRepository {
-    override suspend fun post(coachRequest: CoachRequest): CoachResponse {
-        val response: CoachResponse = coachDataSource.postCoach(coachRequest)
-        coachDAO.insertCoach(response.toEntity())
-        return response
-    }
+    override suspend fun post(coachRequest: CoachRequest): Result<CoachResponse> =
+        runCatching {
+            println(coachRequest)
+            val response: CoachResponse = coachDataSource.postCoach(coachRequest)
+            coachDAO.insertCoach(response.toEntity())
+            response
+        }
+
 
 }
