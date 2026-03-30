@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.easygym.ui.theme.LocalColors
 
 @Composable
-fun EventCard(
+fun EasyGymCalendarEventCard(
     time: String,
     title: String,
     subtitle: String,

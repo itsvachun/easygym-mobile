@@ -32,7 +32,7 @@ fun EasyGymCalendar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        NavArrow(
+        EasyGymCalendarNavArrow(
             symbol = "‹",
             onClick = { calendarManager.onPreviousMonth(onMonthChanged) }
         )
@@ -43,7 +43,7 @@ fun EasyGymCalendar(
             color = LocalColors.current.text
         )
 
-        NavArrow(
+        EasyGymCalendarNavArrow(
             symbol = "›",
             onClick = { calendarManager.onNextMonth(onMonthChanged) }
         )

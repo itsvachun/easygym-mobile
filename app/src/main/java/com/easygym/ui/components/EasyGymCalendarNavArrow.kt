@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.easygym.ui.theme.LocalColors
 
 @Composable
-fun NavArrow(symbol: String, onClick: () -> Unit) {
+fun EasyGymCalendarNavArrow(symbol: String, onClick: () -> Unit) {
     val colors = LocalColors.current
     Box(
         modifier = Modifier

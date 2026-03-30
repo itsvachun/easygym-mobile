@@ -20,9 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easygym.ui.components.EasyGymCalendar
+import com.easygym.ui.components.EasyGymCalendarEventCard
 import com.easygym.ui.components.EasyGymFAB
-import com.easygym.ui.components.EventCard
-import com.easygym.ui.components.SectionHeader
 import com.easygym.ui.theme.LocalColors
 import com.easygym.utils.enums.EventType
 import java.time.LocalDate
@@ -148,9 +147,16 @@ fun CalendarScreen(
                     }
                 }
             }
+
             Spacer(Modifier.height(12.dp))
 
-            SectionHeader(state.selectedDayLabel)
+            Text(
+                text = state.selectedDayLabel,
+                style = MaterialTheme.typography.titleLarge,
+                color = LocalColors.current.text
+            )
+
+            Spacer(Modifier.height(8.dp))
 
             if (state.selectedDayEvents.isEmpty()) {
                 Text(
@@ -167,7 +173,7 @@ fun CalendarScreen(
                         val startTime = event.startDateTime.atZone(ZoneId.systemDefault()).format(timeFormatter)
                         val endTime = event.endDateTime.atZone(ZoneId.systemDefault()).format(timeFormatter)
 
-                        EventCard(
+                        EasyGymCalendarEventCard(
                             "$startTime\n$endTime",
                             event.title,
                             "${event.groupName} · ${event.location}",
