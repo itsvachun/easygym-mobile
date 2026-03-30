@@ -1,9 +1,11 @@
 package com.easygym.ui.screens.calendar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -12,14 +14,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.easygym.ui.components.EasyGymCalendar
 import com.easygym.ui.components.EasyGymFAB
 import com.easygym.ui.components.EventCard
 import com.easygym.ui.components.SectionHeader
 import com.easygym.ui.theme.LocalColors
 import com.easygym.utils.enums.EventType
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -56,11 +62,63 @@ fun CalendarScreen(
             }
 
             EasyGymCalendar(
-                state = state,
-                onPreviousMonth = viewModel::onPreviousMonth,
-                onNextMonth = viewModel::onNextMonth,
-                onDaySelected = viewModel::onDaySelected
-            )
+                onMonthChanged = viewModel::onMonthChanged,
+            ) { day, inMonth, date ->
+
+                // UI per la singola cella del calendario
+
+                val isSelected = inMonth && date == state.selectedDay
+                val isToday = date == LocalDate.now()
+                val isCompetitionDay = inMonth && date in state.competitionDates
+                val hasEvent = inMonth && date in state.datesWithEvent
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(1f)
+                        .padding(2.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(
+                            when {
+                                isSelected -> LocalColors.current.red
+                                isToday -> LocalColors.current.redDim.copy(alpha = 0.3f)
+                                isCompetitionDay -> LocalColors.current.purpleDim.copy(alpha = 0.3f)
+                                else -> Color.Transparent
+                            }
+                        )
+                        .then(
+                            if (inMonth) Modifier.clickable {
+                                viewModel.onDaySelected(date)
+                            } else Modifier
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            "$day",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = when {
+                                isSelected -> LocalColors.current.text
+                                isCompetitionDay -> LocalColors.current.purple
+                                !inMonth -> LocalColors.current.gray.copy(alpha = 0.4f)
+                                else -> LocalColors.current.graySoft
+                            },
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                        )
+                        if (hasEvent) {
+                            Spacer(Modifier.height(1.dp))
+                            Box(
+                                Modifier
+                                    .size(4.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (isSelected) LocalColors.current.text else LocalColors.current.green
+                                    )
+                            )
+                        }
+                    }
+                }
+            }
 
             Spacer(Modifier.height(10.dp))
 

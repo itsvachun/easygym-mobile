@@ -19,12 +19,8 @@ import java.time.ZoneId
 import javax.inject.Inject
 
 data class CalendarState(
-    val displayedMonth: YearMonth = YearMonth.now(),
     val selectedDay: LocalDate = LocalDate.now(),
-    val today: LocalDate = LocalDate.now(),
     val events: List<Event> = emptyList(),
-    val calendarRows: List<List<Triple<Int, Boolean, LocalDate>>> = emptyList(),
-    val monthLabel: String = "",
     val selectedDayLabel: String = "",
     val selectedDayEvents: List<Event> = emptyList(),
     val datesWithEvent: Set<LocalDate> = emptySet(),
@@ -47,40 +43,22 @@ class CalendarViewModel @Inject constructor(
         viewModelScope.launch {
             eventsUseCase().collect { domainEvents ->
                 _state.update { it.copy(events = domainEvents) }
-                updateStateWithCalendarData()
+                updateState()
             }
         }
 
-        loadEventsForMonth(_state.value.displayedMonth)
+        loadEventsForMonth(YearMonth.now())
     }
 
-    fun onPreviousMonth() {
-        _state.update { state ->
-            val newMonth = state.displayedMonth.minusMonths(1)
-            state.copy(
-                displayedMonth = newMonth,
-                selectedDay = calendarHelper.defaultSelectionForMonth(newMonth, state.today),
-            )
-        }
-        loadEventsForMonth(_state.value.displayedMonth)
-        updateStateWithCalendarData()
-    }
-
-    fun onNextMonth() {
-        _state.update { state ->
-            val newMonth = state.displayedMonth.plusMonths(1)
-            state.copy(
-                displayedMonth = newMonth,
-                selectedDay = calendarHelper.defaultSelectionForMonth(newMonth, state.today),
-            )
-        }
-        loadEventsForMonth(_state.value.displayedMonth)
-        updateStateWithCalendarData()
+    fun onMonthChanged(month: YearMonth) {
+        _state.update { it.copy(selectedDay = calendarHelper.defaultSelectionForMonth(month)) }
+        loadEventsForMonth(month)
+        updateState()
     }
 
     fun onDaySelected(date: LocalDate) {
         _state.update { it.copy(selectedDay = date) }
-        updateStateWithCalendarData()
+        updateState()
     }
 
     private fun loadEventsForMonth(month: YearMonth) {
@@ -97,15 +75,13 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    private fun updateStateWithCalendarData() {
+    private fun updateState() {
         _state.update { state ->
             val eventsByDate = state.events.groupBy {
                 it.startDateTime.atZone(ZoneId.systemDefault()).toLocalDate()
             }
 
             state.copy(
-                calendarRows = calendarHelper.generateCalendarRows(state.displayedMonth),
-                monthLabel = calendarHelper.getMonthLabel(state.displayedMonth),
                 selectedDayLabel = calendarHelper.getDayLabel(state.selectedDay),
                 selectedDayEvents = eventsByDate[state.selectedDay] ?: emptyList(),
                 datesWithEvent = eventsByDate.keys,

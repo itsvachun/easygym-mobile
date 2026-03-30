@@ -55,8 +55,9 @@ class CalendarHelper @Inject constructor() {
         return days.chunked(7)
     }
 
-    fun defaultSelectionForMonth(month: YearMonth, today: LocalDate): LocalDate =
-        if (YearMonth.from(today) == month) today else month.atDay(1)
+    fun defaultSelectionForMonth(month: YearMonth): LocalDate =
+        if (YearMonth.from(LocalDate.now()) == month) LocalDate.now()
+        else month.atDay(1)
 
     fun getFirstMomentOfMonth(month: YearMonth): String =
         month.atDay(1).atStartOfDay(ZoneOffset.UTC).toInstant().toString()
