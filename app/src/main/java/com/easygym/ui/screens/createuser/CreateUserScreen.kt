@@ -12,7 +12,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.easygym.ui.components.*
 import com.easygym.ui.theme.LocalColors
@@ -36,7 +38,7 @@ fun CreateUserScreen(
                 .padding(horizontal = 24.dp)
                 .padding(vertical = 10.dp)
                 .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.Start
         ) {
 
@@ -52,59 +54,42 @@ fun CreateUserScreen(
                 style = MaterialTheme.typography.headlineLarge
             )
 
-            Text(
-                text = "RUOLO",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
+            Spacer(modifier = Modifier.height(4.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
+                Text(
+                    text = "TIPOLOGIA",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = LocalColors.current.surface4,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp
+                )
 
-                Box(modifier = Modifier.weight(1f)) {
-                    if (state.createUser is CreateUser.Athlete) {
-                        EasyGymIconButton(
-                            text = "Atleta",
-                            iconText = "\uD83C\uDFCB\uFE0F",
-                            height = 80,
-                            borderColor = LocalColors.current.purple,
-                            textColor = LocalColors.current.purple,
-                            backgroundColor = LocalColors.current.purpleDim,
-                            onClick = {}
-                        )
-                    } else {
-                        EasyGymIconButton(
-                            text = "Atleta",
-                            iconText = "\uD83C\uDFCB\uFE0F",
-                            height = 80,
-                            onClick = { viewModel.onRoleSelected(CreateUser.Athlete()) },
-                        )
-                    }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    EasyGymSegmentedButton(
+                        modifier = Modifier.weight(1f),
+                        text = "Atleta",
+                        icon = "\uD83C\uDFCB\uFE0F",
+                        borderColor = LocalColors.current.purple.takeIf { state.isAthlete },
+                        textColor = LocalColors.current.purple.takeIf { state.isAthlete },
+                        backgroundColor = LocalColors.current.purpleDim.takeIf { state.isAthlete },
+                        onClick = { viewModel.onRoleSelected(CreateUser.Athlete()) },
+                    )
+
+                    EasyGymSegmentedButton(
+                        modifier = Modifier.weight(1f),
+                        text = "Coach",
+                        icon = "\uD83E\uDD4B",
+                        borderColor = LocalColors.current.blue.takeIf { state.isCoach },
+                        textColor = LocalColors.current.blue.takeIf { state.isCoach },
+                        backgroundColor = LocalColors.current.blueDim.takeIf { state.isCoach },
+                        onClick = { viewModel.onRoleSelected(CreateUser.Coach()) },
+                    )
                 }
-
-                Box(modifier = Modifier.weight(1f)) {
-                    if (state.createUser is CreateUser.Coach) {
-                        EasyGymIconButton(
-                            text = "Coach",
-                            iconText = "\uD83E\uDD4B",
-                            height = 80,
-                            borderColor = LocalColors.current.blue,
-                            textColor = LocalColors.current.blue,
-                            backgroundColor = LocalColors.current.blueDim,
-                            onClick = {}
-                        )
-                    } else {
-                        EasyGymIconButton(
-                            text = "Coach",
-                            iconText = "\uD83E\uDD4B",
-                            height = 80,
-                            onClick = { viewModel.onRoleSelected(CreateUser.Coach()) },
-                        )
-                    }
-                }
-
             }
 
             Row(

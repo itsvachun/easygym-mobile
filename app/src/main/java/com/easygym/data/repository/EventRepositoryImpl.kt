@@ -2,6 +2,7 @@ package com.easygym.data.repository
 
 import com.easygym.data.local.dao.EventDAO
 import com.easygym.data.remote.datasource.EventDataSource
+import com.easygym.data.remote.model.event.EventRequest
 import com.easygym.domain.model.Event
 import com.easygym.domain.repository.EventRepository
 import jakarta.inject.Inject
@@ -23,5 +24,12 @@ class EventRepositoryImpl @Inject constructor(
             println("Ecco la response: $response")
             val entities = response.map { it.toEntity() }
             eventDAO.insertAll(entities)
+        }
+
+    override suspend fun create(groupId: String, event: Event): Result<Unit> =
+        runCatching {
+            val response = eventDataSource.create(EventRequest.fromDomain(groupId, event))
+            println("Ecco la response: $response")
+            eventDAO.insert(response.toEntity())
         }
 }

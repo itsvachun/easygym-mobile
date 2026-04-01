@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.easygym.ui.screens.athletes.AthletesScreen
 import com.easygym.ui.screens.calendar.CalendarScreen
 import com.easygym.ui.screens.changepassword.ChangePasswordScreen
+import com.easygym.ui.screens.createevent.CreateEventScreen
 import com.easygym.ui.screens.createuser.CreateUserScreen
 import com.easygym.ui.screens.home.HomeScreen
 import com.easygym.ui.screens.loadinggate.LoadingGateScreen
@@ -50,6 +51,9 @@ fun NavGraph(
         composable(NavDestination.Common.ChangePassword.route) {
             ChangePasswordScreen()
         }
+        composable(NavDestination.Common.CreateEvent.route) {
+            CreateEventScreen()
+        }
         composable(NavDestination.Common.Bottom.route) {
             Scaffold(
                 bottomBar = {
@@ -74,7 +78,10 @@ fun NavGraph(
                         }
 
                         NavDestination.BottomBar.Athletes.route -> AthletesScreen()
-                        NavDestination.BottomBar.Calendar.route -> CalendarScreen()
+                        NavDestination.BottomBar.Calendar.route -> CalendarScreen {
+                            navController.navigate(NavDestination.Common.CreateEvent.route)
+                        }
+
                         NavDestination.BottomBar.Payments.route -> PaymentsScreen()
                         NavDestination.BottomBar.Club.route -> ClubScreen(
                             onNavigateToChangePassword = {

@@ -22,13 +22,14 @@ import androidx.compose.ui.unit.sp
 import com.easygym.ui.theme.LocalColors
 
 @Composable
-fun EasyGymTextField(
+fun EasyGymDescriptionField(
     value: String,
     label: String,
     placeholder: String,
     isImportant: Boolean = false,
-    singleLine: Boolean = true,
     isError: Boolean = false,
+    minLines: Int = 3,
+    maxLines: Int = 6,
     onValueChange: (String) -> Unit,
 ) {
     Column {
@@ -48,17 +49,21 @@ fun EasyGymTextField(
                 .clip(RoundedCornerShape(12.dp))
                 .border(
                     width = 1.5.dp,
-                    color = LocalColors.current.surface3.copy(alpha = if (isImportant) 1f else 0.3f),
+                    color = LocalColors.current.surface3.copy(
+                        alpha = if (isImportant) 1f else 0.3f
+                    ),
                     shape = RoundedCornerShape(12.dp),
                 )
                 .background(LocalColors.current.surface1),
             value = value,
             onValueChange = onValueChange,
-            singleLine = singleLine,
+            singleLine = false,
+            minLines = minLines,
+            maxLines = maxLines,
             isError = isError,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Default
             ),
             shape = RoundedCornerShape(12.dp),
             placeholder = {

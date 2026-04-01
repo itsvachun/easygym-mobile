@@ -15,22 +15,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.easygym.ui.theme.LocalColors
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EasyGymDatePicker(
-    value: LocalDate,
+fun EasyGymTimePicker(
+    value: LocalTime,
     label: String,
     isError: Boolean = false,
-    onDateSelected: (LocalDate) -> Unit,
+    onTimeSelected: (LocalTime) -> Unit,
 ) {
-    val calendarState = rememberDatePickerState(
-        initialSelectedDateMillis = value.atStartOfDay(ZoneOffset.UTC).toEpochSecond() * 1000
+    val timeState = rememberTimePickerState(
+        initialHour = value.hour,
+        initialMinute = value.minute,
+        is24Hour = true
     )
-    var showDatePickerDialog by remember { mutableStateOf(false) }
+
+    var showTimePickerDialog by remember { mutableStateOf(false) }
 
     Column {
         Text(
@@ -53,20 +54,20 @@ fun EasyGymDatePicker(
                     shape = RoundedCornerShape(12.dp),
                 )
                 .background(LocalColors.current.surface1),
-            value = value.toString(),
+            value = "%02d:%02d".format(value.hour, value.minute),
             onValueChange = {},
             readOnly = true,
             isError = isError,
             placeholder = {
                 Text(
-                    text = "YYYY-MM-DD",
+                    text = "HH:MM",
                     color = LocalColors.current.surface3,
                 )
             },
             trailingIcon = {
-                TextButton(onClick = { showDatePickerDialog = true }) {
+                TextButton(onClick = { showTimePickerDialog = true }) {
                     Text(
-                        text = "Seleziona Data",
+                        text = "Seleziona Ora",
                         color = LocalColors.current.red,
                     )
                 }
@@ -74,32 +75,27 @@ fun EasyGymDatePicker(
             shape = RoundedCornerShape(12.dp),
         )
 
-        // Show Date Picker Dialog
-        if (showDatePickerDialog) {
-            DatePickerDialog(
-                onDismissRequest = { showDatePickerDialog = false },
+        // Time Picker Dialog
+        if (showTimePickerDialog) {
+            DatePickerDialog( // riusiamo il dialog Material
+                onDismissRequest = { showTimePickerDialog = false },
                 confirmButton = {
                     TextButton(
                         onClick = {
-                            val selectedLocalDate = Instant.ofEpochMilli(calendarState.selectedDateMillis!!)
-                                .atZone(ZoneOffset.UTC)
-                                .toLocalDate()
-                            onDateSelected(selectedLocalDate)
-                            showDatePickerDialog = false
+                            onTimeSelected(LocalTime.of(timeState.hour, timeState.minute))
+                            showTimePickerDialog = false
                         }
                     ) {
                         Text(text = "OK", color = LocalColors.current.text)
                     }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showDatePickerDialog = false }) {
+                    TextButton(onClick = { showTimePickerDialog = false }) {
                         Text(text = "Cancel", color = LocalColors.current.text)
                     }
                 }
             ) {
-                DatePicker(
-                    calendarState
-                )
+                TimePicker(state = timeState)
             }
         }
     }

@@ -95,31 +95,17 @@ fun UsersScreen(
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
 
-                            Box(modifier = Modifier.weight(1f)) {
+                            UserRole.entries.forEach { userRole ->
                                 EasyGymFilterButton(
-                                    text = "Tutti",
-                                    selected = state.selectedRole == null,
-                                    onClick = { viewModel.onRoleSelected(null) }
+                                    modifier = Modifier.fillMaxWidth().weight(1f),
+                                    text = when (userRole) {
+                                        UserRole.ATHLETE -> "Atleti"
+                                        UserRole.COACH -> "Allenatori"
+                                        else -> "Tutti"
+                                    },
+                                    selected = state.selectedRole == userRole.takeIf { it != UserRole.ADMIN },
+                                    onClick = { viewModel.onRoleSelected(userRole.takeIf { it != UserRole.ADMIN }) }
                                 )
-
-                            }
-
-                            Box(modifier = Modifier.weight(1f)) {
-                                EasyGymFilterButton(
-                                    text = "Allenatori",
-                                    selected = state.selectedRole == UserRole.COACH,
-                                    onClick = { viewModel.onRoleSelected(UserRole.COACH) }
-                                )
-
-                            }
-
-                            Box(modifier = Modifier.weight(1f)) {
-                                EasyGymFilterButton(
-                                    text = "Atleti",
-                                    selected = state.selectedRole == UserRole.ATHLETE,
-                                    onClick = { viewModel.onRoleSelected(UserRole.ATHLETE) }
-                                )
-
                             }
                         }
 

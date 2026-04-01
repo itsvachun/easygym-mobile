@@ -16,11 +16,14 @@ import javax.inject.Inject
 
 data class CreateUserState(
     val createUser: CreateUser = CreateUser.Athlete(),
-    val isLoading: Boolean = false,
+    var isLoading: Boolean = false,
     val errorMessage: String? = null,
     val groupId: String? = null,
     val groups: List<Group> = emptyList()
-)
+) {
+    val isAthlete: Boolean = createUser is CreateUser.Athlete
+    val isCoach: Boolean = createUser is CreateUser.Coach
+}
 
 @HiltViewModel
 class CreateUserViewModel @Inject constructor(

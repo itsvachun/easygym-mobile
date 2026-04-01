@@ -10,6 +10,6 @@ data class Event(
     val startDateTime: Instant,
     val endDateTime: Instant,
     val location: String,
-    val groupName: String,
-    val cancelled: Boolean
+    val groupName: String? = null,
+    val cancelled: Boolean = false,
 )

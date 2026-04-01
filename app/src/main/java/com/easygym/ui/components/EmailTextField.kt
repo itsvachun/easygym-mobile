@@ -30,7 +30,7 @@ fun EmailTextField(
     Column {
         Text(
             text = "EMAIL",
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.labelLarge,
             color = LocalColors.current.surface4,
             fontWeight = FontWeight.Bold,
             letterSpacing = 2.sp,

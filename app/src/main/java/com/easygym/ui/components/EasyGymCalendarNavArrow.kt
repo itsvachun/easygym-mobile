@@ -19,12 +19,12 @@ fun EasyGymCalendarNavArrow(symbol: String, onClick: () -> Unit) {
     val colors = LocalColors.current
     Box(
         modifier = Modifier
-            .size(30.dp)
+            .size(40.dp)
             .clip(RoundedCornerShape(7.dp))
             .background(colors.surface1)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        Text(symbol, fontSize = 20.sp, color = colors.graySoft)
+        Text(symbol, fontSize = 24.sp, color = colors.graySoft)
     }
 }

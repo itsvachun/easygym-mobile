@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun CalendarScreen(
     viewModel: CalendarViewModel = hiltViewModel(),
+    onNavigateToCreateEvent: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -53,7 +54,7 @@ fun CalendarScreen(
                     style = MaterialTheme.typography.headlineLarge,
                     color = LocalColors.current.text
                 )
-                EasyGymFAB(onClick = {}, hasShadow = true)
+                EasyGymFAB(onClick = onNavigateToCreateEvent, hasShadow = true)
             }
 
             state.errorMessage?.let {

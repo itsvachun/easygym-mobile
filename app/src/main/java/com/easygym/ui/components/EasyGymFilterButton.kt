@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,16 +19,16 @@ import com.easygym.ui.theme.LocalColors
 
 @Composable
 fun EasyGymFilterButton(
+    modifier: Modifier = Modifier,
     height: Float = 30F,
     text: String,
     onClick: () -> Unit,
     selected: Boolean
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(15.dp))
             .height(height.dp)
-            .fillMaxWidth()
             .background(
                 if (selected) {
                     LocalColors.current.red
@@ -41,6 +41,7 @@ fun EasyGymFilterButton(
         contentAlignment = Alignment.Center
     ) {
         Text(
+            modifier = Modifier.padding(horizontal = 12.dp),
             text = text,
             color = if (selected) Dark.text else LocalColors.current.text,
             style = MaterialTheme.typography.bodyLarge
