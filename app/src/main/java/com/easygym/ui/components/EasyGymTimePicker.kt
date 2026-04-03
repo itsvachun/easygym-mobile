@@ -2,10 +2,7 @@ package com.easygym.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -75,9 +72,8 @@ fun EasyGymTimePicker(
             shape = RoundedCornerShape(12.dp),
         )
 
-        // Time Picker Dialog
         if (showTimePickerDialog) {
-            DatePickerDialog( // riusiamo il dialog Material
+            DatePickerDialog(
                 onDismissRequest = { showTimePickerDialog = false },
                 confirmButton = {
                     TextButton(
@@ -95,7 +91,7 @@ fun EasyGymTimePicker(
                     }
                 }
             ) {
-                TimePicker(state = timeState)
+                TimePicker(modifier = Modifier.fillMaxSize().padding(top = 80.dp), state = timeState)
             }
         }
     }

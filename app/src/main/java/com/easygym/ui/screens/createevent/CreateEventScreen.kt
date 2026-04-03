@@ -23,7 +23,6 @@ import java.time.ZoneId
 @Composable
 fun CreateEventScreen(
     viewModel: CreateEventViewModel = hiltViewModel(),
-    onSaved: () -> Unit = {},
     onBack: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -89,7 +88,7 @@ fun CreateEventScreen(
                 }
             }
             EasyGymDatePicker(
-                value = state.event.startDateTime.atZone(ZoneId.systemDefault()).toLocalDate(),
+                value = state.selectedDate,
                 label = "Data",
                 onDateSelected = { viewModel.updateEvent(selectedDate = it) },
             )
@@ -141,7 +140,7 @@ fun CreateEventScreen(
                 onValueChange = { viewModel.updateEvent(description = it) },
             )
             Spacer(Modifier.fillMaxHeight())
-            PrimaryButton(text = "Crea evento", onClick = onSaved)
+            PrimaryButton(text = "Crea evento", onClick = viewModel::createEvent)
         }
     }
 

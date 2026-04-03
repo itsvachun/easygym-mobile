@@ -26,6 +26,7 @@ data class CreateEventState(
         endDateTime = Instant.now(),
         location = "",
     ),
+    val selectedDate: LocalDate = LocalDate.now(),
     val groups: List<Group> = emptyList(),
     val selectedGroups: List<Group> = emptyList(),
     val isLoading: Boolean = false,
@@ -81,12 +82,19 @@ class CreateEventViewModel @Inject constructor(
                 title = title ?: it.event.title,
                 eventType = eventType ?: it.event.eventType,
                 description = description ?: it.event.description,
-                startDateTime = LocalDateTime.of(selectedDate, startTime)?.atZone(ZoneId.systemDefault())?.toInstant()
-                    ?: it.event.startDateTime,
-                endDateTime = LocalDateTime.of(selectedDate, endTime).atZone(ZoneId.systemDefault())?.toInstant()
-                    ?: it.event.endDateTime,
+                startDateTime =
+                    if (startTime != null) LocalDateTime.of(it.selectedDate, startTime)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+                    else it.event.startDateTime,
+                endDateTime =
+                    if (endTime != null) LocalDateTime.of(it.selectedDate, endTime)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+                    else it.event.endDateTime,
                 location = location ?: it.event.location,
-            )
+            ),
+            selectedDate = selectedDate ?: it.selectedDate
         )
     }
 

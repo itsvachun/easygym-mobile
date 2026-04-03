@@ -17,4 +17,7 @@ interface EventDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(event: EventEntity)
+
+    @Query("DELETE FROM events WHERE id NOT IN (:ids)")
+    suspend fun deleteNotIn(ids: List<String>)
 }

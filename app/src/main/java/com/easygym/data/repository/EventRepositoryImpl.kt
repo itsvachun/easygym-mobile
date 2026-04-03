@@ -23,6 +23,7 @@ class EventRepositoryImpl @Inject constructor(
             val response = eventDataSource.fetch(Instant.parse(from), Instant.parse(to))
             println("Ecco la response: $response")
             val entities = response.map { it.toEntity() }
+            eventDAO.deleteNotIn(response.map { it.id })
             eventDAO.insertAll(entities)
         }
 
